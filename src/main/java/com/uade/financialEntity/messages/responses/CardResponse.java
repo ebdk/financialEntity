@@ -1,27 +1,39 @@
 package com.uade.financialEntity.messages.responses;
 
-@lombok.Getter
-public class CardResponse implements com.uade.financialEntity.messages.Response {
+import com.uade.financialEntity.messages.Response;
+import com.uade.financialEntity.models.Card;
+import lombok.Getter;
 
-    private Long cardId;
-    private String cardName;
-    private String cardImgUrl;
-    private String cardDescription;
-    private String cardLevel;
-    private String cardType;
+@Getter
+public class CardResponse implements Response {
 
-    private java.util.List<Long> turnsIds;
+	//ATTRIBUTESo
+	private Long id;
 
-    public CardResponse(com.uade.financialEntity.models.Card card) {
-        if(card != null){
-            this.cardId = card.getCardId() != null ? card.getCardId() : null;
-            this.cardName = card.getName() != null ? card.getName() : null;
-            this.cardImgUrl = card.getImgUrl() != null ? card.getImgUrl() : null;
-            this.cardDescription = card.getDescription() != null ? card.getDescription() : null;
-            this.cardType = card.getOptionType().toString() != null ? card.getOptionType().toString() : null;
-        }
-    }
+	private Integer creditNumber;
+	private Integer codeNumber;
+	private String validFrom;
+	private String goodThrough;
+	private String nameCustomer;
+	private String cardType;
+	private Boolean cardPayOnTime;
 
-    public CardResponse() {
-    }
+	//BUILDERS
+	public CardResponse(Card card) {
+		if (card != null) {
+			this.id = card.getId() != null ? card.getId() : null;
+			this.creditNumber = card.getCreditNumber() != null ? card.getCreditNumber() : null;
+			this.codeNumber = card.getCodeNumber() != null ? card.getCodeNumber() : null;
+			this.validFrom = card.getValidFrom() != null ? card.getValidFrom() : null;
+			this.goodThrough = card.getGoodThrough() != null ? card.getGoodThrough() : null;
+			this.nameCustomer = card.getNameCustomer() != null ? card.getNameCustomer() : null;
+			this.cardType = card.getCardType() != null ? card.getCardType().toString() : null;
+			this.cardPayOnTime = card.getCardPayOnTime() != null ? card.getCardPayOnTime() : null;
+
+		}
+	}
+
+	public CardResponse() {
+	}
+
 }

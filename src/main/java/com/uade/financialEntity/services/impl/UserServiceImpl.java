@@ -1,4 +1,4 @@
-package com.uade.financialEntity.services.impl;
+/*package com.uade.financialEntity.services.impl;
 
 @org.springframework.stereotype.Service
 public class UserServiceImpl implements com.uade.financialEntity.services.UserService {
@@ -60,3 +60,6 @@ public class UserServiceImpl implements com.uade.financialEntity.services.UserSe
 
 
 }
+
+
+ */

@@ -1,32 +1,33 @@
 package com.uade.financialEntity.messages.requests;
 
-@lombok.Getter
-public class CardRequest {
+import com.uade.financialEntity.messages.Response;
+import com.uade.financialEntity.models.Card;
+import lombok.Getter;
 
-    private String name;
-    private String imgUrl;
-    private String description;
-    private String difficulty;
-    private String optionType;
-    private String targetType;
-    private String effectType;
+@Getter
+public class CardRequest implements Response {
 
-    public CardRequest(com.uade.financialEntity.models.Card card) {
-        this.name = card.getName();
-        this.imgUrl = card.getImgUrl();
-        this.description = card.getDescription();
-        //this.type = card.getOptionType().toString();
-    }
+	//ATTRIBUTES
+	private Integer creditNumber;
+	private Integer codeNumber;
+	private String validFrom;
+	private String goodThrough;
+	private String nameCustomer;
+	private String cardType;
+	private Boolean cardPayOnTime;
 
-    public CardRequest() {
-    }
+	//BUILDERS
+	public CardRequest(Card card) {
+		this.creditNumber = card.getCreditNumber();
+		this.codeNumber = card.getCodeNumber();
+		this.validFrom = card.getValidFrom();
+		this.goodThrough = card.getGoodThrough();
+		this.nameCustomer = card.getNameCustomer();
+		this.cardType = card.getCardType().toString();
+		this.cardPayOnTime = card.getCardPayOnTime();
+	}
 
-    public com.uade.financialEntity.models.Card toEntity(String a) {
-        return new com.uade.financialEntity.models.Card(this, a);
-    }
-
-    public com.uade.financialEntity.models.Card toEntity() {
-        return new com.uade.financialEntity.models.Card(this);
-    }
+	public CardRequest() {
+	}
 
 }

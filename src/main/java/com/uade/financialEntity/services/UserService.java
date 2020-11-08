@@ -1,14 +1,19 @@
 package com.uade.financialEntity.services;
 
+import com.uade.financialEntity.messages.requests.UserRequest;
+import com.uade.financialEntity.messages.responses.UserResponse;
+
+import java.util.List;
+
 public interface UserService {
 
-    java.util.List<com.uade.financialEntity.messages.responses.UserResponse> getAllusers();
+	List<UserResponse> getAllusers();
 
-    Object getByUsername(String username);
+	Object getByUsername(String username);
 
-    Object validateByUserNameAndPassword(String userName, String password);
+	Object validateByUserNameAndPassword(String userName, String password);
 
-    Object createUser(com.uade.financialEntity.messages.requests.UserRequest userRequest);
+	Object createUser(UserRequest userRequest);
 
-    Object updateCoins(String username, Integer coinsValue);
+	Object updateCoins(String username, Integer coinsValue);
 }

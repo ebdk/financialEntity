@@ -1,7 +1,9 @@
 package com.uade.financialEntity.repositories;
 
-@org.springframework.stereotype.Repository
-public interface UserDAO extends org.springframework.data.jpa.repository.JpaRepository<com.uade.financialEntity.models.User, Long> {
-    java.util.Optional<com.uade.financialEntity.models.User> findByUserName(String userName);
-    java.util.List<com.uade.financialEntity.models.User> findByRank(com.uade.financialEntity.models.User.UserRank rank);
+import com.uade.financialEntity.models.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserDAO extends JpaRepository<User, Long> {
 }

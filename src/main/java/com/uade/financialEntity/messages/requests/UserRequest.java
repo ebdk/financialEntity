@@ -1,23 +1,23 @@
 package com.uade.financialEntity.messages.requests;
 
-@lombok.Getter
-public class UserRequest implements com.uade.financialEntity.messages.Response {
+import com.uade.financialEntity.messages.Response;
+import com.uade.financialEntity.models.User;
+import lombok.Getter;
 
-    //ATTRIBUTES
-    private String userName;
-    private String password;
-    private String rank;
-    private Integer coins;
+@Getter
+public class UserRequest implements Response {
 
-    //BUILDERS
-    public UserRequest(com.uade.financialEntity.models.User user) {
-        this.userName = user.getUserName();
-        this.password = user.getPassword();
-        this.rank = user.getRank().toString();
-        this.coins = user.getCoins();
-    }
+	//ATTRIBUTES
+	private String userName;
+	private String password;
 
-    public UserRequest() {
-    }
+	//BUILDERS
+	public UserRequest(User user) {
+		this.userName = user.getUserName();
+		this.password = user.getPassword();
+	}
+
+	public UserRequest() {
+	}
 
 }

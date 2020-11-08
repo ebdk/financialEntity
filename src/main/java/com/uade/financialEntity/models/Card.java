@@ -1,79 +1,52 @@
 package com.uade.financialEntity.models;
 
-@javax.persistence.Entity(name = "Card")
-@javax.persistence.Table(name = "card")
-@lombok.Getter
+import com.uade.financialEntity.messages.requests.CardRequest;
+import com.uade.financialEntity.messages.responses.CardResponse;
+import lombok.Getter;
+
+import javax.persistence.*;
+
+@Entity(name = "Card")
+@Table(name = "card")
+@Getter
 public class Card {
 
-    //ATTRIBUTES
-    @javax.persistence.Id
-    @javax.persistence.Column(name="CARD_ID")
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
-    private Long cardId;
-    private String name;
-    private String imgUrl;
-    private String description;
-    private com.uade.financialEntity.models.Card.OptionType optionType;
-    private com.uade.financialEntity.models.Card.TargetType targetType;
-    private com.uade.financialEntity.models.Card.EffectType effectType;
+	//ATTRIBUTES
+	@Id
+	@Column(name = "CARD_ID")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    public enum OptionType {
-        EVENT,
-        OPPORTUNITY
-    }
+	private Integer creditNumber;
+	private Integer codeNumber;
+	private String validFrom;
+	private String goodThrough;
+	private String nameCustomer;
+	private CardType cardType;
+	private Boolean cardPayOnTime;
 
-    public enum TargetType {
-        PERSONAL,
-        GLOBAL
-    }
+	public enum CardType {
+		BLACK,
+		GOLD
+	}
 
-    public enum EffectType {
-        TRANSACTION_ONLY,
-        PROPERTY_BUY,
-        SHARE_BUY,
-        BOND_BUY,
-        COMPANY_VALUE_CHANGE
-    }
+	//BUILDERS
+	public Card(CardRequest cardRequest) {
+		this.creditNumber = cardRequest.getCreditNumber();
+		this.codeNumber = cardRequest.getCodeNumber();
+		this.validFrom = cardRequest.getValidFrom();
+		this.goodThrough = cardRequest.getGoodThrough();
+		this.nameCustomer = cardRequest.getNameCustomer();
+		this.cardType = CardType.valueOf(cardRequest.getCardType());
+		this.cardPayOnTime = cardRequest.getCardPayOnTime();
+	}
 
+	public Card() {
+	}
 
-    //BUILDERS
-    public Card(com.uade.financialEntity.messages.requests.CardRequest cardRequest) {
-        this.name = cardRequest.getName();
-        this.imgUrl = cardRequest.getImgUrl();
-        this.description = cardRequest.getDescription();
-        this.optionType = com.uade.financialEntity.models.Card.OptionType.valueOf(cardRequest.getOptionType());
-        this.effectType = com.uade.financialEntity.models.Card.EffectType.valueOf(cardRequest.getEffectType());
-        this.targetType = com.uade.financialEntity.models.Card.TargetType.valueOf(cardRequest.getTargetType());
-    }
-
-    public Card(com.uade.financialEntity.messages.requests.CardRequest cardRequest, String a) {
-        this.name = cardRequest.getName();
-        this.imgUrl = cardRequest.getImgUrl();
-        this.description = cardRequest.getDescription();
-        this.optionType = com.uade.financialEntity.models.Card.OptionType.valueOf(cardRequest.getOptionType());
-        this.effectType = com.uade.financialEntity.models.Card.EffectType.valueOf(cardRequest.getEffectType());
-        this.targetType = com.uade.financialEntity.models.Card.TargetType.valueOf(cardRequest.getTargetType());
-    }
-
-
-    /*
-    public Card(CardRequest cardRequest, TransactionList transactionList) {
-        this.name = cardRequest.getName();
-        this.imgUrl = cardRequest.getImgUrl();
-        this.description = cardRequest.getDescription();
-        this.difficulty = GameDifficulty.valueOf(cardRequest.getDifficulty());
-        this.optionType = OptionType.valueOf(cardRequest.getType());
-        this.targetType = TargetType.valueOf(cardRequest.getType());
-        this.transactionList = transactionList;
-    }
-     */
-
-    public Card() {
-    }
-
-    //METHODS
-    public com.uade.financialEntity.messages.responses.CardResponse toDto() {
-        return new com.uade.financialEntity.messages.responses.CardResponse(this);
-    }
+	//METHODS
+	public CardResponse toDto() {
+		return new CardResponse(this);
+	}
 
 }
