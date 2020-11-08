@@ -27,6 +27,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public Object get(Long id) {
+		Optional<User> persona = userRepository.findById(id);
+		return persona.isPresent() ?
+				new UserResponse(persona.get()) :
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la persona con id " + id)).getMapMessage();
+	}
+
+	@Override
 	public Object getByUsername(String username) {
 		Optional<User> persona = userRepository.findByUserName(username);
 		return persona.isPresent() ?

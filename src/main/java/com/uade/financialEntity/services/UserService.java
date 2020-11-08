@@ -9,6 +9,8 @@ public interface UserService {
 
 	List<UserResponse> getAllusers();
 
+	Object get(Long id);
+
 	Object getByUsername(String username);
 
 	Object validateByUserNameAndPassword(String userName, String password);

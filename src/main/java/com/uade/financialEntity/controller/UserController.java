@@ -23,6 +23,20 @@ public class UserController {
 	private UserService service;
 
 	@ApiOperation(
+			value = "Looks up a user by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The user was found successfully", response = UserResponse.class),
+	})
+	@GetMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getUser(
+			@ApiParam(value = "The user's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.get(id));
+	}
+
+	@ApiOperation(
 			value = "Looks up a user by username",
 			notes = "Self explanatory")
 	@ApiResponses({
@@ -30,7 +44,7 @@ public class UserController {
 	})
 	@GetMapping(path = "{username}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Object getUser(
+	public Object getUserByUserName(
 			@ApiParam(value = "The user's username", required = true)
 			@PathVariable("username") String username) {
 		return ResponseEntity.ok(service.getByUsername(username));
