@@ -1,85 +1,82 @@
 package com.uade.financialEntity.controller;
 
+import com.uade.financialEntity.messages.Response;
+import com.uade.financialEntity.messages.requests.UserRequest;
+import com.uade.financialEntity.messages.responses.UserResponse;
+import com.uade.financialEntity.services.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@org.springframework.web.bind.annotation.RestController
-@org.springframework.web.bind.annotation.RequestMapping("financial_game/api/user")
+@RestController
+@RequestMapping("financial_game/api/user")
 public class UserController {
 
-    @org.springframework.beans.factory.annotation.Autowired
-    private com.uade.financialEntity.services.UserService service;
+	@Autowired
+	private UserService service;
 
-    @io.swagger.annotations.ApiOperation(
-            value = "Looks up a user by username",
-            notes = "Self explanatory")
-    @io.swagger.annotations.ApiResponses({
-            @io.swagger.annotations.ApiResponse(code = 200, message = "The user was found successfully", response = com.uade.financialEntity.messages.responses.UserResponse.class),
-    })
-    @org.springframework.web.bind.annotation.GetMapping(path="{username}", produces = APPLICATION_JSON_VALUE)
-    @org.springframework.web.bind.annotation.ResponseStatus(org.springframework.http.HttpStatus.OK)
-    public Object getUser(
-            @io.swagger.annotations.ApiParam(value = "The user's username", required = true)
-            @org.springframework.web.bind.annotation.PathVariable("username") String username) {
-        return org.springframework.http.ResponseEntity.ok(service.getByUsername(username));
-    }
-
-
-    @io.swagger.annotations.ApiOperation(
-            value = "Looks up ALL users from the database",
-            notes = "Self explanatory")
-    @io.swagger.annotations.ApiResponses({
-            @io.swagger.annotations.ApiResponse(code = 200, message = "The users were found successfully", response = Object.class),
-            @io.swagger.annotations.ApiResponse(code = 500, message = "Internal server error", response = com.uade.financialEntity.messages.Response.class),
-    })
-    @org.springframework.web.bind.annotation.GetMapping(produces = APPLICATION_JSON_VALUE)
-    @org.springframework.web.bind.annotation.ResponseStatus(org.springframework.http.HttpStatus.OK)
-    public Object getAllUsers() {
-        return org.springframework.http.ResponseEntity.ok(service.getAllusers());
-    }
+	@ApiOperation(
+			value = "Looks up a user by username",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The user was found successfully", response = UserResponse.class),
+	})
+	@GetMapping(path = "{username}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getUser(
+			@ApiParam(value = "The user's username", required = true)
+			@PathVariable("username") String username) {
+		return ResponseEntity.ok(service.getByUsername(username));
+	}
 
 
-    @io.swagger.annotations.ApiOperation(
-            value = "Validates data from User",
-            notes = "Looks up the user and tries to match it's password with the one given")
-    @io.swagger.annotations.ApiResponses({
-            @io.swagger.annotations.ApiResponse(code = 200, message = "The user was validated successfully", response = Object.class),
-    })
-    @org.springframework.web.bind.annotation.GetMapping(path="validate/{username}/{password}", produces = APPLICATION_JSON_VALUE)
-    @org.springframework.web.bind.annotation.ResponseStatus(org.springframework.http.HttpStatus.OK)
-    public Object getValidation(
-            @io.swagger.annotations.ApiParam(value = "The user's username", required = true)
-            @org.springframework.web.bind.annotation.PathVariable("username") String username,
-            @io.swagger.annotations.ApiParam(value = "The user's password", required = true)
-            @org.springframework.web.bind.annotation.PathVariable("password") String password) {
-        return org.springframework.http.ResponseEntity.ok(service.validateByUserNameAndPassword(username, password));
-    }
+	@ApiOperation(
+			value = "Looks up ALL users from the database",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The users were found successfully", response = Object.class),
+			@ApiResponse(code = 500, message = "Internal server error", response = Response.class),
+	})
+	@GetMapping(produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getAllUsers() {
+		return ResponseEntity.ok(service.getAllusers());
+	}
 
-    @io.swagger.annotations.ApiOperation(
-            value = "Creates a user",
-            notes = "Self explanatory")
-    @io.swagger.annotations.ApiResponses({
-            @io.swagger.annotations.ApiResponse(code = 200, message = "The user was crated successfully", response = com.uade.financialEntity.messages.responses.UserResponse.class),
-    })
-    @org.springframework.web.bind.annotation.PostMapping(produces = APPLICATION_JSON_VALUE)
-    @org.springframework.web.bind.annotation.ResponseStatus(org.springframework.http.HttpStatus.OK)
-    public Object createPersona(@org.springframework.web.bind.annotation.RequestBody com.uade.financialEntity.messages.requests.UserRequest userRequest) {
-        return service.createUser(userRequest);
-    }
 
-    @io.swagger.annotations.ApiOperation(
-            value = "Looks up a user by username, and adds or substracts the coins",
-            notes = "Self explanatory")
-    @io.swagger.annotations.ApiResponses({
-            @io.swagger.annotations.ApiResponse(code = 200, message = "The user was found and modified successfully ", response = com.uade.financialEntity.messages.responses.UserResponse.class),
-    })
-    @org.springframework.web.bind.annotation.PostMapping(path="{username}/{coins_value}", produces = APPLICATION_JSON_VALUE)
-    @org.springframework.web.bind.annotation.ResponseStatus(org.springframework.http.HttpStatus.OK)
-    public Object updateCoins(
-            @io.swagger.annotations.ApiParam(value = "The user's username", required = true)
-            @org.springframework.web.bind.annotation.PathVariable("username") String username,
-            @io.swagger.annotations.ApiParam(value = "The coins to be added or substracted", required = true)
-            @org.springframework.web.bind.annotation.PathVariable("coins_value") String coinsValue) {
-        return org.springframework.http.ResponseEntity.ok(service.updateCoins(username, Integer.valueOf(coinsValue)));
-    }
+	@ApiOperation(
+			value = "Validates data from User",
+			notes = "Looks up the user and tries to match it's password with the one given")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The user was validated successfully", response = Object.class),
+	})
+	@GetMapping(path = "validate/{username}/{password}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getValidation(
+			@ApiParam(value = "The user's username", required = true)
+			@PathVariable("username") String username,
+			@ApiParam(value = "The user's password", required = true)
+			@PathVariable("password") String password) {
+		return ResponseEntity.ok(service.validateByUserNameAndPassword(username, password));
+	}
+
+	@ApiOperation(
+			value = "Creates a user",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The user was crated successfully", response = UserResponse.class),
+	})
+	@PostMapping(produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object createPersona(@RequestBody UserRequest userRequest) {
+		return service.createUser(userRequest);
+	}
 
 }

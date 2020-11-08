@@ -15,5 +15,4 @@ public interface UserService {
 
 	Object createUser(UserRequest userRequest);
 
-	Object updateCoins(String username, Integer coinsValue);
 }
