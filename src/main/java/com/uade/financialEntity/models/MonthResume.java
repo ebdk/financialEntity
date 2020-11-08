@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Entity(name = "Month_Resume")
+@Entity(name = "MonthResume")
 @Table(name = "month_resume")
 @Getter
 @Setter
@@ -18,6 +19,12 @@ public class MonthResume {
 	@Column(name = "MONTH_RESUME_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@ManyToOne
+	private Card card;
+
+	@OneToMany(mappedBy = "monthResume", cascade = CascadeType.ALL)
+	private List<Purchase> purchases;
 
 	private Integer monthNumber;
 	private Integer amountToPay;

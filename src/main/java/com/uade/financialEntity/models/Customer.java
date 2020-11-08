@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "Customer")
 @Table(name = "customer")
@@ -18,6 +19,9 @@ public class Customer {
 	@Column(name = "CUSTOMER_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL)
+	private List<Card> cards;
 
 	private Integer dni;
 	private String firstname;

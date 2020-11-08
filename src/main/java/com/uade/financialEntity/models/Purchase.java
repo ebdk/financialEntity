@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "Purchase")
 @Table(name = "purchase")
@@ -21,6 +22,18 @@ public class Purchase {
 	@Column(name = "PURCHASE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@ManyToOne
+	private ShopPromotion shopPromotion;
+
+	@ManyToOne
+	private Shop shop;
+
+	@ManyToOne
+	private MonthResume monthResume;
+
+	@OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
+	private List<PurchaseItem> purchaseItems;
 
 	private String description;
 	private Integer totalAmount;

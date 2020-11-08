@@ -5,6 +5,7 @@ import com.uade.financialEntity.messages.responses.CardResponse;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "Card")
 @Table(name = "card")
@@ -16,6 +17,15 @@ public class Card {
 	@Column(name = "CARD_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@ManyToOne
+	private Customer customer;
+
+	@OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
+	private List<MonthResume> monthResumes;
+
+	@ManyToOne
+	private CardEntity cardEntity;
 
 	private Integer creditNumber;
 	private Integer codeNumber;

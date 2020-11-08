@@ -19,6 +19,9 @@ public class PurchaseItem {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@ManyToOne
+	private Purchase purchase;
+
 	private String description;
 	private ProductType typeOfProduct;
 	private Integer amount;
