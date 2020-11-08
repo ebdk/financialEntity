@@ -72,7 +72,7 @@ public class ShopController {
 	})
 	@PostMapping(produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Object createPersona(@RequestBody ShopRequest ShopRequest) {
+	public Object createShop(@RequestBody ShopRequest ShopRequest) {
 		return service.createShop(ShopRequest);
 	}
 

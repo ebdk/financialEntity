@@ -29,8 +29,8 @@ public class Shop {
 	private String name;
 
 	//BUILDERS
-	public Shop(ShopRequest userRequest) {
-
+	public Shop(ShopRequest shopRequest) {
+		this.name = shopRequest.getName();
 	}
 
 	public Shop() {
