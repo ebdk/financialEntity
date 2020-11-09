@@ -76,4 +76,19 @@ public class CardController {
 		return service.createCard(cardRequest);
 	}
 
+
+	@ApiOperation(
+			value = "Closes a card by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The card was found successfully", response = CardResponse.class),
+	})
+	@PostMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object closeLastMonthResume(
+			@ApiParam(value = "The card's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.closeLastMonthResume(id));
+	}
+
 }

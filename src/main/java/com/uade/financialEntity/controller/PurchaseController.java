@@ -1,16 +1,13 @@
 package com.uade.financialEntity.controller;
 
-import com.uade.financialEntity.messages.Response;
-import com.uade.financialEntity.messages.requests.ShopRequest;
-import com.uade.financialEntity.messages.responses.ShopResponse;
-import com.uade.financialEntity.services.ShopService;
+import com.uade.financialEntity.messages.requests.custom.PurchaseCustomRequest;
+import com.uade.financialEntity.messages.responses.CustomerResponse;
+import com.uade.financialEntity.services.PurchaseService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -20,20 +17,18 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class PurchaseController {
 
 	@Autowired
-	private ShopService service;
+	private PurchaseService service;
 
 	@ApiOperation(
-			value = "Looks up a Shop by Id",
+			value = "Purchases",
 			notes = "Self explanatory")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "The Shop was found successfully", response = ShopResponse.class),
+			@ApiResponse(code = 200, message = "The customer was crated successfully", response = CustomerResponse.class),
 	})
-	@GetMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@PostMapping(produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Object getShop(
-			@ApiParam(value = "The Shop's Id", required = true)
-			@PathVariable("id") Long id) {
-		return ResponseEntity.ok(service.get(id));
+	public Object purchase(@RequestBody PurchaseCustomRequest purchaseCustomRequest) {
+		return service.purchase(purchaseCustomRequest);
 	}
 
 }
