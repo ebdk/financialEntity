@@ -15,4 +15,6 @@ public interface CardService {
 
 	Object createCard(CardRequest cardRequest);
 
+	Object closeLastMonthResume(Long id);
+
 }

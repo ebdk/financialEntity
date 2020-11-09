@@ -61,7 +61,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 			Shop shop = optionalShop.get();
 
 			Purchase purchase = new Purchase();
-			purchase.setMonthPays(request.getMonthPays());
+			MonthlyExpense monthlyExpense = new MonthlyExpense();
+
+			//purchase.setMonthPays(request.getMonthPays());
+			monthlyExpense.setMonthPays(request.getMonthPays());
 
 			List<PurchaseItem> purchaseItems = request.getPurchaseItems()
 					.stream()
@@ -74,15 +77,25 @@ public class PurchaseServiceImpl implements PurchaseService {
 			String date = simpleDateformat.format(now);
 
 			ShopPromotion shopPromotion = shop.getPromotion(card.getCardEntityName(), purchase.getPurchaseProductTypes(), date);
+			Integer amount;
 			if (shopPromotion != null) {
 				purchase.setDiscount(MathUtils.getPercentage(purchase.getOriginalAmount(), shopPromotion.getPercentageValue()));
 				purchase.setShopPromotion(shopPromotion);
+				amount = purchase.getOriginalAmount() - purchase.getDiscount();
 				purchase.setTotalAmount(purchase.getOriginalAmount() - purchase.getDiscount());
 			} else {
-				purchase.setTotalAmount(purchase.getOriginalAmount());
+				amount = purchase.getOriginalAmount();
 			}
+			purchase.setTotalAmount(amount);
+			monthlyExpense.setAmount(amount);
 
-			MonthResume monthResume = card.getLastMonthResume();
+			MonthResume monthResume;
+			if (card.getLastMonthResumeOpen() != null) {
+				monthResume = card.getLastMonthResumeOpen();
+			} else {
+				monthResume = new MonthResume();
+				monthResume.setCard(card);
+			}
 			monthResume.addPurchase(purchase);
 
 			purchaseRepository.save(purchase);

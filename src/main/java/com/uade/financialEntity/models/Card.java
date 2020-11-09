@@ -27,6 +27,9 @@ public class Card {
 	@OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
 	private List<MonthResume> monthResumes;
 
+	@OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
+	private List<MonthlyExpense> monthlyExpenses;
+
 	@ManyToOne
 	private CardEntity cardEntity;
 
@@ -62,9 +65,17 @@ public class Card {
 		return new CardResponse(this);
 	}
 
-	public MonthResume getLastMonthResume() {
+	public MonthResume getLastMonthResumeOpen() {
 		return monthResumes.stream()
-				.filter(MonthResume::getOpen)
+				.filter(MonthResume::isOpen)
+				.sorted(comparing(MonthResume::getMonthNumber).reversed())
+				.collect(toList())
+				.get(0);
+	}
+
+	public MonthResume getLastMonthResumeClosed() {
+		return monthResumes.stream()
+				.filter(MonthResume::isClosed)
 				.sorted(comparing(MonthResume::getMonthNumber).reversed())
 				.collect(toList())
 				.get(0);
@@ -72,6 +83,18 @@ public class Card {
 
 	public String getCardEntityName() {
 		return cardEntity.getName();
+	}
+
+	public Integer closeMonthWithMonthlyExpenses() {
+		Integer amount = monthlyExpenses.stream()
+				.filter(MonthlyExpense::isNotFullyPaid)
+				.mapToInt(MonthlyExpense::getAmount).sum();
+		increaseIfNotFullyPaidExpenses();
+		return amount;
+	}
+
+	private void increaseIfNotFullyPaidExpenses() {
+		monthlyExpenses.forEach(MonthlyExpense::increaseIfNotFullyPaid);
 	}
 
 }

@@ -42,16 +42,16 @@ public class Purchase {
 	private Integer discount;
 	private Integer totalAmount;
 	private Date date;
-	private Integer monthPays;
-	private Integer monthsPaid;
+	//private Integer monthPays;
+	//private Integer monthsPaid;
 
 	//BUILDERS
 	public Purchase(PurchaseRequest purchaseRequest) throws ParseException {
 		this.description = purchaseRequest.getDescription();
 		this.totalAmount = purchaseRequest.getTotalAmount();
 		this.date = new SimpleDateFormat("dd/MM/yyyy").parse(purchaseRequest.getDate());
-		this.monthPays = purchaseRequest.getMonthPays();
-		this.monthsPaid = purchaseRequest.getMonthsPaid();
+		//this.monthPays = purchaseRequest.getMonthPays();
+		//this.monthsPaid = purchaseRequest.getMonthsPaid();
 	}
 
 	public Purchase() {
@@ -71,5 +71,16 @@ public class Purchase {
 		purchaseItems.forEach(purchaseItem -> types.add(purchaseItem.getTypeOfProduct()));
 		return types;
 	}
+
+	/*
+	public boolean isFullyPaid() {
+		return monthsPaid >= monthPays;
+	}
+
+	public boolean isNotFullyPaid() {
+		return !isFullyPaid();
+	}
+	 */
+
 
 }

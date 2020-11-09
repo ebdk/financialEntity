@@ -40,6 +40,7 @@ public class MonthResume {
 	}
 
 	public MonthResume() {
+		open = true;
 	}
 
 	public void addPurchase(Purchase purchase) {
@@ -51,4 +52,31 @@ public class MonthResume {
 		return new MonthResumeResponse(this);
 	}
 
+	public boolean isClosed() {
+		return !open;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public Integer calculateTotalAmount() {
+		return purchases.stream().mapToInt(Purchase::getTotalAmount).sum();
+	}
+
+	/*
+	public List<Purchase> getPurchasesRemainingMonthPay() {
+		return purchases.stream()
+				.filter(Purchase::isNotFullyPaid)
+				.collect(toList());
+	}
+	 */
+
+	public boolean paidCorrectly() {
+		return amountPaid >= amountToPay;
+	}
+
+	public void close() {
+		open = false;
+	}
 }
