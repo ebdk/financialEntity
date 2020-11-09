@@ -42,12 +42,12 @@ public class ShopPromotionController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The Shop was found successfully", response = ShopResponse.class),
 	})
-	@GetMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "{shopId}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Object getByShopId(
-			@ApiParam(value = "The Shop's Name", required = true)
-			@PathVariable("id") Long id) {
-		return ResponseEntity.ok(service.getByShopId(id));
+			@ApiParam(value = "The Shop's Id", required = true)
+			@PathVariable("shopId") Long shopId) {
+		return ResponseEntity.ok(service.getByShopId(shopId));
 	}
 
 

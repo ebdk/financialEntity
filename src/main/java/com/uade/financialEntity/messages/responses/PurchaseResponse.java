@@ -22,8 +22,8 @@ public class PurchaseResponse implements Response {
 			this.description = purchase.getDescription() != null ? purchase.getDescription() : null;
 			this.totalAmount = purchase.getTotalAmount() != null ? purchase.getTotalAmount() : null;
 			this.date = purchase.getDate() != null ? purchase.getDate().toString() : null;
-			this.monthPays = purchase.getMonthPays() != null ? purchase.getMonthPays() : null;
-			this.monthsPaid = purchase.getMonthsPaid() != null ? purchase.getMonthsPaid() : null;
+			//this.monthPays = purchase.getMonthPays() != null ? purchase.getMonthPays() : null;
+			//this.monthsPaid = purchase.getMonthsPaid() != null ? purchase.getMonthsPaid() : null;
 		}
 	}
 

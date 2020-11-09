@@ -6,15 +6,15 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity(name = "MonthResume")
-@Table(name = "month_resume")
+@Entity(name = "MonthlyExpense")
+@Table(name = "monthly_expense")
 @Getter
 @Setter
 public class MonthlyExpense {
 
 	//ATTRIBUTES
 	@Id
-	@Column(name = "MONTH_RESUME_ID")
+	@Column(name = "MONTHLY_EXPENSE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
