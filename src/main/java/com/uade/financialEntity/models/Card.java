@@ -7,6 +7,9 @@ import lombok.Getter;
 import javax.persistence.*;
 import java.util.List;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 @Entity(name = "Card")
 @Table(name = "card")
 @Getter
@@ -57,6 +60,18 @@ public class Card {
 	//METHODS
 	public CardResponse toDto() {
 		return new CardResponse(this);
+	}
+
+	public MonthResume getLastMonthResume() {
+		return monthResumes.stream()
+				.filter(MonthResume::getOpen)
+				.sorted(comparing(MonthResume::getMonthNumber).reversed())
+				.collect(toList())
+				.get(0);
+	}
+
+	public String getCardEntityName() {
+		return cardEntity.getName();
 	}
 
 }

@@ -11,7 +11,7 @@ public class MonthResumeResponse implements Response {
 	private Long id;
 	private Integer monthNumber;
 	private Integer amountToPay;
-	private Boolean closed;
+	private Boolean open;
 	private Integer amountPaid;
 
 	//BUILDERS
@@ -20,7 +20,7 @@ public class MonthResumeResponse implements Response {
 			this.id = monthResume.getId() != null ? monthResume.getId() : null;
 			this.monthNumber = monthResume.getMonthNumber() != null ? monthResume.getMonthNumber() : null;
 			this.amountToPay = monthResume.getAmountToPay() != null ? monthResume.getAmountToPay() : null;
-			this.closed = monthResume.getClosed() != null ? monthResume.getClosed() : null;
+			this.open = monthResume.getOpen() != null ? monthResume.getOpen() : null;
 			this.amountPaid = monthResume.getAmountPaid() != null ? monthResume.getAmountPaid() : null;
 		}
 	}

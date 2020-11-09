@@ -24,4 +24,10 @@ public class PurchaseItemRequest implements Response {
 	public PurchaseItemRequest() {
 	}
 
+
+	//METHODS
+	public PurchaseItem toEntity() {
+		return new PurchaseItem(this);
+	}
+
 }

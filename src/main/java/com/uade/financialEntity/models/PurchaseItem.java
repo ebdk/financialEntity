@@ -49,4 +49,8 @@ public class PurchaseItem {
 		return new PurchaseItemResponse(this);
 	}
 
+	public Integer calculateTotalAmount() {
+		return amount * value;
+	}
+
 }

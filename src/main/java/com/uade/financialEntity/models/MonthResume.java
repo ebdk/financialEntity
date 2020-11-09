@@ -28,18 +28,22 @@ public class MonthResume {
 
 	private Integer monthNumber;
 	private Integer amountToPay;
-	private Boolean closed;
+	private Boolean open;
 	private Integer amountPaid;
 
 	//BUILDERS
 	public MonthResume(MonthResumeRequest monthResumeRequest) {
 		this.monthNumber = monthResumeRequest.getMonthNumber();
 		this.amountToPay = monthResumeRequest.getAmountToPay();
-		this.closed = monthResumeRequest.getClosed();
+		this.open = monthResumeRequest.getOpen();
 		this.amountPaid = monthResumeRequest.getAmountPaid();
 	}
 
 	public MonthResume() {
+	}
+
+	public void addPurchase(Purchase purchase) {
+		this.purchases.add(purchase);
 	}
 
 	//METHODS

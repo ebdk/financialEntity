@@ -2,12 +2,14 @@ package com.uade.financialEntity.models;
 
 import com.uade.financialEntity.messages.requests.PurchaseRequest;
 import com.uade.financialEntity.messages.responses.PurchaseResponse;
+import com.uade.financialEntity.models.PurchaseItem.ProductType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class Purchase {
 	private List<PurchaseItem> purchaseItems;
 
 	private String description;
+	private Integer originalAmount;
+	private Integer discount;
 	private Integer totalAmount;
 	private Date date;
 	private Integer monthPays;
@@ -56,6 +60,16 @@ public class Purchase {
 	//METHODS
 	public PurchaseResponse toDto() {
 		return new PurchaseResponse(this);
+	}
+
+	public Integer calculateTotalAmount() {
+		return purchaseItems.stream().mapToInt(PurchaseItem::calculateTotalAmount).sum();
+	}
+
+	public List<ProductType> getPurchaseProductTypes() {
+		List<ProductType> types = new ArrayList<>();
+		purchaseItems.forEach(purchaseItem -> types.add(purchaseItem.getTypeOfProduct()));
+		return types;
 	}
 
 }

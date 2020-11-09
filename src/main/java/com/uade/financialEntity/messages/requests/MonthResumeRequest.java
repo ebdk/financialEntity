@@ -10,14 +10,14 @@ public class MonthResumeRequest implements Response {
 	//ATTRIBUTES
 	private Integer monthNumber;
 	private Integer amountToPay;
-	private Boolean closed;
+	private Boolean open;
 	private Integer amountPaid;
 
 	//BUILDERS
 	public MonthResumeRequest(MonthResume monthResume) {
 		this.monthNumber = monthResume.getMonthNumber();
 		this.amountToPay = monthResume.getAmountToPay();
-		this.closed = monthResume.getClosed();
+		this.open = monthResume.getOpen();
 		this.amountPaid = monthResume.getAmountPaid();
 	}
 

@@ -60,4 +60,10 @@ public class ShopPromotion {
 		return new ShopPromotionResponse(this);
 	}
 
+	public boolean isPromotion(String cardEntityName, List<PurchaseItem.ProductType> purchaseProductTypes, PromotionDay day) {
+		return cardEntityName.equals(cardEntity.getName())
+				&& purchaseProductTypes.contains(productType)
+				&& day.equals(day);
+	}
+
 }
