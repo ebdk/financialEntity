@@ -13,27 +13,34 @@ import javax.persistence.*;
 @Setter
 public class User {
 
-    //ATTRIBUTES
-    @Id
-    @Column(name="USER_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	//ATTRIBUTES
+	@Id
+	@Column(name = "USER_ID")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    private String userName;
-    private String password;
+	private String userName;
+	private String password;
+	private Privilege privilege;
 
-    //BUILDERS
-    public User(UserRequest userRequest) {
-        this.userName = userRequest.getUserName();
-        this.password = userRequest.getPassword();
-    }
+	public enum Privilege {
+		COMMON,
+		ADMIN
+	}
 
-    public User() {
-    }
+	//BUILDERS
+	public User(UserRequest userRequest) {
+		this.userName = userRequest.getUserName();
+		this.password = userRequest.getPassword();
+		this.privilege = Privilege.valueOf(userRequest.getPrivilege());
+	}
 
-    //METHODS
-    public UserResponse toDto() {
-        return new UserResponse(this);
-    }
+	public User() {
+	}
+
+	//METHODS
+	public UserResponse toDto() {
+		return new UserResponse(this);
+	}
 
 }

@@ -11,6 +11,7 @@ public class UserResponse implements Response {
 	private Long id;
 	private String userName;
 	private String password;
+	private String privilege;
 
 	//BUILDERS
 	public UserResponse(User user) {
@@ -18,6 +19,7 @@ public class UserResponse implements Response {
 			this.id = user.getId() != null ? user.getId() : null;
 			this.userName = user.getUserName() != null ? user.getUserName() : null;
 			this.password = user.getPassword() != null ? user.getPassword() : null;
+			this.privilege = user.getPrivilege() != null ? user.getPrivilege().toString() : null;
 		}
 	}
 
