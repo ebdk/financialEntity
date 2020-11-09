@@ -78,14 +78,6 @@ public class Card {
 				.get(0);
 	}
 
-	public MonthResume getLastMonthResumeClosed() {
-		return monthResumes.stream()
-				.filter(MonthResume::isClosed)
-				.sorted(comparing(MonthResume::getMonthNumber).reversed())
-				.collect(toList())
-				.get(0);
-	}
-
 	public String getCardEntityName() {
 		return cardEntity.getName();
 	}

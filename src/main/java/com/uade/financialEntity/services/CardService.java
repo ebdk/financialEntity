@@ -18,4 +18,10 @@ public interface CardService {
 
 	Object closeLastMonthResume(Long id);
 
+	Object getOpenResumeByResumeId(Long idResume);
+
+	Object getOpenResume(Long cardId);
+
+	Object payForLastResume(Long cardId, Integer amount);
+
 }

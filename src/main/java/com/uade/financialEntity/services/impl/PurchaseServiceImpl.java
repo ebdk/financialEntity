@@ -5,10 +5,7 @@ import com.uade.financialEntity.messages.requests.PurchaseItemRequest;
 import com.uade.financialEntity.messages.requests.custom.PurchaseCustomRequest;
 import com.uade.financialEntity.messages.responses.PurchaseResponse;
 import com.uade.financialEntity.models.*;
-import com.uade.financialEntity.repositories.CardDAO;
-import com.uade.financialEntity.repositories.MonthResumeDAO;
-import com.uade.financialEntity.repositories.PurchaseDAO;
-import com.uade.financialEntity.repositories.ShopDAO;
+import com.uade.financialEntity.repositories.*;
 import com.uade.financialEntity.services.PurchaseService;
 import com.uade.financialEntity.utils.MathUtils;
 import com.uade.financialEntity.utils.Pair;
@@ -28,6 +25,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	@Autowired
 	private PurchaseDAO purchaseRepository;
+
+	@Autowired
+	private PurchaseItemDAO purchaseItemRepository;
 
 	@Autowired
 	private ShopDAO shopRepository;
@@ -99,12 +99,13 @@ public class PurchaseServiceImpl implements PurchaseService {
 			monthResume.addPurchase(purchase);
 			monthResume.setAmountToPay(monthResume.calculateTotalAmount());
 
+			purchaseItemRepository.saveAll(purchaseItems);
 			purchaseRepository.save(purchase);
 			monthResumeRepository.save(monthResume);
 
 			return purchase.toDto();
 		} else {
-			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrado la carta o negocio.")).getMapMessage();
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrado la tarjeta o negocio.")).getMapMessage();
 		}
 	}
 

@@ -93,4 +93,48 @@ public class CardController {
 		return ResponseEntity.ok(service.closeLastMonthResume(id));
 	}
 
+	@ApiOperation(
+			value = "Gets Open Resume by Resume ID",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The card was found successfully", response = CardResponse.class),
+	})
+	@GetMapping(path = "open_resume_id/{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getOpenResumeByResumeId(
+			@ApiParam(value = "The resume's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.getOpenResumeByResumeId(id));
+	}
+
+	@ApiOperation(
+			value = "Gets Open Resume by Card ID",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The card was found successfully", response = CardResponse.class),
+	})
+	@GetMapping(path = "open_resume/{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getOpenResume(
+			@ApiParam(value = "The card's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.getOpenResume(id));
+	}
+
+	@ApiOperation(
+			value = "Pays a card's last open resume by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The card was found successfully", response = CardResponse.class),
+	})
+	@PostMapping(path = "pay/{id}/{amount}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object payForLastResume(
+			@ApiParam(value = "The card's id", required = true)
+			@PathVariable("id") Long id,
+			@ApiParam(value = "The amount to pay", required = true)
+			@PathVariable("amount") Integer amount) {
+		return ResponseEntity.ok(service.payForLastResume(id, amount));
+	}
+
 }

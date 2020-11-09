@@ -60,10 +60,6 @@ public class MonthResume {
 		return new MonthResumeFullResponse(this);
 	}
 
-	boolean isClosed() {
-		return !open;
-	}
-
 	boolean isOpen() {
 		return open;
 	}

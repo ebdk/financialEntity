@@ -48,7 +48,7 @@ public class CardServiceImpl implements CardService {
 		Optional<Card> card = cardRepository.findById(id);
 		return card.isPresent() ?
 				card.get().toFullDto() :
-				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la persona con id " + id)).getMapMessage();
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con id " + id)).getMapMessage();
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class CardServiceImpl implements CardService {
 		Optional<Card> card = cardRepository.findByCreditNumber(creditnumber);
 		return card.isPresent() ?
 				card.get().toFullDto() :
-				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la carta con numero " + creditnumber)).getMapMessage();
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con numero " + creditnumber)).getMapMessage();
 	}
 
 	@Override
@@ -117,9 +117,44 @@ public class CardServiceImpl implements CardService {
 
 			return monthResumeOpen.toDto();
 		} else {
-			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la carta con numero " + id)).getMapMessage();
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con numero " + id)).getMapMessage();
 		}
 
 	}
+
+	@Override
+	public Object getOpenResumeByResumeId(Long idResume) {
+		Optional<MonthResume> monthResume = monthResumeRepository.findById(idResume);
+		return monthResume.isPresent() ?
+				monthResume.get().toFullDto() :
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada el resumen con id " + idResume)).getMapMessage();
+	}
+
+	@Override
+	public Object getOpenResume(Long cardId) {
+		Optional<Card> optionalCard = cardRepository.findById(cardId);
+		return optionalCard.isPresent() ?
+				optionalCard.get().getLastMonthResumeOpen().toFullDto() :
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con id " + cardId)).getMapMessage();
+	}
+
+	@Override
+	public Object payForLastResume(Long cardId, Integer amount) {
+		Optional<Card> optionalCard = cardRepository.findById(cardId);
+		if (optionalCard.isPresent()) {
+			Card card = optionalCard.get();
+
+			MonthResume monthResume = card.getLastMonthResumeOpen();
+			monthResume.setAmountPaid(monthResume.getAmountPaid() + amount);
+
+			monthResumeRepository.save(monthResume);
+
+			return monthResume.toFullDto();
+		} else {
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con id " + cardId)).getMapMessage();
+		}
+
+	}
+
 
 }

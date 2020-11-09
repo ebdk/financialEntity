@@ -33,7 +33,7 @@ public class CardEntityServiceImpl implements CardEntityService {
 		Optional<CardEntity> cardEntity = cardEntityRepository.findById(id);
 		return cardEntity.isPresent() ?
 				new CardEntityResponse(cardEntity.get()) :
-				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la entidad de carta con  id " + id)).getMapMessage();
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la entidad de Tarjeta con  id " + id)).getMapMessage();
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class CardEntityServiceImpl implements CardEntityService {
 		Optional<CardEntity> cardEntity = cardEntityRepository.findByName(name);
 		return cardEntity.isPresent() ?
 				new CardEntityResponse(cardEntity.get()) :
-				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la entidad de carta con nombre " + name)).getMapMessage();
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la entidad de tarjeta con nombre " + name)).getMapMessage();
 	}
 
 	@Override
