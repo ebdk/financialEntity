@@ -3,7 +3,6 @@ package com.uade.financialEntity.messages.responses;
 import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.models.Card;
 import com.uade.financialEntity.models.MonthResume;
-import com.uade.financialEntity.models.MonthlyExpense;
 import lombok.Getter;
 
 import java.util.List;
@@ -16,7 +15,6 @@ public class CardFullResponse implements Response {
 	private Long id;
 	private CustomerResponse customer;
 	private List<MonthResumeFullResponse> monthResumes;
-	private List<MonthlyExpenseResponse> monthlyExpenses;
 	private CardEntityResponse cardEntity;
 	private Integer creditNumber;
 	private Integer codeNumber;
@@ -33,8 +31,6 @@ public class CardFullResponse implements Response {
 			this.customer = card.getCustomer() != null ? card.getCustomer().toDto() : null;
 			this.monthResumes = card.getMonthResumes() != null
 					? card.getMonthResumes().stream().map(MonthResume::toFullDto).collect(Collectors.toList()) : null;
-			this.monthlyExpenses = card.getMonthResumes() != null
-					? card.getMonthlyExpenses().stream().map(MonthlyExpense::toDto).collect(Collectors.toList()) : null;
 			this.cardEntity = card.getCardEntity() != null ? card.getCardEntity().toDto() : null;
 			this.creditNumber = card.getCreditNumber() != null ? card.getCreditNumber() : null;
 			this.codeNumber = card.getCodeNumber() != null ? card.getCodeNumber() : null;

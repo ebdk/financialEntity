@@ -1,7 +1,6 @@
 package com.uade.financialEntity.models;
 
 import com.uade.financialEntity.messages.requests.PurchaseRequest;
-import com.uade.financialEntity.messages.responses.MonthResumeFullResponse;
 import com.uade.financialEntity.messages.responses.PurchaseFullResponse;
 import com.uade.financialEntity.messages.responses.PurchaseResponse;
 import com.uade.financialEntity.models.PurchaseItem.ProductType;
@@ -14,6 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.uade.financialEntity.models.Purchase.PurchaseType.MONTHLY_PAYMENT;
+import static com.uade.financialEntity.models.Purchase.PurchaseType.ORIGINAL;
 
 @Entity(name = "Purchase")
 @Table(name = "purchase")
@@ -44,8 +46,14 @@ public class Purchase {
 	private Integer discount;
 	private Integer totalAmount;
 	private Date date;
-	//private Integer monthPays;
-	//private Integer monthsPaid;
+	private PurchaseType purchaseType;
+	private Integer monthPays;
+	private Integer monthsPaid;
+
+	public enum PurchaseType {
+		ORIGINAL,
+		MONTHLY_PAYMENT
+	}
 
 	//BUILDERS
 	public Purchase(PurchaseRequest purchaseRequest) throws ParseException {
@@ -55,6 +63,18 @@ public class Purchase {
 		//this.monthPays = purchaseRequest.getMonthPays();
 		//this.monthsPaid = purchaseRequest.getMonthsPaid();
 	}
+
+	public Purchase cloneNew() {
+		monthsPaid++;
+		Purchase newPurchase = new Purchase();
+		newPurchase.setDate(date);
+		newPurchase.setTotalAmount(totalAmount);
+		newPurchase.setMonthPays(monthPays);
+		newPurchase.setMonthsPaid(monthsPaid);
+		newPurchase.setPurchaseType(MONTHLY_PAYMENT);
+		return newPurchase;
+	}
+
 
 	public Purchase() {
 	}
@@ -78,15 +98,26 @@ public class Purchase {
 		return types;
 	}
 
-	/*
-	public boolean isFullyPaid() {
+	private boolean isOriginal() {
+		return purchaseType.equals(ORIGINAL);
+	}
+
+
+	private boolean isFullyPaid() {
 		return monthsPaid >= monthPays;
 	}
 
-	public boolean isNotFullyPaid() {
+	private boolean isNotFullyPaid() {
 		return !isFullyPaid();
 	}
-	 */
+
+	boolean isOriginalAndNotFullyPaid() {
+		return isNotFullyPaid() && isOriginal();
+	}
+
+	public void increasePayMonth() {
+		monthsPaid++;
+	}
 
 
 }

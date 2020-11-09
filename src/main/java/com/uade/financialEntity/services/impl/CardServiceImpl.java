@@ -3,15 +3,9 @@ package com.uade.financialEntity.services.impl;
 import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.CardRequest;
 import com.uade.financialEntity.messages.responses.CardFullResponse;
-import com.uade.financialEntity.models.Card;
-import com.uade.financialEntity.models.CardEntity;
-import com.uade.financialEntity.models.Customer;
-import com.uade.financialEntity.models.MonthResume;
-import com.uade.financialEntity.repositories.CardDAO;
-import com.uade.financialEntity.repositories.CardEntityDAO;
-import com.uade.financialEntity.repositories.CustomerDAO;
+import com.uade.financialEntity.models.*;
+import com.uade.financialEntity.repositories.*;
 import com.uade.financialEntity.services.CardService;
-import com.uade.financialEntity.utils.MathUtils;
 import com.uade.financialEntity.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.uade.financialEntity.utils.MathUtils.getPercentage;
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -28,6 +24,12 @@ public class CardServiceImpl implements CardService {
 
 	@Autowired
 	private CardDAO cardRepository;
+
+	@Autowired
+	private MonthResumeDAO monthResumeRepository;
+
+	@Autowired
+	private PurchaseDAO purchaseRepository;
 
 	@Autowired
 	private CardEntityDAO cardEntityRepository;
@@ -71,6 +73,10 @@ public class CardServiceImpl implements CardService {
 			Optional<CardEntity> optionalCardEntity = cardEntityRepository.findById(idCardEntity);
 			optionalCardEntity.ifPresent(card::setCardEntity);
 
+			MonthResume monthResume = new MonthResume(1);
+			monthResume.setCard(card);
+
+			monthResumeRepository.save(monthResume);
 			cards.add(card);
 		});
 
@@ -85,15 +91,29 @@ public class CardServiceImpl implements CardService {
 		if (optionalCard.isPresent()) {
 			Card card = optionalCard.get();
 
+			List<Purchase> monthlyPay = card.getPurchasesRemainingMonthPay();
+			monthlyPay.forEach(Purchase::increasePayMonth);
+			List<Purchase> cloneMonthlyPay = card.clonePurchase(monthlyPay);
+
 			MonthResume monthResumeOpen = card.getLastMonthResumeOpen();
+			monthResumeOpen.addPurchases(cloneMonthlyPay);
 
 			Integer leftOver = 0;
-			MonthResume monthResumeClosed = card.getLastMonthResumeClosed();
-			if (!monthResumeClosed.paidCorrectly()) {
-				leftOver = MathUtils.getPercentage(monthResumeClosed.getAmountPaid() - monthResumeClosed.getAmountToPay(), 30);
+			Integer amount = monthResumeOpen.calculateTotalAmount();
+			if (!monthResumeOpen.paidCorrectly()) {
+				Integer amountleftOver = monthResumeOpen.getAmountToPay() - monthResumeOpen.getAmountPaid();
+				leftOver = amountleftOver + getPercentage(amountleftOver, 30);
 			}
-			monthResumeOpen.setAmountToPay(monthResumeOpen.calculateTotalAmount() + card.closeMonthWithMonthlyExpenses() + leftOver);
+			monthResumeOpen.setAmountToPay(amount + leftOver);
 			monthResumeOpen.close();
+
+			MonthResume newMonthResume = new MonthResume(monthResumeOpen.getMonthNumber() + 1);
+
+			List<MonthResume> monthResumesToSave = asList(monthResumeOpen, newMonthResume);
+			monthResumeRepository.saveAll(monthResumesToSave);
+
+			monthlyPay.addAll(cloneMonthlyPay);
+			purchaseRepository.saveAll(monthlyPay);
 
 			return monthResumeOpen.toDto();
 		} else {

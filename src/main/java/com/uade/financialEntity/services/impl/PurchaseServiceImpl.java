@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.uade.financialEntity.models.Purchase.PurchaseType.ORIGINAL;
+
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
 
@@ -61,10 +63,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 			Shop shop = optionalShop.get();
 
 			Purchase purchase = new Purchase();
-			MonthlyExpense monthlyExpense = new MonthlyExpense();
-
-			//purchase.setMonthPays(request.getMonthPays());
-			monthlyExpense.setMonthPays(request.getMonthPays());
+			purchase.setMonthPays(request.getMonthPays());
+			purchase.setPurchaseType(ORIGINAL);
 
 			List<PurchaseItem> purchaseItems = request.getPurchaseItems()
 					.stream()
@@ -88,16 +88,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 				amount = purchase.getOriginalAmount();
 			}
 			purchase.setTotalAmount(amount);
-			monthlyExpense.setAmount(amount);
 
 			MonthResume monthResume;
 			if (card.getLastMonthResumeOpen() != null) {
 				monthResume = card.getLastMonthResumeOpen();
 			} else {
-				monthResume = new MonthResume();
+				monthResume = new MonthResume(1);
 				monthResume.setCard(card);
 			}
 			monthResume.addPurchase(purchase);
+			monthResume.setAmountToPay(monthResume.calculateTotalAmount());
 
 			purchaseRepository.save(purchase);
 			monthResumeRepository.save(monthResume);

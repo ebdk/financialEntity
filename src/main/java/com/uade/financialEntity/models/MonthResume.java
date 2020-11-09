@@ -9,6 +9,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Entity(name = "MonthResume")
 @Table(name = "month_resume")
 @Getter
@@ -40,8 +42,9 @@ public class MonthResume {
 		this.amountPaid = monthResumeRequest.getAmountPaid();
 	}
 
-	public MonthResume() {
+	public MonthResume(Integer number) {
 		open = true;
+		monthNumber = number;
 	}
 
 	public void addPurchase(Purchase purchase) {
@@ -69,13 +72,11 @@ public class MonthResume {
 		return purchases.stream().mapToInt(Purchase::getTotalAmount).sum();
 	}
 
-	/*
-	public List<Purchase> getPurchasesRemainingMonthPay() {
+	List<Purchase> getPurchasesRemainingMonthPay() {
 		return purchases.stream()
-				.filter(Purchase::isNotFullyPaid)
+				.filter(Purchase::isOriginalAndNotFullyPaid)
 				.collect(toList());
 	}
-	 */
 
 	public boolean paidCorrectly() {
 		return amountPaid >= amountToPay;
@@ -85,4 +86,7 @@ public class MonthResume {
 		open = false;
 	}
 
+	public void addPurchases(List<Purchase> cloneMonthlyPay) {
+		purchases.addAll(cloneMonthlyPay);
+	}
 }

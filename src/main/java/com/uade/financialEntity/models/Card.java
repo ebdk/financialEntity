@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
@@ -29,9 +30,6 @@ public class Card {
 
 	@OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
 	private List<MonthResume> monthResumes;
-
-	@OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
-	private List<MonthlyExpense> monthlyExpenses;
 
 	@ManyToOne
 	private CardEntity cardEntity;
@@ -92,16 +90,16 @@ public class Card {
 		return cardEntity.getName();
 	}
 
-	public Integer closeMonthWithMonthlyExpenses() {
-		Integer amount = monthlyExpenses.stream()
-				.filter(MonthlyExpense::isNotFullyPaid)
-				.mapToInt(MonthlyExpense::getAmount).sum();
-		increaseIfNotFullyPaidExpenses();
-		return amount;
+	public List<Purchase> getPurchasesRemainingMonthPay() {
+		List<Purchase> purchases = new ArrayList<>();
+		monthResumes.forEach(monthResume -> purchases.addAll(monthResume.getPurchasesRemainingMonthPay()));
+		return purchases;
 	}
 
-	private void increaseIfNotFullyPaidExpenses() {
-		monthlyExpenses.forEach(MonthlyExpense::increaseIfNotFullyPaid);
+	public List<Purchase> clonePurchase(List<Purchase> originalPurchases) {
+		List<Purchase> newPurchases = new ArrayList<>();
+		originalPurchases.forEach(purchase -> newPurchases.add(purchase.cloneNew()));
+		return newPurchases;
 	}
 
 }
