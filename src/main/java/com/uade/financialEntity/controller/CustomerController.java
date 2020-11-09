@@ -44,7 +44,7 @@ public class CustomerController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The customer was found successfully", response = CustomerResponse.class),
 	})
-	@GetMapping(path = "{dni}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "queryOne/{dni}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Object getByDni(
 			@ApiParam(value = "The customer's dni", required = true)

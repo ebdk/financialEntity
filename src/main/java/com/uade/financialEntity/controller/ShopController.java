@@ -44,7 +44,7 @@ public class ShopController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The Shop was found successfully", response = ShopResponse.class),
 	})
-	@GetMapping(path = "{shopname}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "queryOne/{shopname}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Object getShopByName(
 			@ApiParam(value = "The Shop's Name", required = true)

@@ -44,7 +44,7 @@ public class CardEntityController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The Card Entity was found successfully", response = CardEntityResponse.class),
 	})
-	@GetMapping(path = "{name}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "queryOne/{name}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Object getcardEntityByCreditnumber(
 			@ApiParam(value = "The Card Entity's name", required = true)

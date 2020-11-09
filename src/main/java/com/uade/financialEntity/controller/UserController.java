@@ -44,11 +44,11 @@ public class UserController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The user was found successfully", response = UserResponse.class),
 	})
-	@GetMapping(path = "{username}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "queryOne/{username}/",produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Object getUserByUserName(
 			@ApiParam(value = "The user's username", required = true)
-			@PathVariable("username") String username) {
+			@PathVariable(value="username") String username) {
 		return ResponseEntity.ok(service.getByUsername(username));
 	}
 

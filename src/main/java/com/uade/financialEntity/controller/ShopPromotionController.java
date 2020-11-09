@@ -33,7 +33,7 @@ public class ShopPromotionController {
 	@GetMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Object getShop(
-			@ApiParam(value = "The Shop's Id", required = true)
+			@ApiParam(value = "The ShopPromotion's Id", required = true)
 			@PathVariable("id") Long id) {
 		return ResponseEntity.ok(service.get(id));
 	}
@@ -44,7 +44,7 @@ public class ShopPromotionController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The Shop was found successfully", response = ShopResponse.class),
 	})
-	@GetMapping(path = "{shopId}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "queryOne/{shopId}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Object getByShopId(
 			@ApiParam(value = "The Shop's Id", required = true)
