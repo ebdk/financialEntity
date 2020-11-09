@@ -28,4 +28,8 @@ public class CustomerRequest implements Response {
 	public CustomerRequest() {
 	}
 
+	public Customer toEntity() {
+		return new Customer(this);
+	}
+
 }

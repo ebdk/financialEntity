@@ -1,6 +1,8 @@
 package com.uade.financialEntity.models;
 
 import com.uade.financialEntity.messages.requests.PurchaseRequest;
+import com.uade.financialEntity.messages.responses.MonthResumeFullResponse;
+import com.uade.financialEntity.messages.responses.PurchaseFullResponse;
 import com.uade.financialEntity.messages.responses.PurchaseResponse;
 import com.uade.financialEntity.models.PurchaseItem.ProductType;
 import lombok.Getter;
@@ -60,6 +62,10 @@ public class Purchase {
 	//METHODS
 	public PurchaseResponse toDto() {
 		return new PurchaseResponse(this);
+	}
+
+	public PurchaseFullResponse toFullDto() {
+		return new PurchaseFullResponse(this);
 	}
 
 	public Integer calculateTotalAmount() {

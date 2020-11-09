@@ -13,6 +13,6 @@ public interface CardEntityService {
 
 	Object getByName(String name);
 
-	Object createCardEntity(CardEntityRequest cardRequest);
+	Object createCardEntities(List<CardEntityRequest> cardEntityRequests);
 
 }

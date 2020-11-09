@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -82,15 +84,15 @@ public class UserController {
 	}
 
 	@ApiOperation(
-			value = "Creates a user",
+			value = "Creates Users",
 			notes = "Self explanatory")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "The user was crated successfully", response = UserResponse.class),
+			@ApiResponse(code = 200, message = "The users were created successfully", response = UserResponse.class),
 	})
 	@PostMapping(produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Object createPersona(@RequestBody UserRequest userRequest) {
-		return service.createUser(userRequest);
+	public Object createPersona(@RequestBody List<UserRequest> userRequests) {
+		return service.createUsers(userRequests);
 	}
 
 }

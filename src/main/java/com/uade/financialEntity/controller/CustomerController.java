@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -65,15 +67,15 @@ public class CustomerController {
 	}
 
 	@ApiOperation(
-			value = "Creates a customer",
+			value = "Creates Customers",
 			notes = "Self explanatory")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "The customer was crated successfully", response = CustomerResponse.class),
+			@ApiResponse(code = 200, message = "The customers were created successfully", response = CustomerResponse.class),
 	})
 	@PostMapping(produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Object createCustomer(@RequestBody CustomerRequest customerRequest) {
-		return service.createCustomer(customerRequest);
+	public Object createCustomer(@RequestBody List<CustomerRequest> customerRequests) {
+		return service.createCustomers(customerRequests);
 	}
 
 }

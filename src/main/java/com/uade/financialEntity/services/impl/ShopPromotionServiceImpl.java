@@ -3,22 +3,35 @@ package com.uade.financialEntity.services.impl;
 import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.ShopPromotionRequest;
 import com.uade.financialEntity.messages.responses.ShopPromotionResponse;
+import com.uade.financialEntity.models.CardEntity;
+import com.uade.financialEntity.models.Shop;
 import com.uade.financialEntity.models.ShopPromotion;
+import com.uade.financialEntity.repositories.CardEntityDAO;
+import com.uade.financialEntity.repositories.ShopDAO;
 import com.uade.financialEntity.repositories.ShopPromotionDAO;
 import com.uade.financialEntity.services.ShopPromotionService;
 import com.uade.financialEntity.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ShopPromotionServiceImpl implements ShopPromotionService {
 
 	@Autowired
 	private ShopPromotionDAO shopPromotionRepository;
+
+	@Autowired
+	private ShopDAO shopRepository;
+
+	@Autowired
+	private CardEntityDAO cardEntityRepository;
 
 	@Override
 	public List<ShopPromotionResponse> getAllShopPromotions() {
@@ -45,10 +58,24 @@ public class ShopPromotionServiceImpl implements ShopPromotionService {
 	}
 
 	@Override
-	public Object createShopPromotion(ShopPromotionRequest shopRequest) {
-		ShopPromotion newShopPromotion = new ShopPromotion(shopRequest);
-		shopPromotionRepository.save(newShopPromotion);
-		return newShopPromotion.toDto();
+	public Object createShopPromotions(List<ShopPromotionRequest> shopPromotionRequests) {
+		List<ShopPromotion> shopPromotions = new ArrayList<>();
+		shopPromotionRequests.forEach(shopPromotionRequest -> {
+			ShopPromotion shopPromotion = new ShopPromotion(shopPromotionRequest);
+
+			Long idShop = shopPromotionRequest.getShopId();
+			Optional<Shop> optionalShop = shopRepository.findById(idShop);
+			optionalShop.ifPresent(shopPromotion::setShop);
+
+			Long idCardEntity = shopPromotionRequest.getCardEntityId();
+			Optional<CardEntity> optionalCardEntity = cardEntityRepository.findById(idCardEntity);
+			optionalCardEntity.ifPresent(shopPromotion::setCardEntity);
+
+			shopPromotions.add(shopPromotion);
+		});
+
+		shopPromotionRepository.saveAll(shopPromotions);
+		return shopPromotions.stream().map(ShopPromotion::toDto).collect(toList());
 	}
 
 }

@@ -2,8 +2,10 @@ package com.uade.financialEntity.services.impl;
 
 import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.CustomerRequest;
+import com.uade.financialEntity.messages.requests.ShopPromotionRequest;
 import com.uade.financialEntity.messages.responses.CustomerResponse;
 import com.uade.financialEntity.models.Customer;
+import com.uade.financialEntity.models.ShopPromotion;
 import com.uade.financialEntity.repositories.CustomerDAO;
 import com.uade.financialEntity.services.CustomerService;
 import com.uade.financialEntity.utils.Pair;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -43,10 +47,14 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Object createCustomer(CustomerRequest customerRequest) {
-		Customer newcustomer = new Customer(customerRequest);
-		customerRepository.save(newcustomer);
-		return newcustomer.toDto();
+	public Object createCustomers(List<CustomerRequest> customerRequests) {
+		List<Customer> customers = customerRequests
+				.stream()
+				.map(CustomerRequest::toEntity)
+				.collect(toList());
+
+		customerRepository.saveAll(customers);
+		return customers.stream().map(Customer::toDto).collect(toList());
 	}
 
 }

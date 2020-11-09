@@ -15,6 +15,6 @@ public interface UserService {
 
 	Object validateByUserNameAndPassword(String userName, String password);
 
-	Object createUser(UserRequest userRequest);
+	Object createUsers(List<UserRequest> userRequests);
 
 }

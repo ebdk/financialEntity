@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class CardEntityServiceImpl implements CardEntityService {
 
@@ -43,10 +45,14 @@ public class CardEntityServiceImpl implements CardEntityService {
 	}
 
 	@Override
-	public Object createCardEntity(CardEntityRequest cardRequest) {
-		CardEntity newcard = new CardEntity(cardRequest);
-		cardEntityRepository.save(newcard);
-		return newcard.toDto();
+	public Object createCardEntities(List<CardEntityRequest> cardEntityRequests) {
+		List<CardEntity> cardEntities = cardEntityRequests
+				.stream()
+				.map(CardEntityRequest::toEntity)
+				.collect(toList());
+
+		cardEntityRepository.saveAll(cardEntities);
+		return cardEntities.stream().map(CardEntity::toDto).collect(toList());
 	}
 
 }

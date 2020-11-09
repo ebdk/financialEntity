@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -65,15 +67,15 @@ public class CardController {
 	}
 
 	@ApiOperation(
-			value = "Creates a card",
+			value = "Creates cards",
 			notes = "Self explanatory")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "The card was crated successfully", response = CardResponse.class),
+			@ApiResponse(code = 200, message = "The cards were created successfully", response = CardResponse.class),
 	})
 	@PostMapping(produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Object createCard(@RequestBody CardRequest cardRequest) {
-		return service.createCard(cardRequest);
+	public Object createCard(@RequestBody List<CardRequest> cardRequests) {
+		return service.createCard(cardRequests);
 	}
 
 

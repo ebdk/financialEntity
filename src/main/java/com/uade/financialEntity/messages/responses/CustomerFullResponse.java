@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class CustomerResponse implements Response {
+public class CustomerFullResponse implements Response {
 
 	//ATTRIBUTES
 	private Long id;
-	private List<Long> cards;
+	private List<CardFullResponse> cards;
 	private Integer dni;
 	private String firstname;
 	private String lastname;
@@ -22,11 +22,11 @@ public class CustomerResponse implements Response {
 	private Integer salary;
 
 	//BUILDERS
-	public CustomerResponse(Customer customer) {
+	public CustomerFullResponse(Customer customer) {
 		if (customer != null) {
 			this.id = customer.getId() != null ? customer.getId() : null;
 			this.cards = customer.getCards() != null
-					? customer.getCards().stream().map(Card::getId).collect(Collectors.toList()) : null;
+					? customer.getCards().stream().map(Card::toFullDto).collect(Collectors.toList()) : null;
 			this.dni = customer.getDni() != null ? customer.getDni() : null;
 			this.firstname = customer.getFirstname() != null ? customer.getFirstname() : null;
 			this.lastname = customer.getLastname() != null ? customer.getLastname() : null;
@@ -36,7 +36,7 @@ public class CustomerResponse implements Response {
 		}
 	}
 
-	public CustomerResponse() {
+	public CustomerFullResponse() {
 	}
 
 }

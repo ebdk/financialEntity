@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class ShopServiceImpl implements ShopService {
 
@@ -44,10 +46,14 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public Object createShop(ShopRequest shopRequest) {
-		Shop newShop = new Shop(shopRequest);
-		shopRepository.save(newShop);
-		return newShop.toDto();
+	public Object createShops(List<ShopRequest> shopRequests) {
+		List<Shop> shops = shopRequests
+				.stream()
+				.map(ShopRequest::toEntity)
+				.collect(toList());
+
+		shopRepository.saveAll(shops);
+		return shops.stream().map(Shop::toDto).collect(toList());
 	}
 
 }

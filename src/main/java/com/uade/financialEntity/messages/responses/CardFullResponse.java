@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class CardResponse implements Response {
+public class CardFullResponse implements Response {
 
 	//ATTRIBUTESo
 	private Long id;
-	private Long customerId;
-	private List<Long> monthResumes;
-	private List<Long> monthlyExpenses;
-	private Long cardEntityId;
+	private CustomerResponse customer;
+	private List<MonthResumeFullResponse> monthResumes;
+	private List<MonthlyExpenseResponse> monthlyExpenses;
+	private CardEntityResponse cardEntity;
 	private Integer creditNumber;
 	private Integer codeNumber;
 	private String validFrom;
@@ -27,15 +27,15 @@ public class CardResponse implements Response {
 	private Boolean cardPayOnTime;
 
 	//BUILDERS
-	public CardResponse(Card card) {
+	public CardFullResponse(Card card) {
 		if (card != null) {
 			this.id = card.getId() != null ? card.getId() : null;
-			this.customerId = card.getCustomer() != null ? card.getCustomer().getId() : null;
+			this.customer = card.getCustomer() != null ? card.getCustomer().toDto() : null;
 			this.monthResumes = card.getMonthResumes() != null
-					? card.getMonthResumes().stream().map(MonthResume::getId).collect(Collectors.toList()) : null;
+					? card.getMonthResumes().stream().map(MonthResume::toFullDto).collect(Collectors.toList()) : null;
 			this.monthlyExpenses = card.getMonthResumes() != null
-					? card.getMonthlyExpenses().stream().map(MonthlyExpense::getId).collect(Collectors.toList()) : null;
-			this.cardEntityId = card.getCardEntity() != null ? card.getCardEntity().getId() : null;
+					? card.getMonthlyExpenses().stream().map(MonthlyExpense::toDto).collect(Collectors.toList()) : null;
+			this.cardEntity = card.getCardEntity() != null ? card.getCardEntity().toDto() : null;
 			this.creditNumber = card.getCreditNumber() != null ? card.getCreditNumber() : null;
 			this.codeNumber = card.getCodeNumber() != null ? card.getCodeNumber() : null;
 			this.validFrom = card.getValidFrom() != null ? card.getValidFrom() : null;
@@ -43,11 +43,10 @@ public class CardResponse implements Response {
 			this.nameCustomer = card.getNameCustomer() != null ? card.getNameCustomer() : null;
 			this.cardType = card.getCardType() != null ? card.getCardType().toString() : null;
 			this.cardPayOnTime = card.getCardPayOnTime() != null ? card.getCardPayOnTime() : null;
-
 		}
 	}
 
-	public CardResponse() {
+	public CardFullResponse() {
 	}
 
 }

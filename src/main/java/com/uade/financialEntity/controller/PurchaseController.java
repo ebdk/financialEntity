@@ -23,7 +23,7 @@ public class PurchaseController {
 			value = "Purchases",
 			notes = "Self explanatory")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "The customer was crated successfully", response = CustomerResponse.class),
+			@ApiResponse(code = 200, message = "The Purchase was crated successfully", response = CustomerResponse.class),
 	})
 	@PostMapping(produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)

@@ -8,6 +8,8 @@ import lombok.Getter;
 public class ShopPromotionRequest implements Response {
 
 	//ATTRIBUTES
+	private Long shopId;
+	private Long cardEntityId;
 	private String description;
 	private String day;
 	private String productType;
@@ -24,4 +26,7 @@ public class ShopPromotionRequest implements Response {
 	public ShopPromotionRequest() {
 	}
 
+	public ShopPromotion toEntity() {
+		return new ShopPromotion(this);
+	}
 }

@@ -13,6 +13,6 @@ public interface ShopPromotionService {
 
 	List<ShopPromotionResponse> getByShopId(Long id);
 
-	Object createShopPromotion(ShopPromotionRequest shopRequest);
+	Object createShopPromotions(List<ShopPromotionRequest> shopPromotionRequests);
 
 }

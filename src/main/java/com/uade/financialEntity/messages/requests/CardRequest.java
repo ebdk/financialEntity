@@ -8,6 +8,8 @@ import lombok.Getter;
 public class CardRequest implements Response {
 
 	//ATTRIBUTES
+	private Long cardEntityId;
+	private Long customerId;
 	private Integer creditNumber;
 	private Integer codeNumber;
 	private String validFrom;

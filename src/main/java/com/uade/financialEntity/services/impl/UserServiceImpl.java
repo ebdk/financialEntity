@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -58,10 +60,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Object createUser(UserRequest userRequest) {
-		User newUser = new User(userRequest);
-		userRepository.save(newUser);
-		return newUser.toDto();
+	public Object createUsers(List<UserRequest> userRequests) {
+		List<User> users = userRequests
+				.stream()
+				.map(UserRequest::toEntity)
+				.collect(toList());
+
+		userRepository.saveAll(users);
+		return users.stream().map(User::toDto).collect(toList());
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.uade.financialEntity.models;
 
 import com.uade.financialEntity.messages.requests.MonthResumeRequest;
+import com.uade.financialEntity.messages.responses.MonthResumeFullResponse;
 import com.uade.financialEntity.messages.responses.MonthResumeResponse;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,11 +53,15 @@ public class MonthResume {
 		return new MonthResumeResponse(this);
 	}
 
-	public boolean isClosed() {
+	public MonthResumeFullResponse toFullDto() {
+		return new MonthResumeFullResponse(this);
+	}
+
+	boolean isClosed() {
 		return !open;
 	}
 
-	public boolean isOpen() {
+	boolean isOpen() {
 		return open;
 	}
 
@@ -79,4 +84,5 @@ public class MonthResume {
 	public void close() {
 		open = false;
 	}
+
 }

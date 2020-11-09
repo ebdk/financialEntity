@@ -73,6 +73,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 			purchase.setOriginalAmount(purchase.calculateTotalAmount());
 
 			Date now = new Date();
+			purchase.setDate(now);
 			SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE"); // the day of the week spelled out completely
 			String date = simpleDateformat.format(now);
 

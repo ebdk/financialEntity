@@ -17,6 +17,10 @@ public class UserRequest implements Response {
 		this.password = user.getPassword();
 	}
 
+	public User toEntity() {
+		return new User(this);
+	}
+
 	public UserRequest() {
 	}
 

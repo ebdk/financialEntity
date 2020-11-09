@@ -13,6 +13,6 @@ public interface CustomerService {
 
 	Object getByDni(Integer dni);
 
-	Object createCustomer(CustomerRequest customerRequest);
+	Object createCustomers(List<CustomerRequest> customerRequests);
 
 }

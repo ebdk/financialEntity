@@ -15,6 +15,6 @@ public interface ShopService {
 
 	Object getByName(String name);
 
-	Object createShop(ShopRequest shopRequest);
+	Object createShops(List<ShopRequest> shopRequests);
 
 }

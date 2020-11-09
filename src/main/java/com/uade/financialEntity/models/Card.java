@@ -1,8 +1,10 @@
 package com.uade.financialEntity.models;
 
 import com.uade.financialEntity.messages.requests.CardRequest;
+import com.uade.financialEntity.messages.responses.CardFullResponse;
 import com.uade.financialEntity.messages.responses.CardResponse;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,6 +15,7 @@ import static java.util.stream.Collectors.toList;
 @Entity(name = "Card")
 @Table(name = "card")
 @Getter
+@Setter
 public class Card {
 
 	//ATTRIBUTES
@@ -63,6 +66,10 @@ public class Card {
 	//METHODS
 	public CardResponse toDto() {
 		return new CardResponse(this);
+	}
+
+	public CardFullResponse toFullDto() {
+		return new CardFullResponse(this);
 	}
 
 	public MonthResume getLastMonthResumeOpen() {
