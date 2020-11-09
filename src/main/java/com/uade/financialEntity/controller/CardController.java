@@ -94,12 +94,12 @@ public class CardController {
 	}
 
 	@ApiOperation(
-			value = "Gets Open Resume by Resume ID",
+			value = "Gets Resume by Resume ID",
 			notes = "Self explanatory")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The card was found successfully", response = CardResponse.class),
 	})
-	@GetMapping(path = "open_resume_id/{id}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "resume_id/{id}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Object getOpenResumeByResumeId(
 			@ApiParam(value = "The resume's id", required = true)
@@ -122,7 +122,7 @@ public class CardController {
 	}
 
 	@ApiOperation(
-			value = "Pays a card's last open resume by Id",
+			value = "Pays a card's last open resume by Card Id and Amount to pay",
 			notes = "Self explanatory")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The card was found successfully", response = CardResponse.class),
