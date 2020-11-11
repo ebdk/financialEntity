@@ -17,13 +17,12 @@ public class PurchaseFullResponse implements Response {
 	private ShopResponse shop;
 	private MonthResumeResponse monthResume;
 	private List<PurchaseItemResponse> purchaseItems;
-	private String description;
 	private Integer originalAmount;
 	private Integer discount;
 	private Integer totalAmount;
 	private String date;
-	//private Integer monthPays;
-	//private Integer monthsPaid;
+	private Integer monthPays;
+	private Integer monthsPaid;
 
 	//BUILDERS
 	public PurchaseFullResponse(Purchase purchase) {
@@ -34,13 +33,12 @@ public class PurchaseFullResponse implements Response {
 			this.monthResume = purchase.getMonthResume() != null ? purchase.getMonthResume().toDto() : null;
 			this.purchaseItems = purchase.getPurchaseItems() != null
 					? purchase.getPurchaseItems().stream().map(PurchaseItem::toDto).collect(Collectors.toList()) : null;
-			this.description = purchase.getDescription() != null ? purchase.getDescription() : null;
 			this.originalAmount = purchase.getOriginalAmount() != null ? purchase.getOriginalAmount() : null;
 			this.discount = purchase.getDiscount() != null ? purchase.getDiscount() : null;
 			this.totalAmount = purchase.getTotalAmount() != null ? purchase.getTotalAmount() : null;
 			this.date = purchase.getDate() != null ? purchase.getDate().toString() : null;
-			//this.monthPays = purchase.getMonthPays() != null ? purchase.getMonthPays() : null;
-			//this.monthsPaid = purchase.getMonthsPaid() != null ? purchase.getMonthsPaid() : null;
+			this.monthPays = purchase.getMonthPays() != null ? purchase.getMonthPays() : null;
+			this.monthsPaid = purchase.getMonthsPaid() != null ? purchase.getMonthsPaid() : null;
 		}
 	}
 

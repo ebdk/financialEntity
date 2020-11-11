@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -64,17 +65,19 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 			Purchase purchase = new Purchase();
 			purchase.setMonthPays(request.getMonthPays());
+			purchase.setMonthsPaid(1);
 			purchase.setPurchaseType(ORIGINAL);
 
 			List<PurchaseItem> purchaseItems = request.getPurchaseItems()
 					.stream()
 					.map(PurchaseItemRequest::toEntity).collect(Collectors.toList());
+			purchaseItems.forEach(purchaseItem -> purchaseItem.setPurchase(purchase));
 			purchase.setPurchaseItems(purchaseItems);
 			purchase.setOriginalAmount(purchase.calculateTotalAmount());
 
 			Date now = new Date();
 			purchase.setDate(now);
-			SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE"); // the day of the week spelled out completely
+			SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE", Locale.US); // the day of the week spelled out completely
 			String date = simpleDateformat.format(now);
 
 			ShopPromotion shopPromotion = shop.getPromotion(card.getCardEntityName(), purchase.getPurchaseProductTypes(), date);
@@ -83,7 +86,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 				purchase.setDiscount(MathUtils.getPercentage(purchase.getOriginalAmount(), shopPromotion.getPercentageValue()));
 				purchase.setShopPromotion(shopPromotion);
 				amount = purchase.getOriginalAmount() - purchase.getDiscount();
-				purchase.setTotalAmount(purchase.getOriginalAmount() - purchase.getDiscount());
 			} else {
 				amount = purchase.getOriginalAmount();
 			}
@@ -97,13 +99,17 @@ public class PurchaseServiceImpl implements PurchaseService {
 				monthResume.setCard(card);
 			}
 			monthResume.addPurchase(purchase);
+			purchase.setMonthResume(monthResume);
+			purchase.setShop(shop);
+			purchase.setDescription(String.format("Compra del negocio %s con tarjeta %s del dia %s",
+					shop.getName(), card.getCardEntityName(), now));
 			monthResume.setAmountToPay(monthResume.calculateTotalAmount());
 
 			purchaseItemRepository.saveAll(purchaseItems);
 			purchaseRepository.save(purchase);
 			monthResumeRepository.save(monthResume);
 
-			return purchase.toDto();
+			return purchase.toFullDto();
 		} else {
 			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrado la tarjeta o negocio.")).getMapMessage();
 		}

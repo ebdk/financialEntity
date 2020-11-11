@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -42,9 +43,15 @@ public class MonthResume {
 		this.amountPaid = monthResumeRequest.getAmountPaid();
 	}
 
+	public MonthResume() {
+	}
+
 	public MonthResume(Integer number) {
+		purchases = new ArrayList<>();
 		open = true;
 		monthNumber = number;
+		amountToPay = 0;
+		amountPaid = 0;
 	}
 
 	public void addPurchase(Purchase purchase) {
@@ -74,7 +81,11 @@ public class MonthResume {
 				.collect(toList());
 	}
 
-	public boolean paidCorrectly() {
+	public boolean paidsArentZero() {
+		return (amountPaid - amountToPay) != 0;
+	}
+
+	public boolean debts() {
 		return amountPaid >= amountToPay;
 	}
 

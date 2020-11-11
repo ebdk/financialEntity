@@ -10,12 +10,14 @@ public class ShopResponse implements Response {
 	//ATTRIBUTES
 	private Long id;
 	private String name;
+	private String imgUrl;
 
 	//BUILDERS
 	public ShopResponse(Shop shop) {
 		if (shop != null) {
 			this.id = shop.getId() != null ? shop.getId() : null;
 			this.name = shop.getName() != null ? shop.getName() : null;
+			this.imgUrl = shop.getImgUrl() != null ? shop.getImgUrl() : null;
 		}
 	}
 

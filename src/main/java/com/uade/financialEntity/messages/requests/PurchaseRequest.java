@@ -16,7 +16,6 @@ public class PurchaseRequest implements Response {
 
 	//BUILDERS
 	public PurchaseRequest(Purchase purchase) {
-		this.description = purchase.getDescription();
 		this.totalAmount = purchase.getTotalAmount();
 		this.date = purchase.getDate().toString();
 		//this.monthPays = purchase.getMonthPays();

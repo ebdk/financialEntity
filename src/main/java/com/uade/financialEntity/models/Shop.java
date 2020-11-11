@@ -31,10 +31,12 @@ public class Shop {
 	private List<ShopPromotion> shopPromotions;
 
 	private String name;
+	private String imgUrl;
 
 	//BUILDERS
 	public Shop(ShopRequest shopRequest) {
 		this.name = shopRequest.getName();
+		this.imgUrl = shopRequest.getImgUrl();
 	}
 
 	public Shop() {

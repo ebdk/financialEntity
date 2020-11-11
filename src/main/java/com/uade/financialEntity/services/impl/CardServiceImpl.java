@@ -76,11 +76,11 @@ public class CardServiceImpl implements CardService {
 			MonthResume monthResume = new MonthResume(1);
 			monthResume.setCard(card);
 
+			cardRepository.save(card);
 			monthResumeRepository.save(monthResume);
 			cards.add(card);
 		});
 
-		cardRepository.saveAll(cards);
 		return cards.stream().map(Card::toDto).collect(toList());
 	}
 
@@ -96,18 +96,41 @@ public class CardServiceImpl implements CardService {
 			List<Purchase> cloneMonthlyPay = card.clonePurchase(monthlyPay);
 
 			MonthResume monthResumeOpen = card.getLastMonthResumeOpen();
-			monthResumeOpen.addPurchases(cloneMonthlyPay);
+			//monthResumeOpen.addPurchases(cloneMonthlyPay);
 
 			Integer leftOver = 0;
-			Integer amount = monthResumeOpen.calculateTotalAmount();
-			if (!monthResumeOpen.paidCorrectly()) {
+			if (monthResumeOpen.paidsArentZero()) {
 				Integer amountleftOver = monthResumeOpen.getAmountToPay() - monthResumeOpen.getAmountPaid();
-				leftOver = amountleftOver + getPercentage(amountleftOver, 30);
+
+				if (monthResumeOpen.debts()) {
+					leftOver = amountleftOver + getPercentage(amountleftOver, 30);
+				} else {
+					leftOver = amountleftOver;
+				}
 			}
-			monthResumeOpen.setAmountToPay(amount + leftOver);
 			monthResumeOpen.close();
 
 			MonthResume newMonthResume = new MonthResume(monthResumeOpen.getMonthNumber() + 1);
+			newMonthResume.setCard(card);
+			cloneMonthlyPay.forEach(cloneMonth -> cloneMonth.setMonthResume(newMonthResume));
+
+			if (!leftOver.equals(0)) {
+				Purchase purchase = new Purchase();
+				purchase.setTotalAmount(leftOver);
+				purchase.setDescription("Restante del mes " + monthResumeOpen.getMonthNumber());
+				purchase.setMonthResume(newMonthResume);
+				newMonthResume.addPurchase(purchase);
+
+				newMonthResume.addPurchases(cloneMonthlyPay);
+				Integer amountToPay = newMonthResume.calculateTotalAmount();
+
+				List<Purchase> emptyList = new ArrayList<>();
+				newMonthResume.setPurchases(emptyList);
+
+				newMonthResume.setAmountToPay(amountToPay);
+
+				monthlyPay.add(purchase);
+			}
 
 			List<MonthResume> monthResumesToSave = asList(monthResumeOpen, newMonthResume);
 			monthResumeRepository.saveAll(monthResumesToSave);
@@ -115,7 +138,7 @@ public class CardServiceImpl implements CardService {
 			monthlyPay.addAll(cloneMonthlyPay);
 			purchaseRepository.saveAll(monthlyPay);
 
-			return monthResumeOpen.toDto();
+			return monthResumeOpen.toFullDto();
 		} else {
 			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con numero " + id)).getMapMessage();
 		}

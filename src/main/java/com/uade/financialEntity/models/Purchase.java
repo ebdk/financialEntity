@@ -1,6 +1,5 @@
 package com.uade.financialEntity.models;
 
-import com.uade.financialEntity.messages.requests.PurchaseRequest;
 import com.uade.financialEntity.messages.responses.PurchaseFullResponse;
 import com.uade.financialEntity.messages.responses.PurchaseResponse;
 import com.uade.financialEntity.models.PurchaseItem.ProductType;
@@ -8,8 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,27 +53,22 @@ public class Purchase {
 	}
 
 	//BUILDERS
-	public Purchase(PurchaseRequest purchaseRequest) throws ParseException {
-		this.description = purchaseRequest.getDescription();
-		this.totalAmount = purchaseRequest.getTotalAmount();
-		this.date = new SimpleDateFormat("dd/MM/yyyy").parse(purchaseRequest.getDate());
-		//this.monthPays = purchaseRequest.getMonthPays();
-		//this.monthsPaid = purchaseRequest.getMonthsPaid();
-	}
-
-	public Purchase cloneNew() {
-		monthsPaid++;
+	Purchase cloneNew() {
+		//monthsPaid++;
 		Purchase newPurchase = new Purchase();
 		newPurchase.setDate(date);
 		newPurchase.setTotalAmount(totalAmount);
 		newPurchase.setMonthPays(monthPays);
 		newPurchase.setMonthsPaid(monthsPaid);
+		newPurchase.setDescription(description + String.format(" - Pago de la cuota %s / %s", monthsPaid, monthPays));
 		newPurchase.setPurchaseType(MONTHLY_PAYMENT);
 		return newPurchase;
 	}
 
 
 	public Purchase() {
+		monthPays = 0;
+		monthsPaid = 0;
 	}
 
 	//METHODS
@@ -116,7 +108,7 @@ public class Purchase {
 	}
 
 	public void increasePayMonth() {
-		monthsPaid++;
+		this.monthsPaid = monthsPaid + 1;
 	}
 
 

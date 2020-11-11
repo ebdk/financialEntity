@@ -3,6 +3,7 @@ package com.uade.financialEntity.controller;
 import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.messages.requests.CardEntityRequest;
 import com.uade.financialEntity.messages.responses.CardEntityResponse;
+import com.uade.financialEntity.messages.responses.ShopPromotionResponse;
 import com.uade.financialEntity.services.CardEntityService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -36,6 +37,20 @@ public class CardEntityController {
 			@ApiParam(value = "The cardEntity's id", required = true)
 			@PathVariable("id") Long id) {
 		return ResponseEntity.ok(service.get(id));
+	}
+
+	@ApiOperation(
+			value = "Looks up promotions by cardEntity Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The cardEntity was found successfully", response = ShopPromotionResponse.class),
+	})
+	@GetMapping(path = "promotions/{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getPromotions(
+			@ApiParam(value = "The cardEntity's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.getPromotions(id));
 	}
 
 	@ApiOperation(
