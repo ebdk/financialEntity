@@ -9,6 +9,8 @@ public class ShopPromotionResponse implements Response {
 
 	//ATTRIBUTES
 	private Long id;
+	private ShopResponse shop;
+	private CardEntityResponse cardEntity;
 	private String description;
 	private String day;
 	private String productType;
@@ -18,6 +20,8 @@ public class ShopPromotionResponse implements Response {
 	public ShopPromotionResponse(ShopPromotion shopPromotion) {
 		if (shopPromotion != null) {
 			this.id = shopPromotion.getId() != null ? shopPromotion.getId() : null;
+			this.shop = shopPromotion.getShop() != null ? shopPromotion.getShop().toDto() : null;
+			this.cardEntity = shopPromotion.getCardEntity() != null ? shopPromotion.getCardEntity().toDto() : null;
 			this.description = shopPromotion.getDescription() != null ? shopPromotion.getDescription() : null;
 			this.day = shopPromotion.getDay() != null ? shopPromotion.getDay().toString() : null;
 			this.productType = shopPromotion.getProductType() != null ? shopPromotion.getProductType().toString() : null;

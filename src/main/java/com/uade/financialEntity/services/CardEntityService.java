@@ -11,6 +11,8 @@ public interface CardEntityService {
 
 	Object get(Long id);
 
+	Object getPromotions(Long id);
+
 	Object getByName(String name);
 
 	Object createCardEntities(List<CardEntityRequest> cardEntityRequests);

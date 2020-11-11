@@ -13,6 +13,7 @@ public class CustomerFullResponse implements Response {
 
 	//ATTRIBUTES
 	private Long id;
+	private UserResponse user;
 	private List<CardFullResponse> cards;
 	private Integer dni;
 	private String firstname;
@@ -25,6 +26,7 @@ public class CustomerFullResponse implements Response {
 	public CustomerFullResponse(Customer customer) {
 		if (customer != null) {
 			this.id = customer.getId() != null ? customer.getId() : null;
+			this.user = customer.getUser() != null ? customer.getUser().toDto() : null;
 			this.cards = customer.getCards() != null
 					? customer.getCards().stream().map(Card::toFullDto).collect(Collectors.toList()) : null;
 			this.dni = customer.getDni() != null ? customer.getDni() : null;

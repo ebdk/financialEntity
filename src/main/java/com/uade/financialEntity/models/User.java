@@ -1,6 +1,7 @@
 package com.uade.financialEntity.models;
 
 import com.uade.financialEntity.messages.requests.UserRequest;
+import com.uade.financialEntity.messages.responses.UserFullResponse;
 import com.uade.financialEntity.messages.responses.UserResponse;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,6 +45,10 @@ public class User {
 	//METHODS
 	public UserResponse toDto() {
 		return new UserResponse(this);
+	}
+
+	public UserFullResponse toFullDto() {
+		return new UserFullResponse(this);
 	}
 
 }

@@ -4,6 +4,7 @@ import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.CardEntityRequest;
 import com.uade.financialEntity.messages.responses.CardEntityResponse;
 import com.uade.financialEntity.models.CardEntity;
+import com.uade.financialEntity.models.ShopPromotion;
 import com.uade.financialEntity.repositories.CardEntityDAO;
 import com.uade.financialEntity.services.CardEntityService;
 import com.uade.financialEntity.utils.Pair;
@@ -33,6 +34,14 @@ public class CardEntityServiceImpl implements CardEntityService {
 		Optional<CardEntity> cardEntity = cardEntityRepository.findById(id);
 		return cardEntity.isPresent() ?
 				new CardEntityResponse(cardEntity.get()) :
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la entidad de Tarjeta con  id " + id)).getMapMessage();
+	}
+
+	@Override
+	public Object getPromotions(Long id) {
+		Optional<CardEntity> cardEntity = cardEntityRepository.findById(id);
+		return cardEntity.isPresent() ?
+				cardEntity.get().getShopPromotions().stream().map(ShopPromotion::toDto) :
 				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la entidad de Tarjeta con  id " + id)).getMapMessage();
 	}
 
