@@ -35,13 +35,13 @@ public class Customer {
 	private Integer salary;
 
 	//BUILDERS
-	public Customer(CustomerRequest customerRequest) {
-		this.dni = customerRequest.getDni();
-		this.firstname = customerRequest.getFirstname();
-		this.lastname = customerRequest.getLastname();
-		this.address = customerRequest.getAddress();
-		this.phone = customerRequest.getPhone();
-		this.salary = customerRequest.getSalary();
+	public Customer(CustomerRequest request) {
+		this.dni = request.getDni() != null ? request.getDni() : dni;
+		this.firstname = request.getFirstname() != null ? request.getFirstname() : firstname;
+		this.lastname = request.getLastname() != null ? request.getLastname() : lastname;
+		this.address = request.getAddress() != null ? request.getAddress() : address;
+		this.phone = request.getPhone() != null ? request.getPhone() : phone;
+		this.salary = request.getSalary() != null ? request.getSalary() : salary;
 	}
 
 	public Customer() {
@@ -57,4 +57,12 @@ public class Customer {
 		return new CustomerFullResponse(this);
 	}
 
+	public void modify(CustomerRequest request) {
+		this.dni = request.getDni() != null ? request.getDni() : dni;
+		this.firstname = request.getFirstname() != null ? request.getFirstname() : firstname;
+		this.lastname = request.getLastname() != null ? request.getLastname() : lastname;
+		this.address = request.getAddress() != null ? request.getAddress() : address;
+		this.phone = request.getPhone() != null ? request.getPhone() : phone;
+		this.salary = request.getSalary() != null ? request.getSalary() : salary;
+	}
 }

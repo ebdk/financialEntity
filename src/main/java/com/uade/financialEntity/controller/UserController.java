@@ -2,6 +2,8 @@ package com.uade.financialEntity.controller;
 
 import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.messages.requests.UserRequest;
+import com.uade.financialEntity.messages.responses.CardResponse;
+import com.uade.financialEntity.messages.responses.MonthResumeResponse;
 import com.uade.financialEntity.messages.responses.UserResponse;
 import com.uade.financialEntity.services.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -44,11 +46,11 @@ public class UserController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The user was found successfully", response = UserResponse.class),
 	})
-	@GetMapping(path = "queryOne/{username}/",produces = APPLICATION_JSON_VALUE)
+	@GetMapping(path = "queryOne/{username}/", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Object getUserByUserName(
 			@ApiParam(value = "The user's username", required = true)
-			@PathVariable(value="username") String username) {
+			@PathVariable(value = "username") String username) {
 		return ResponseEntity.ok(service.getByUsername(username));
 	}
 
@@ -93,6 +95,36 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public Object createPersona(@RequestBody List<UserRequest> userRequests) {
 		return service.createUsers(userRequests);
+	}
+
+	@ApiOperation(
+			value = "Deletes a user by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The user was deleted successfully", response = CardResponse.class),
+	})
+	@DeleteMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object delete(
+			@ApiParam(value = "The user's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.delete(id));
+	}
+
+	@ApiOperation(
+			value = "Modifies a user",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The user was found successfully", response = MonthResumeResponse.class),
+	})
+	@PutMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object modify(
+			@ApiParam(value = "The user's id", required = true)
+			@PathVariable("id") Long id,
+			@ApiParam(value = "Modifications", required = true)
+			@RequestBody UserRequest userRequest) {
+		return ResponseEntity.ok(service.modify(id, userRequest));
 	}
 
 }

@@ -13,4 +13,8 @@ public interface PurchaseService {
 
 	Object purchase(PurchaseCustomRequest name);
 
+	Object delete(Long id);
+
+	Object deleteItem(Long id);
+
 }

@@ -17,4 +17,8 @@ public interface CardEntityService {
 
 	Object createCardEntities(List<CardEntityRequest> cardEntityRequests);
 
+	Object delete(Long cardId);
+
+	Object modify(Long id, CardEntityRequest request);
+
 }

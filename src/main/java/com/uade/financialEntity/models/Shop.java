@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
@@ -31,12 +32,12 @@ public class Shop {
 	private List<ShopPromotion> shopPromotions;
 
 	private String name;
-	private String imgUrl;
+	private Blob imgUrl;
 
 	//BUILDERS
-	public Shop(ShopRequest shopRequest) {
-		this.name = shopRequest.getName();
-		this.imgUrl = shopRequest.getImgUrl();
+	public Shop(ShopRequest request) {
+		this.name = request.getName() != null ? request.getName() : name;
+		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
 	}
 
 	public Shop() {
@@ -58,5 +59,10 @@ public class Shop {
 		} else {
 			return null;
 		}
+	}
+
+	public void modify(ShopRequest request) {
+		this.name = request.getName() != null ? request.getName() : name;
+		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
 	}
 }

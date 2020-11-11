@@ -2,6 +2,7 @@ package com.uade.financialEntity.models;
 
 import com.uade.financialEntity.messages.requests.ShopPromotionRequest;
 import com.uade.financialEntity.messages.responses.ShopPromotionResponse;
+import com.uade.financialEntity.models.PurchaseItem.ProductType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +32,7 @@ public class ShopPromotion {
 
 	private String description;
 	private PromotionDay day;
-	private PurchaseItem.ProductType productType;
+	private ProductType productType;
 	private Integer percentageValue;
 
 	public enum PromotionDay {
@@ -45,11 +46,11 @@ public class ShopPromotion {
 	}
 
 	//BUILDERS
-	public ShopPromotion(ShopPromotionRequest userRequest) {
-		this.description = userRequest.getDescription();
-		this.day = PromotionDay.valueOf(userRequest.getDay());
-		this.productType = PurchaseItem.ProductType.valueOf(userRequest.getProductType());
-		this.percentageValue = userRequest.getPercentageValue();
+	public ShopPromotion(ShopPromotionRequest request) {
+		this.description = request.getDescription() != null ? request.getDescription() : description;
+		this.day = request.getDay() != null ? PromotionDay.valueOf(request.getDay()) : day;
+		this.productType = request.getProductType() != null ? ProductType.valueOf(request.getProductType()) : productType;
+		this.percentageValue = request.getPercentageValue() != null ? request.getPercentageValue() : percentageValue;
 	}
 
 	public ShopPromotion() {
@@ -60,10 +61,17 @@ public class ShopPromotion {
 		return new ShopPromotionResponse(this);
 	}
 
-	public boolean isPromotion(String cardEntityName, List<PurchaseItem.ProductType> purchaseProductTypes, PromotionDay day) {
+	public boolean isPromotion(String cardEntityName, List<ProductType> purchaseProductTypes, PromotionDay day) {
 		return cardEntityName.equals(cardEntity.getName())
 				&& purchaseProductTypes.contains(productType)
 				&& day.equals(day);
+	}
+
+	public void modify(ShopPromotionRequest request) {
+		this.description = request.getDescription() != null ? request.getDescription() : description;
+		this.day = request.getDay() != null ? PromotionDay.valueOf(request.getDay()) : day;
+		this.productType = request.getProductType() != null ? ProductType.valueOf(request.getProductType()) : productType;
+		this.percentageValue = request.getPercentageValue() != null ? request.getPercentageValue() : percentageValue;
 	}
 
 }

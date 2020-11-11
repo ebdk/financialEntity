@@ -25,4 +25,10 @@ public interface CardService {
 
 	Object payForLastResume(Long cardId, Integer amount);
 
+	Object delete(Long id);
+
+	Object modify(Long id, CardRequest request);
+
+	Object deleteResume(Long id);
+
 }

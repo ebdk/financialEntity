@@ -2,6 +2,8 @@ package com.uade.financialEntity.controller;
 
 import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.messages.requests.ShopRequest;
+import com.uade.financialEntity.messages.responses.CardResponse;
+import com.uade.financialEntity.messages.responses.MonthResumeResponse;
 import com.uade.financialEntity.messages.responses.ShopResponse;
 import com.uade.financialEntity.services.ShopService;
 import io.swagger.annotations.ApiOperation;
@@ -76,6 +78,36 @@ public class ShopController {
 	@ResponseStatus(HttpStatus.OK)
 	public Object createShop(@RequestBody List<ShopRequest> shopRequests) {
 		return service.createShops(shopRequests);
+	}
+
+	@ApiOperation(
+			value = "Deletes a Shop by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The Shop was deleted successfully", response = CardResponse.class),
+	})
+	@DeleteMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object delete(
+			@ApiParam(value = "The Shop's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.delete(id));
+	}
+
+	@ApiOperation(
+			value = "Modifies a Shop",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The Shop was found successfully", response = MonthResumeResponse.class),
+	})
+	@PutMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object modify(
+			@ApiParam(value = "The Shop's id", required = true)
+			@PathVariable("id") Long id,
+			@ApiParam(value = "Modifications", required = true)
+			@RequestBody ShopRequest request) {
+		return ResponseEntity.ok(service.modify(id, request));
 	}
 
 }

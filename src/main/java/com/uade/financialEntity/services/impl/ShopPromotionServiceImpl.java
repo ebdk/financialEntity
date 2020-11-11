@@ -2,6 +2,7 @@ package com.uade.financialEntity.services.impl;
 
 import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.ShopPromotionRequest;
+import com.uade.financialEntity.messages.requests.ShopRequest;
 import com.uade.financialEntity.messages.responses.ShopPromotionResponse;
 import com.uade.financialEntity.models.CardEntity;
 import com.uade.financialEntity.models.Shop;
@@ -76,6 +77,25 @@ public class ShopPromotionServiceImpl implements ShopPromotionService {
 
 		shopPromotionRepository.saveAll(shopPromotions);
 		return shopPromotions.stream().map(ShopPromotion::toDto).collect(toList());
+	}
+
+	@Override
+	public Object delete(Long id) {
+		shopPromotionRepository.deleteById(id);
+		return new MessageResponse("Removed Succesfuly");
+	}
+
+	@Override
+	public Object modify(Long id, ShopPromotionRequest request) {
+		Optional<ShopPromotion> optionalShopPromotion = shopPromotionRepository.findById(id);
+		if (optionalShopPromotion.isPresent()) {
+			ShopPromotion shopPromotion = optionalShopPromotion.get();
+			shopPromotion.modify(request);
+			shopPromotionRepository.save(shopPromotion);
+			return shopPromotion.toDto();
+		} else {
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada el negocio con id " + id)).getMapMessage();
+		}
 	}
 
 }

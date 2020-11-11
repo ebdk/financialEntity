@@ -2,7 +2,9 @@ package com.uade.financialEntity.controller;
 
 import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.messages.requests.CustomerRequest;
+import com.uade.financialEntity.messages.responses.CardResponse;
 import com.uade.financialEntity.messages.responses.CustomerResponse;
+import com.uade.financialEntity.messages.responses.MonthResumeResponse;
 import com.uade.financialEntity.services.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -76,6 +78,36 @@ public class CustomerController {
 	@ResponseStatus(HttpStatus.OK)
 	public Object createCustomer(@RequestBody List<CustomerRequest> customerRequests) {
 		return service.createCustomers(customerRequests);
+	}
+
+	@ApiOperation(
+			value = "Deletes a Customer by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The customer was deleted successfully", response = CardResponse.class),
+	})
+	@DeleteMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object delete(
+			@ApiParam(value = "The customer's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.delete(id));
+	}
+
+	@ApiOperation(
+			value = "Modifies a Customer",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The Customer was found successfully", response = MonthResumeResponse.class),
+	})
+	@PutMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object modify(
+			@ApiParam(value = "The Customer's id", required = true)
+			@PathVariable("id") Long id,
+			@ApiParam(value = "Modifications", required = true)
+			@RequestBody CustomerRequest request) {
+		return ResponseEntity.ok(service.modify(id, request));
 	}
 
 }

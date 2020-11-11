@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.List;
 
 @Entity(name = "CardEntity")
@@ -27,12 +28,12 @@ public class CardEntity {
 	private List<Card> cards;
 
 	private String name;
-	private String imgUrl;
+	private Blob imgUrl;
 
 	//BUILDERS
-	public CardEntity(CardEntityRequest cardEntityRequest) {
-		this.name = cardEntityRequest.getName();
-		this.imgUrl = cardEntityRequest.getImgUrl();
+	public CardEntity(CardEntityRequest request) {
+		this.name = request.getName() != null ? request.getName() : name;
+		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
 	}
 
 	public CardEntity() {
@@ -43,4 +44,8 @@ public class CardEntity {
 		return new CardEntityResponse(this);
 	}
 
+	public void modify(CardEntityRequest request) {
+		this.name = request.getName() != null ? request.getName() : name;
+		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
+	}
 }

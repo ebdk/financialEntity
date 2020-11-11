@@ -56,4 +56,23 @@ public class ShopServiceImpl implements ShopService {
 		return shops.stream().map(Shop::toDto).collect(toList());
 	}
 
+	@Override
+	public Object delete(Long id) {
+		shopRepository.deleteById(id);
+		return new MessageResponse("Removed Succesfuly");
+	}
+
+	@Override
+	public Object modify(Long id, ShopRequest request) {
+		Optional<Shop> optionalShop = shopRepository.findById(id);
+		if (optionalShop.isPresent()) {
+			Shop shop = optionalShop.get();
+			shop.modify(request);
+			shopRepository.save(shop);
+			return shop.toDto();
+		} else {
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada el negocio con id " + id)).getMapMessage();
+		}
+	}
+
 }

@@ -115,4 +115,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 		}
 	}
 
+	@Override
+	public Object delete(Long id) {
+		purchaseRepository.deleteById(id);
+		return new MessageResponse("Removed Succesfuly");
+	}
+
+	@Override
+	public Object deleteItem(Long id) {
+		purchaseItemRepository.deleteById(id);
+		return new MessageResponse("Removed Succesfuly");
+	}
+
 }

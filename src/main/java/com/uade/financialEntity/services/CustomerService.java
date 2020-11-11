@@ -15,4 +15,8 @@ public interface CustomerService {
 
 	Object createCustomers(List<CustomerRequest> customerRequests);
 
+	Object delete(Long id);
+
+	Object modify(Long id, CustomerRequest request);
+
 }

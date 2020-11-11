@@ -67,4 +67,23 @@ public class CustomerServiceImpl implements CustomerService {
 		return customers.stream().map(Customer::toDto).collect(toList());
 	}
 
+	@Override
+	public Object delete(Long id) {
+		customerRepository.deleteById(id);
+		return new MessageResponse("Removed Succesfuly");
+	}
+
+	@Override
+	public Object modify(Long id, CustomerRequest request) {
+		Optional<Customer> optionalCustomer = customerRepository.findById(id);
+		if (optionalCustomer.isPresent()) {
+			Customer customer = optionalCustomer.get();
+			customer.modify(request);
+			customerRepository.save(customer);
+			return customer.toFullDto();
+		} else {
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada el negocio con id " + id)).getMapMessage();
+		}
+	}
+
 }

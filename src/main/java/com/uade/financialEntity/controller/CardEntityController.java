@@ -3,6 +3,8 @@ package com.uade.financialEntity.controller;
 import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.messages.requests.CardEntityRequest;
 import com.uade.financialEntity.messages.responses.CardEntityResponse;
+import com.uade.financialEntity.messages.responses.CardResponse;
+import com.uade.financialEntity.messages.responses.MonthResumeResponse;
 import com.uade.financialEntity.messages.responses.ShopPromotionResponse;
 import com.uade.financialEntity.services.CardEntityService;
 import io.swagger.annotations.ApiOperation;
@@ -91,6 +93,36 @@ public class CardEntityController {
 	@ResponseStatus(HttpStatus.OK)
 	public Object createCardEntities(@RequestBody List<CardEntityRequest> cardEntityRequests) {
 		return service.createCardEntities(cardEntityRequests);
+	}
+
+	@ApiOperation(
+			value = "Deletes a Card Entity by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The card entity was deleted successfully", response = CardResponse.class),
+	})
+	@DeleteMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object delete(
+			@ApiParam(value = "The card entity's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.delete(id));
+	}
+
+	@ApiOperation(
+			value = "Modifies a Card Entity",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The card entity was found successfully", response = MonthResumeResponse.class),
+	})
+	@PutMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object modify(
+			@ApiParam(value = "The card entity's id", required = true)
+			@PathVariable("id") Long id,
+			@ApiParam(value = "Modifications", required = true)
+			@RequestBody CardEntityRequest cardEntityRequest) {
+		return ResponseEntity.ok(service.modify(id, cardEntityRequest));
 	}
 
 }

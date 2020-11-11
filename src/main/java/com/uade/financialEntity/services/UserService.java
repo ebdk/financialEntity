@@ -17,4 +17,7 @@ public interface UserService {
 
 	Object createUsers(List<UserRequest> userRequests);
 
+	Object delete(Long cardId);
+
+	Object modify(Long id, UserRequest request);
 }

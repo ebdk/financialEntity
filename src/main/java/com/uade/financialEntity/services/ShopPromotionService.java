@@ -15,4 +15,8 @@ public interface ShopPromotionService {
 
 	Object createShopPromotions(List<ShopPromotionRequest> shopPromotionRequests);
 
+	Object delete(Long id);
+
+	Object modify(Long id, ShopPromotionRequest request);
+
 }

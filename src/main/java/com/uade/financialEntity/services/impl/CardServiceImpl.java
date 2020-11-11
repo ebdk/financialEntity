@@ -187,5 +187,29 @@ public class CardServiceImpl implements CardService {
 
 	}
 
+	@Override
+	public Object delete(Long cardId) {
+		cardRepository.deleteById(cardId);
+		return new MessageResponse("Removed Succesfuly");
+	}
+
+	@Override
+	public Object modify(Long id, CardRequest request) {
+		Optional<Card> optionalCard = cardRepository.findById(id);
+		if (optionalCard.isPresent()) {
+			Card card = optionalCard.get();
+			card.modify(request);
+			cardRepository.save(card);
+			return card.toFullDto();
+		} else {
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con id " + id)).getMapMessage();
+		}
+	}
+
+	@Override
+	public Object deleteResume(Long id) {
+		monthResumeRepository.deleteById(id);
+		return new MessageResponse("Removed Succesfuly");
+	}
 
 }

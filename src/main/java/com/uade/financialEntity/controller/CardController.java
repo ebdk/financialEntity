@@ -152,4 +152,48 @@ public class CardController {
 		return ResponseEntity.ok(service.payForLastResume(id, amount));
 	}
 
+	@ApiOperation(
+			value = "Deletes a card by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The card was deleted successfully", response = CardResponse.class),
+	})
+	@DeleteMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object delete(
+			@ApiParam(value = "The card's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.delete(id));
+	}
+
+	@ApiOperation(
+			value = "Modifies a Card",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The card was found successfully", response = MonthResumeResponse.class),
+	})
+	@PutMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object modify(
+			@ApiParam(value = "The card's id", required = true)
+			@PathVariable("id") Long id,
+			@ApiParam(value = "Modifications", required = true)
+			@RequestBody CardRequest cardRequest) {
+		return ResponseEntity.ok(service.modify(id, cardRequest));
+	}
+
+	@ApiOperation(
+			value = "Deletes a Resume by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The resume was deleted successfully", response = CardResponse.class),
+	})
+	@DeleteMapping(path = "resume/{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object deleteResume(
+			@ApiParam(value = "The resume's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.deleteResume(id));
+	}
+
 }

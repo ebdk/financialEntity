@@ -64,4 +64,23 @@ public class CardEntityServiceImpl implements CardEntityService {
 		return cardEntities.stream().map(CardEntity::toDto).collect(toList());
 	}
 
+	@Override
+	public Object delete(Long cardId) {
+		cardEntityRepository.deleteById(cardId);
+		return new MessageResponse("Removed Succesfuly");
+	}
+
+	@Override
+	public Object modify(Long id, CardEntityRequest request) {
+		Optional<CardEntity> optionalCardEntity = cardEntityRepository.findById(id);
+		if (optionalCardEntity.isPresent()) {
+			CardEntity cardEntity = optionalCardEntity.get();
+			cardEntity.modify(request);
+			cardEntityRepository.save(cardEntity);
+			return cardEntity.toDto();
+		} else {
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la Entidad con id " + id)).getMapMessage();
+		}
+	}
+
 }

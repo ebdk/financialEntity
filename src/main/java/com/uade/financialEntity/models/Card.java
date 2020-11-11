@@ -49,13 +49,13 @@ public class Card {
 
 	//BUILDERS
 	public Card(CardRequest cardRequest) {
-		this.creditNumber = cardRequest.getCreditNumber();
-		this.codeNumber = cardRequest.getCodeNumber();
-		this.validFrom = cardRequest.getValidFrom();
-		this.goodThrough = cardRequest.getGoodThrough();
-		this.nameCustomer = cardRequest.getNameCustomer();
-		this.cardType = CardType.valueOf(cardRequest.getCardType());
-		this.cardPayOnTime = cardRequest.getCardPayOnTime();
+		this.creditNumber = cardRequest.getCreditNumber() != null ? cardRequest.getCreditNumber() : creditNumber;
+		this.codeNumber = cardRequest.getCodeNumber() != null ? cardRequest.getCodeNumber() : codeNumber;
+		this.validFrom = cardRequest.getValidFrom() != null ? cardRequest.getValidFrom() : validFrom;
+		this.goodThrough = cardRequest.getGoodThrough() != null ? cardRequest.getGoodThrough() : goodThrough;
+		this.nameCustomer = cardRequest.getNameCustomer() != null ? cardRequest.getNameCustomer() : nameCustomer;
+		this.cardType = cardRequest.getCardType() != null ? CardType.valueOf(cardRequest.getCardType()) : cardType;
+		this.cardPayOnTime = cardRequest.getCardPayOnTime() != null ? cardRequest.getCardPayOnTime() : cardPayOnTime;
 	}
 
 	public Card() {
@@ -76,6 +76,16 @@ public class Card {
 				.sorted(comparing(MonthResume::getMonthNumber).reversed())
 				.collect(toList())
 				.get(0);
+	}
+
+	public void modify(CardRequest cardRequest) {
+		this.creditNumber = cardRequest.getCreditNumber() != null ? cardRequest.getCreditNumber() : creditNumber;
+		this.codeNumber = cardRequest.getCodeNumber() != null ? cardRequest.getCodeNumber() : codeNumber;
+		this.validFrom = cardRequest.getValidFrom() != null ? cardRequest.getValidFrom() : validFrom;
+		this.goodThrough = cardRequest.getGoodThrough() != null ? cardRequest.getGoodThrough() : goodThrough;
+		this.nameCustomer = cardRequest.getNameCustomer() != null ? cardRequest.getNameCustomer() : nameCustomer;
+		this.cardType = cardRequest.getCardType() != null ? CardType.valueOf(cardRequest.getCardType()) : cardType;
+		this.cardPayOnTime = cardRequest.getCardPayOnTime() != null ? cardRequest.getCardPayOnTime() : cardPayOnTime;
 	}
 
 	public String getCardEntityName() {

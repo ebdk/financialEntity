@@ -6,6 +6,7 @@ import com.uade.financialEntity.models.CardEntity;
 import com.uade.financialEntity.models.ShopPromotion;
 import lombok.Getter;
 
+import java.sql.Blob;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public class CardEntityFullResponse implements Response {
 	private List<ShopPromotionResponse> shopPromotions;
 	private List<Long> cardIds;
 	private String name;
-	private String imgUrl;
+	private Blob imgUrl;
 
 	//BUILDERS
 	public CardEntityFullResponse(CardEntity cardEntity) {

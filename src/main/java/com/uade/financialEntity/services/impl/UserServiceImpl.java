@@ -70,4 +70,23 @@ public class UserServiceImpl implements UserService {
 		return users.stream().map(User::toDto).collect(toList());
 	}
 
+	@Override
+	public Object delete(Long cardId) {
+		userRepository.deleteById(cardId);
+		return new MessageResponse("Removed Succesfuly");
+	}
+
+	@Override
+	public Object modify(Long id, UserRequest request) {
+		Optional<User> optionalUser = userRepository.findById(id);
+		if (optionalUser.isPresent()) {
+			User user = optionalUser.get();
+			user.modify(request);
+			userRepository.save(user);
+			return user.toFullDto();
+		} else {
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada el user con id " + id)).getMapMessage();
+		}
+	}
+
 }

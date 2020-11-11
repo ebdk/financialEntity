@@ -5,12 +5,14 @@ import com.uade.financialEntity.models.CardEntity;
 import com.uade.financialEntity.models.Customer;
 import lombok.Getter;
 
+import java.sql.Blob;
+
 @Getter
 public class CardEntityRequest implements Response {
 
 	//ATTRIBUTES
 	private String name;
-	private String imgUrl;
+	private Blob imgUrl;
 
 	//BUILDERS
 	public CardEntityRequest(CardEntity cardEntity) {

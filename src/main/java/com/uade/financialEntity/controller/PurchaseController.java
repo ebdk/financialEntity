@@ -2,6 +2,7 @@ package com.uade.financialEntity.controller;
 
 import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.messages.requests.custom.PurchaseCustomRequest;
+import com.uade.financialEntity.messages.responses.CardResponse;
 import com.uade.financialEntity.messages.responses.CustomerResponse;
 import com.uade.financialEntity.messages.responses.PurchaseResponse;
 import com.uade.financialEntity.services.PurchaseService;
@@ -60,6 +61,34 @@ public class PurchaseController {
 	@ResponseStatus(HttpStatus.OK)
 	public Object purchase(@RequestBody PurchaseCustomRequest purchaseCustomRequest) {
 		return service.purchase(purchaseCustomRequest);
+	}
+
+	@ApiOperation(
+			value = "Deletes a Purchase by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The Purchase was deleted successfully", response = CardResponse.class),
+	})
+	@DeleteMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object delete(
+			@ApiParam(value = "The Purchase's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.delete(id));
+	}
+
+	@ApiOperation(
+			value = "Deletes a Purchase Item by Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The purchase item was deleted successfully", response = CardResponse.class),
+	})
+	@DeleteMapping(path = "item/{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object deleteItem(
+			@ApiParam(value = "The Purchase item's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.deleteItem(id));
 	}
 
 }

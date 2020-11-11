@@ -51,4 +51,10 @@ public class User {
 		return new UserFullResponse(this);
 	}
 
+	public void modify(UserRequest request) {
+		this.userName = request.getUserName() != null ? request.getUserName() : userName;
+		this.password = request.getPassword() != null ? request.getPassword() : password;
+		this.privilege = request.getPrivilege() != null ? Privilege.valueOf(request.getPrivilege()) : privilege;
+	}
+
 }

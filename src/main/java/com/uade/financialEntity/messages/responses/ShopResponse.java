@@ -4,13 +4,15 @@ import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.models.Shop;
 import lombok.Getter;
 
+import java.sql.Blob;
+
 @Getter
 public class ShopResponse implements Response {
 
 	//ATTRIBUTES
 	private Long id;
 	private String name;
-	private String imgUrl;
+	private Blob imgUrl;
 
 	//BUILDERS
 	public ShopResponse(Shop shop) {
