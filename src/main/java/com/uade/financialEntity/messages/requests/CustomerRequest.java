@@ -9,6 +9,7 @@ public class CustomerRequest implements Response {
 
 	//ATTRIBUTES
 	private Integer dni;
+	private Long userId;
 	private String firstname;
 	private String lastname;
 	private String address;

@@ -19,6 +19,9 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private Customer customer;
+
 	private String userName;
 	private String password;
 	private Privilege privilege;

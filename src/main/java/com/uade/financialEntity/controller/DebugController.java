@@ -35,7 +35,7 @@ public class DebugController {
 	}
 
 	@ApiOperation(
-			value = "Creates Users, Shops, Card Entities and Customers",
+			value = "Creates Users, Shops and Card Entities",
 			notes = "Self explanatory")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The entities were created successfully", response = CardEntityResponse.class),

@@ -20,8 +20,11 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Card> cards;
+
+	@OneToOne(cascade = {CascadeType.ALL})
+	private User user;
 
 	private Integer dni;
 	private String firstname;

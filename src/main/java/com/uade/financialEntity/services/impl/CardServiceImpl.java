@@ -139,6 +139,14 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
+	public Object getAllResumes(Long cardId) {
+		Optional<Card> optionalCard = cardRepository.findById(cardId);
+		return optionalCard.isPresent() ?
+				optionalCard.get().getMonthResumes().stream().map(MonthResume::toFullDto) :
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con id " + cardId)).getMapMessage();
+	}
+
+	@Override
 	public Object payForLastResume(Long cardId, Integer amount) {
 		Optional<Card> optionalCard = cardRepository.findById(cardId);
 		if (optionalCard.isPresent()) {

@@ -2,7 +2,6 @@ package com.uade.financialEntity.services;
 
 import com.uade.financialEntity.messages.requests.CardRequest;
 import com.uade.financialEntity.messages.responses.CardFullResponse;
-import com.uade.financialEntity.messages.responses.CardResponse;
 
 import java.util.List;
 
@@ -21,6 +20,8 @@ public interface CardService {
 	Object getOpenResumeByResumeId(Long idResume);
 
 	Object getOpenResume(Long cardId);
+
+	Object getAllResumes(Long cardId);
 
 	Object payForLastResume(Long cardId, Integer amount);
 

@@ -3,6 +3,7 @@ package com.uade.financialEntity.controller;
 import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.messages.requests.CardRequest;
 import com.uade.financialEntity.messages.responses.CardResponse;
+import com.uade.financialEntity.messages.responses.MonthResumeResponse;
 import com.uade.financialEntity.services.CardService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -97,7 +98,7 @@ public class CardController {
 			value = "Gets Resume by Resume ID",
 			notes = "Self explanatory")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "The card was found successfully", response = CardResponse.class),
+			@ApiResponse(code = 200, message = "The card was found successfully", response = MonthResumeResponse.class),
 	})
 	@GetMapping(path = "resume_id/{id}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
@@ -111,7 +112,7 @@ public class CardController {
 			value = "Gets Open Resume by Card ID",
 			notes = "Self explanatory")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "The card was found successfully", response = CardResponse.class),
+			@ApiResponse(code = 200, message = "The card was found successfully", response = MonthResumeResponse.class),
 	})
 	@GetMapping(path = "open_resume/{id}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
@@ -122,10 +123,24 @@ public class CardController {
 	}
 
 	@ApiOperation(
+			value = "Gets All Resumes of a Card by Card ID",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The card was found successfully", response = MonthResumeResponse.class),
+	})
+	@GetMapping(path = "all_resumes/{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getAllResumes(
+			@ApiParam(value = "The card's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.getAllResumes(id));
+	}
+
+	@ApiOperation(
 			value = "Pays a card's last open resume by Card Id and Amount to pay",
 			notes = "Self explanatory")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "The card was found successfully", response = CardResponse.class),
+			@ApiResponse(code = 200, message = "The card was found successfully", response = MonthResumeResponse.class),
 	})
 	@PostMapping(path = "pay/{id}/{amount}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)

@@ -13,7 +13,7 @@ import java.util.List;
 public class FirstInsertRequest implements Response {
 
 	//ATTRIBUTES
-	private List<CustomerRequest> customerRequests;
+	//private List<CustomerRequest> customerRequests;
 	private List<CardEntityRequest> cardEntityRequests;
 	private List<ShopRequest> shopRequests;
 	private List<UserRequest> userRequests;
