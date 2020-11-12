@@ -18,7 +18,7 @@ public class CardEntityFullResponse implements Response {
 	private List<ShopPromotionResponse> shopPromotions;
 	private List<Long> cardIds;
 	private String name;
-	private Blob imgUrl;
+	private String imgUrl;
 
 	//BUILDERS
 	public CardEntityFullResponse(CardEntity cardEntity) {

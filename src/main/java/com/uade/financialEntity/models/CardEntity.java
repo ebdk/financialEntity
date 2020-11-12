@@ -28,7 +28,7 @@ public class CardEntity {
 	private List<Card> cards;
 
 	private String name;
-	private Blob imgUrl;
+	private String imgUrl;
 
 	//BUILDERS
 	public CardEntity(CardEntityRequest request) {

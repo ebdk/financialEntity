@@ -32,7 +32,7 @@ public class Shop {
 	private List<ShopPromotion> shopPromotions;
 
 	private String name;
-	private Blob imgUrl;
+	private String imgUrl;
 
 	//BUILDERS
 	public Shop(ShopRequest request) {

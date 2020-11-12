@@ -127,4 +127,19 @@ public class UserController {
 		return ResponseEntity.ok(service.modify(id, userRequest));
 	}
 
+	@ApiOperation(
+			value = "Looks up a customer by user Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The customer was found successfully", response = UserResponse.class),
+	})
+	@GetMapping(path = "customer/{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getCustomer(
+			@ApiParam(value = "The user's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.getCustomer(id));
+	}
+
+
 }

@@ -11,7 +11,7 @@ public class ShopRequest implements Response {
 
 	//ATTRIBUTES
 	private String name;
-	private Blob imgUrl;
+	private String imgUrl;
 
 	//BUILDERS
 	public Shop toEntity() {

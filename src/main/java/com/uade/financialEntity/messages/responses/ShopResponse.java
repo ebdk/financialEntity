@@ -12,7 +12,7 @@ public class ShopResponse implements Response {
 	//ATTRIBUTES
 	private Long id;
 	private String name;
-	private Blob imgUrl;
+	private String imgUrl;
 
 	//BUILDERS
 	public ShopResponse(Shop shop) {

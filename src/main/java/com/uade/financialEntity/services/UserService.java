@@ -20,4 +20,6 @@ public interface UserService {
 	Object delete(Long cardId);
 
 	Object modify(Long id, UserRequest request);
+
+	Object getCustomer(Long id);
 }

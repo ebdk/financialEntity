@@ -12,7 +12,7 @@ public class CardEntityRequest implements Response {
 
 	//ATTRIBUTES
 	private String name;
-	private Blob imgUrl;
+	private String imgUrl;
 
 	//BUILDERS
 	public CardEntityRequest(CardEntity cardEntity) {

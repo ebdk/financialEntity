@@ -44,7 +44,9 @@ public class Card {
 
 	public enum CardType {
 		BLACK,
-		GOLD
+		GOLD,
+		PLATINUM,
+		CLASSIC
 	}
 
 	//BUILDERS

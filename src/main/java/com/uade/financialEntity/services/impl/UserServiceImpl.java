@@ -2,6 +2,7 @@ package com.uade.financialEntity.services.impl;
 
 import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.UserRequest;
+import com.uade.financialEntity.messages.responses.CustomerFullResponse;
 import com.uade.financialEntity.messages.responses.UserResponse;
 import com.uade.financialEntity.models.User;
 import com.uade.financialEntity.repositories.UserDAO;
@@ -87,6 +88,14 @@ public class UserServiceImpl implements UserService {
 		} else {
 			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada el user con id " + id)).getMapMessage();
 		}
+	}
+
+	@Override
+	public Object getCustomer(Long id) {
+		Optional<User> persona = userRepository.findById(id);
+		return persona.isPresent() ?
+				new CustomerFullResponse(persona.get().getCustomer()) :
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la persona con id " + id)).getMapMessage();
 	}
 
 }

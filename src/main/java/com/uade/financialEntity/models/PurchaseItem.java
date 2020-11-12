@@ -30,6 +30,8 @@ public class PurchaseItem {
 	public enum ProductType {
 		GYM,
 		COFFE,
+		GROCERY,
+		ELECTRONICS,
 		ALL
 	}
 

@@ -9,6 +9,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+import static com.uade.financialEntity.models.ShopPromotion.PromotionDay.ANYDAY;
+
 @Entity(name = "ShopPromotion")
 @Table(name = "shop_promotion")
 @Getter
@@ -42,7 +44,8 @@ public class ShopPromotion {
 		THURSDAY,
 		FRIDAY,
 		SATURDAY,
-		SUNDAY
+		SUNDAY,
+		ANYDAY
 	}
 
 	//BUILDERS
@@ -61,10 +64,14 @@ public class ShopPromotion {
 		return new ShopPromotionResponse(this);
 	}
 
-	public boolean isPromotion(String cardEntityName, List<ProductType> purchaseProductTypes, PromotionDay day) {
-		return cardEntityName.equals(cardEntity.getName())
-				&& purchaseProductTypes.contains(productType)
-				&& day.equals(day);
+	public boolean isPromotion(String cardEntityName, List<ProductType> purchaseProductTypes, PromotionDay date) {
+
+		boolean sameBankEntity = cardEntityName.equals(cardEntity.getName());
+		boolean sameProductType = ProductType.ALL.equals(productType) || purchaseProductTypes.contains(productType);
+		boolean sameDay = ANYDAY.equals(day) || day.equals(date);
+
+
+		return sameBankEntity && sameProductType && sameDay;
 	}
 
 	public void modify(ShopPromotionRequest request) {
