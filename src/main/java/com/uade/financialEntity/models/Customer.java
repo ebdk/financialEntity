@@ -47,6 +47,10 @@ public class Customer {
 	public Customer() {
 	}
 
+	public Customer(Integer dni) {
+		this.dni = dni;
+	}
+
 	//METHODS
 	public CustomerResponse toDto() {
 		return new CustomerResponse(this);

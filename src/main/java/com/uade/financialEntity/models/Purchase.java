@@ -3,6 +3,7 @@ package com.uade.financialEntity.models;
 import com.uade.financialEntity.messages.responses.PurchaseFullResponse;
 import com.uade.financialEntity.messages.responses.PurchaseResponse;
 import com.uade.financialEntity.models.PurchaseItem.ProductType;
+import com.uade.financialEntity.utils.MathUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,8 +30,8 @@ public class Purchase {
 	@ManyToOne
 	private ShopPromotion shopPromotion;
 
-	@ManyToOne
-	private Shop shop;
+	@OneToOne(mappedBy = "purchase", cascade = CascadeType.ALL)
+	private ShopPayment shopPayment;
 
 	@ManyToOne
 	private MonthResume monthResume;
@@ -82,6 +83,24 @@ public class Purchase {
 
 	public Integer calculateTotalAmount() {
 		return purchaseItems.stream().mapToInt(PurchaseItem::calculateTotalAmount).sum();
+	}
+
+	public Integer calculateTotalAmount(Integer monthPays) {
+		Integer amount = purchaseItems.stream().mapToInt(PurchaseItem::calculateTotalAmount).sum();
+		if (monthPays.equals(1)) {
+			return amount;
+		} else {
+			if ((1 < monthPays) && (monthPays <= 3)) {
+				amount = amount + MathUtils.getPercentage(amount, 10);
+			}
+			if ((3 < monthPays) && (monthPays <= 6)) {
+				amount = amount + MathUtils.getPercentage(amount, 20);
+			}
+			if ((6 < monthPays) && (monthPays <= 12)) {
+				amount = amount + MathUtils.getPercentage(amount, 30);
+			}
+			return amount;
+		}
 	}
 
 	public List<ProductType> getPurchaseProductTypes() {

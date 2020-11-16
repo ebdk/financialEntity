@@ -19,4 +19,6 @@ public interface CustomerService {
 
 	Object modify(Long id, CustomerRequest request);
 
+	Object existsDni(Integer dni);
+
 }

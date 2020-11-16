@@ -141,5 +141,33 @@ public class UserController {
 		return ResponseEntity.ok(service.getCustomer(id));
 	}
 
+	@ApiOperation(
+			value = "Looks up a customer by Shop Id",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The customer was found successfully", response = UserResponse.class),
+	})
+	@GetMapping(path = "shop/{id}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getShop(
+			@ApiParam(value = "The user's id", required = true)
+			@PathVariable("id") Long id) {
+		return ResponseEntity.ok(service.getShop(id));
+	}
+
+	@ApiOperation(
+			value = "Validates if it exists a User with given username",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The customer was found successfully", response = UserResponse.class),
+	})
+	@GetMapping(path = "exists_username/{username}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getShop(
+			@ApiParam(value = "The user's username", required = true)
+			@PathVariable("username") String username) {
+		return ResponseEntity.ok(service.existsUsername(username));
+	}
+
 
 }

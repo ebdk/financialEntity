@@ -23,13 +23,13 @@ public class PurchaseFullResponse implements Response {
 	private String date;
 	private Integer monthPays;
 	private Integer monthsPaid;
+	private String description;
 
 	//BUILDERS
 	public PurchaseFullResponse(Purchase purchase) {
 		if (purchase != null) {
 			this.id = purchase.getId() != null ? purchase.getId() : null;
 			this.shopPromotion = purchase.getShopPromotion() != null ? purchase.getShopPromotion().toDto() : null;
-			this.shop = purchase.getShop() != null ? purchase.getShop().toDto() : null;
 			this.monthResume = purchase.getMonthResume() != null ? purchase.getMonthResume().toDto() : null;
 			this.purchaseItems = purchase.getPurchaseItems() != null
 					? purchase.getPurchaseItems().stream().map(PurchaseItem::toDto).collect(Collectors.toList()) : null;
@@ -39,6 +39,7 @@ public class PurchaseFullResponse implements Response {
 			this.date = purchase.getDate() != null ? purchase.getDate().toString() : null;
 			this.monthPays = purchase.getMonthPays() != null ? purchase.getMonthPays() : null;
 			this.monthsPaid = purchase.getMonthsPaid() != null ? purchase.getMonthsPaid() : null;
+			this.description = purchase.getDescription() != null ? purchase.getDescription() : null;
 		}
 	}
 

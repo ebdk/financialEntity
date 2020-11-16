@@ -1,13 +1,13 @@
 package com.uade.financialEntity.models;
 
 import com.uade.financialEntity.messages.requests.ShopRequest;
+import com.uade.financialEntity.messages.responses.ShopFullResponse;
 import com.uade.financialEntity.messages.responses.ShopResponse;
 import com.uade.financialEntity.models.ShopPromotion.PromotionDay;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
@@ -26,26 +26,39 @@ public class Shop {
 	private Long id;
 
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
-	private List<Purchase> purchases;
+	private List<ShopPayment> purchases;
 
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
 	private List<ShopPromotion> shopPromotions;
 
+	@OneToOne(cascade = {CascadeType.ALL})
+	private User user;
+
 	private String name;
 	private String imgUrl;
+	private Integer cuit;
 
 	//BUILDERS
 	public Shop(ShopRequest request) {
 		this.name = request.getName() != null ? request.getName() : name;
 		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
+		this.cuit = request.getCuit() != null ? request.getCuit() : cuit;
 	}
 
 	public Shop() {
 	}
 
+	public Shop(String name) {
+		this.name = name;
+	}
+
 	//METHODS
 	public ShopResponse toDto() {
 		return new ShopResponse(this);
+	}
+
+	public ShopFullResponse toFullDto() {
+		return new ShopFullResponse(this);
 	}
 
 	public ShopPromotion getPromotion(String cardEntityName, List<PurchaseItem.ProductType> purchaseProductTypes, String date) {
@@ -64,5 +77,6 @@ public class Shop {
 	public void modify(ShopRequest request) {
 		this.name = request.getName() != null ? request.getName() : name;
 		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
+		this.cuit = request.getCuit() != null ? request.getCuit() : cuit;
 	}
 }

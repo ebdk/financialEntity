@@ -23,9 +23,16 @@ public class User {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Customer customer;
 
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private Shop shop;
+
 	private String userName;
 	private String password;
 	private Privilege privilege;
+
+	public User(String username) {
+		this.userName = username;
+	}
 
 	public enum Privilege {
 		COMMON,

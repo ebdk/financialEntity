@@ -67,7 +67,7 @@ public class CardEntityServiceImpl implements CardEntityService {
 	@Override
 	public Object delete(Long cardId) {
 		cardEntityRepository.deleteById(cardId);
-		return new MessageResponse("Removed Succesfuly");
+		return new MessageResponse("Removed Succesfuly").getMapMessage();
 	}
 
 	@Override

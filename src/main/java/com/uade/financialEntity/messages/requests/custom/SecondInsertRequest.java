@@ -1,7 +1,6 @@
 package com.uade.financialEntity.messages.requests.custom;
 
 import com.uade.financialEntity.messages.Response;
-import com.uade.financialEntity.messages.requests.CardEntityRequest;
 import com.uade.financialEntity.messages.requests.CustomerRequest;
 import com.uade.financialEntity.messages.requests.ShopRequest;
 import com.uade.financialEntity.messages.requests.UserRequest;
@@ -10,14 +9,14 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class FirstInsertRequest implements Response {
+public class SecondInsertRequest implements Response {
 
 	//ATTRIBUTES
-	private List<CardEntityRequest> cardEntityRequests;
-	private List<UserRequest> userRequests;
+	private List<CustomerRequest> customerRequests;
+	private List<ShopRequest> shopRequests;
 
 	//BUILDERS
-	public FirstInsertRequest() {
+	public SecondInsertRequest() {
 	}
 
 }

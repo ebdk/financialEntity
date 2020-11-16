@@ -22,4 +22,8 @@ public interface UserService {
 	Object modify(Long id, UserRequest request);
 
 	Object getCustomer(Long id);
+	
+	Object getShop(Long id);
+
+	Object existsUsername(String username);
 }

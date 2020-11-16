@@ -11,7 +11,9 @@ public class ShopRequest implements Response {
 
 	//ATTRIBUTES
 	private String name;
+	private Long userId;
 	private String imgUrl;
+	private Integer cuit;
 
 	//BUILDERS
 	public Shop toEntity() {

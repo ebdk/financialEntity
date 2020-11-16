@@ -2,13 +2,14 @@ package com.uade.financialEntity.services.impl;
 
 import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.UserRequest;
-import com.uade.financialEntity.messages.responses.CustomerFullResponse;
 import com.uade.financialEntity.messages.responses.UserResponse;
 import com.uade.financialEntity.models.User;
 import com.uade.financialEntity.repositories.UserDAO;
 import com.uade.financialEntity.services.UserService;
 import com.uade.financialEntity.utils.Pair;
+import com.uade.financialEntity.utils.PairObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Object delete(Long cardId) {
 		userRepository.deleteById(cardId);
-		return new MessageResponse("Removed Succesfuly");
+		return new MessageResponse("Removed Succesfuly").getMapMessage();
 	}
 
 	@Override
@@ -94,8 +95,23 @@ public class UserServiceImpl implements UserService {
 	public Object getCustomer(Long id) {
 		Optional<User> persona = userRepository.findById(id);
 		return persona.isPresent() ?
-				new CustomerFullResponse(persona.get().getCustomer()) :
+				persona.get().getCustomer().toFullDto() :
 				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la persona con id " + id)).getMapMessage();
+	}
+
+	@Override
+	public Object getShop(Long id) {
+		Optional<User> persona = userRepository.findById(id);
+		return persona.isPresent() ?
+				persona.get().getShop().toFullDto() :
+				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la persona con id " + id)).getMapMessage();
+	}
+
+	@Override
+	public Object existsUsername(String username) {
+		User user = new User(username);
+		boolean exists = userRepository.exists(Example.of(user));
+		return new MessageResponse(new PairObject("exists", exists)).getMapObject();
 	}
 
 }

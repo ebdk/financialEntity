@@ -1,32 +1,40 @@
 package com.uade.financialEntity.messages;
 
-@lombok.Getter
+import com.uade.financialEntity.utils.Pair;
+import com.uade.financialEntity.utils.PairObject;
+import lombok.Getter;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Getter
 public class MessageResponse implements Response {
 
 	//ATTRIBUTES
-	private java.util.Map<String, String> mapMessage;
-	private java.util.Map<String, Object> mapObject;
+	private Map<String, String> mapMessage;
+	private Map<String, Object> mapObject;
+
 
 	//BUILDERS
-	public MessageResponse(com.uade.financialEntity.utils.Pair... args) {
+	public MessageResponse(Pair... args) {
 		super();
-		this.mapMessage = new java.util.HashMap<>();
-		for (com.uade.financialEntity.utils.Pair arg : args) {
+		this.mapMessage = new HashMap<>();
+		for (Pair arg : args) {
 			mapMessage.put(arg.getKey(), arg.getValue());
 		}
 	}
 
-	public MessageResponse(com.uade.financialEntity.utils.PairObject... args) {
+	public MessageResponse(PairObject... args) {
 		super();
-		this.mapObject = new java.util.HashMap<>();
-		for (com.uade.financialEntity.utils.PairObject arg : args) {
+		this.mapObject = new HashMap<>();
+		for (PairObject arg : args) {
 			mapObject.put(arg.getKey(), arg.getValue());
 		}
 	}
 
 	public MessageResponse(String string) {
 		super();
-		this.mapMessage = new java.util.HashMap<>();
+		this.mapMessage = new HashMap<>();
 		mapMessage.put("message", string);
 	}
 

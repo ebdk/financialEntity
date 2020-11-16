@@ -42,6 +42,10 @@ public class Card {
 	private CardType cardType;
 	private Boolean cardPayOnTime;
 
+	public Card(Integer creditNumber) {
+		this.creditNumber = creditNumber;
+	}
+
 	public enum CardType {
 		BLACK,
 		GOLD,

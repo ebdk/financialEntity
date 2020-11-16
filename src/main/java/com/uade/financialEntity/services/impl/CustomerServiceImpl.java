@@ -9,7 +9,9 @@ import com.uade.financialEntity.repositories.CustomerDAO;
 import com.uade.financialEntity.repositories.UserDAO;
 import com.uade.financialEntity.services.CustomerService;
 import com.uade.financialEntity.utils.Pair;
+import com.uade.financialEntity.utils.PairObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -70,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Object delete(Long id) {
 		customerRepository.deleteById(id);
-		return new MessageResponse("Removed Succesfuly");
+		return new MessageResponse("Removed Succesfuly").getMapMessage();
 	}
 
 	@Override
@@ -84,6 +86,13 @@ public class CustomerServiceImpl implements CustomerService {
 		} else {
 			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada el negocio con id " + id)).getMapMessage();
 		}
+	}
+
+	@Override
+	public Object existsDni(Integer dni) {
+		Customer customer = new Customer(dni);
+		boolean exists = customerRepository.exists(Example.of(customer));
+		return new MessageResponse(new PairObject("exists", exists)).getMapObject();
 	}
 
 }

@@ -82,7 +82,7 @@ public class ShopPromotionServiceImpl implements ShopPromotionService {
 	@Override
 	public Object delete(Long id) {
 		shopPromotionRepository.deleteById(id);
-		return new MessageResponse("Removed Succesfuly");
+		return new MessageResponse("Removed Succesfuly").getMapMessage();
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.uade.financialEntity.models.Purchase.PurchaseType.ORIGINAL;
+import static com.uade.financialEntity.models.ShopPayment.DateType.DAILY;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
@@ -34,10 +35,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private ShopDAO shopRepository;
 
 	@Autowired
+	private ShopPaymentDAO shopPaymentRepository;
+
+	@Autowired
 	private CardDAO cardRepository;
 
 	@Autowired
 	private MonthResumeDAO monthResumeRepository;
+
+	@Autowired
+	private SystemCacheDAO systemCacheRepository;
 
 	@Override
 	public List<PurchaseResponse> getAllPurchases() {
@@ -59,6 +66,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		Optional<Shop> optionalShop = shopRepository.findById(request.getShopId());
 		Optional<Card> optionalCard = cardRepository.findById(request.getCardId());
 
+		SystemCache systemCache = systemCacheRepository.findAll().get(0);
+		Integer monthNumber = systemCache.getMonthNumber();
+
 		if (optionalShop.isPresent() && optionalCard.isPresent()) {
 			Card card = optionalCard.get();
 			Shop shop = optionalShop.get();
@@ -73,7 +83,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 					.map(PurchaseItemRequest::toEntity).collect(Collectors.toList());
 			purchaseItems.forEach(purchaseItem -> purchaseItem.setPurchase(purchase));
 			purchase.setPurchaseItems(purchaseItems);
-			purchase.setOriginalAmount(purchase.calculateTotalAmount());
+			purchase.setOriginalAmount(purchase.calculateTotalAmount(request.getMonthPays()));
 
 			Date now = new Date();
 			purchase.setDate(now);
@@ -87,24 +97,36 @@ public class PurchaseServiceImpl implements PurchaseService {
 				purchase.setShopPromotion(shopPromotion);
 				amount = purchase.getOriginalAmount() - purchase.getDiscount();
 			} else {
+				purchase.setDiscount(0);
 				amount = purchase.getOriginalAmount();
 			}
 			purchase.setTotalAmount(amount);
 
 			MonthResume monthResume;
-			if (card.getLastMonthResumeOpen() != null) {
-				monthResume = card.getLastMonthResumeOpen();
-			} else {
-				monthResume = new MonthResume(1);
-				monthResume.setCard(card);
-			}
+			monthResume = card.getLastMonthResumeOpen();
+
 			monthResume.addPurchase(purchase);
 			purchase.setMonthResume(monthResume);
-			purchase.setShop(shop);
-			purchase.setDescription(String.format("Compra del negocio %s con tarjeta %s del dia %s",
-					shop.getName(), card.getCardEntityName(), now));
+			//purchase.setShop(shop);
+
+			String description = String.format("con tarjeta %s del dia %s",
+					card.getCardEntityName(), now);
+			purchase.setDescription(String.format("Compra del negocio %s ",
+					shop.getName()) + description);
 			monthResume.setAmountToPay(monthResume.calculateTotalAmount());
 
+			ShopPayment shopPayment = new ShopPayment();
+			shopPayment.setShop(shop);
+			shopPayment.setOriginalAmount(purchase.getTotalAmount());
+			shopPayment.setComission(MathUtils.getPercentage(shopPayment.getOriginalAmount(), 15));
+			shopPayment.setTotalAmount(shopPayment.getOriginalAmount() - shopPayment.getComission());
+			shopPayment.setDate(now);
+			shopPayment.setDateType(DAILY);
+			shopPayment.setDescription("Venta " + description);
+			shopPayment.setMonth(monthNumber);
+			shopPayment.setPurchase(purchase);
+
+			shopPaymentRepository.save(shopPayment);
 			purchaseItemRepository.saveAll(purchaseItems);
 			purchaseRepository.save(purchase);
 			monthResumeRepository.save(monthResume);
@@ -118,13 +140,13 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public Object delete(Long id) {
 		purchaseRepository.deleteById(id);
-		return new MessageResponse("Removed Succesfuly");
+		return new MessageResponse("Removed Succesfuly").getMapMessage();
 	}
 
 	@Override
 	public Object deleteItem(Long id) {
 		purchaseItemRepository.deleteById(id);
-		return new MessageResponse("Removed Succesfuly");
+		return new MessageResponse("Removed Succesfuly").getMapMessage();
 	}
 
 }

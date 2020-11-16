@@ -2,6 +2,7 @@ package com.uade.financialEntity.services;
 
 import com.uade.financialEntity.messages.requests.CardRequest;
 import com.uade.financialEntity.messages.responses.CardFullResponse;
+import com.uade.financialEntity.messages.responses.MonthResumeFullResponse;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface CardService {
 
 	Object closeLastMonthResume(Long id);
 
+	Object closeLastMonthResumes();
+
 	Object getOpenResumeByResumeId(Long idResume);
 
 	Object getOpenResume(Long cardId);
@@ -30,5 +33,9 @@ public interface CardService {
 	Object modify(Long id, CardRequest request);
 
 	Object deleteResume(Long id);
+
+	Object existsCreditNumber(Integer creditNumber);
+
+	List<MonthResumeFullResponse> closeLastMonthResumes(Integer month);
 
 }
