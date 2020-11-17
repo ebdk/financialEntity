@@ -35,7 +35,8 @@ public class User {
 	}
 
 	public enum Privilege {
-		COMMON,
+		SHOP,
+		CUSTOMER,
 		ADMIN
 	}
 
