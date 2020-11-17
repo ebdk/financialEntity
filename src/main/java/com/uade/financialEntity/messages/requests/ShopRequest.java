@@ -14,6 +14,7 @@ public class ShopRequest implements Response {
 	private Long userId;
 	private String imgUrl;
 	private Integer cuit;
+	private String cbuForBank;
 
 	//BUILDERS
 	public Shop toEntity() {

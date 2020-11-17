@@ -37,12 +37,14 @@ public class Shop {
 	private String name;
 	private String imgUrl;
 	private Integer cuit;
+	private String cbuForBank;
 
 	//BUILDERS
 	public Shop(ShopRequest request) {
 		this.name = request.getName() != null ? request.getName() : name;
 		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
 		this.cuit = request.getCuit() != null ? request.getCuit() : cuit;
+		this.cbuForBank = request.getCbuForBank() != null ? request.getCbuForBank() : cbuForBank;
 	}
 
 	public Shop() {
@@ -78,5 +80,6 @@ public class Shop {
 		this.name = request.getName() != null ? request.getName() : name;
 		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
 		this.cuit = request.getCuit() != null ? request.getCuit() : cuit;
+		this.cbuForBank = request.getCbuForBank() != null ? request.getCbuForBank() : cbuForBank;
 	}
 }

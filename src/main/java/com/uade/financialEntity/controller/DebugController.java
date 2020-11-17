@@ -37,7 +37,7 @@ public class DebugController {
 	}
 
 	@ApiOperation(
-			value = "Creates Users, Shops and Card Entities",
+			value = "Creates Users and Card Entities",
 			notes = "Self explanatory")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The entities were created successfully", response = CardEntityResponse.class),
@@ -49,7 +49,7 @@ public class DebugController {
 	}
 
 	@ApiOperation(
-			value = "Creates Users, Shops and Card Entities",
+			value = "Creates Customers and Shops",
 			notes = "Self explanatory")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The entities were created successfully", response = CardEntityResponse.class),
@@ -61,7 +61,7 @@ public class DebugController {
 	}
 
 	@ApiOperation(
-			value = "Creates Users, Shops and Card Entities",
+			value = "Creates Cards and Shop Promotions",
 			notes = "Self explanatory")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "The entities were created successfully", response = CardEntityResponse.class),

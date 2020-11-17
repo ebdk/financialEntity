@@ -4,6 +4,7 @@ import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.messages.requests.CardRequest;
 import com.uade.financialEntity.messages.responses.CardResponse;
 import com.uade.financialEntity.messages.responses.MonthResumeResponse;
+import com.uade.financialEntity.messages.responses.UserResponse;
 import com.uade.financialEntity.services.CardService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -194,6 +195,20 @@ public class CardController {
 			@ApiParam(value = "The resume's id", required = true)
 			@PathVariable("id") Long id) {
 		return ResponseEntity.ok(service.deleteResume(id));
+	}
+
+	@ApiOperation(
+			value = "Validates if it exists a Card with given Credit Number",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The shop was found successfully", response = UserResponse.class),
+	})
+	@GetMapping(path = "exists_credit_number/{creditNumber}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object existsCreditNumber(
+			@ApiParam(value = "The Card's Credit Number", required = true)
+			@PathVariable("creditNumber") Integer creditNumber) {
+		return ResponseEntity.ok(service.existsCreditNumber(creditNumber));
 	}
 
 }

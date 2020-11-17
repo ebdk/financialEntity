@@ -63,8 +63,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	@Override
 	public Object purchase(PurchaseCustomRequest request) {
-		Optional<Shop> optionalShop = shopRepository.findById(request.getShopId());
-		Optional<Card> optionalCard = cardRepository.findById(request.getCardId());
+		Optional<Shop> optionalShop = shopRepository.findByName(request.getShopName());
+		Optional<Card> optionalCard = cardRepository.findByCreditNumber(request.getCardNumber());
 
 		SystemCache systemCache = systemCacheRepository.findAll().get(0);
 		Integer monthNumber = systemCache.getMonthNumber();

@@ -5,6 +5,7 @@ import com.uade.financialEntity.messages.requests.CustomerRequest;
 import com.uade.financialEntity.messages.responses.CardResponse;
 import com.uade.financialEntity.messages.responses.CustomerResponse;
 import com.uade.financialEntity.messages.responses.MonthResumeResponse;
+import com.uade.financialEntity.messages.responses.UserResponse;
 import com.uade.financialEntity.services.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -108,6 +109,20 @@ public class CustomerController {
 			@ApiParam(value = "Modifications", required = true)
 			@RequestBody CustomerRequest request) {
 		return ResponseEntity.ok(service.modify(id, request));
+	}
+
+	@ApiOperation(
+			value = "Validates if it exists a Customer with given dni",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The shop was found successfully", response = UserResponse.class),
+	})
+	@GetMapping(path = "exists_dni/{dni}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object existsDni(
+			@ApiParam(value = "The Customer's dni", required = true)
+			@PathVariable("dni") Integer dni) {
+		return ResponseEntity.ok(service.existsDni(dni));
 	}
 
 }

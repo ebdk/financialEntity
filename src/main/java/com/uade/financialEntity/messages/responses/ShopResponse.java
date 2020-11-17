@@ -14,7 +14,7 @@ public class ShopResponse implements Response {
 
 	//ATTRIBUTES
 	private Long id;
-	private UserResponse user;
+	private Long userId;
 	private List<Long> purchasesIds;
 	private List<Long> promotionsIds;
 	private String name;
@@ -25,7 +25,7 @@ public class ShopResponse implements Response {
 	public ShopResponse(Shop shop) {
 		if (shop != null) {
 			this.id = shop.getId() != null ? shop.getId() : null;
-			this.user = shop.getUser() != null ? shop.getUser().toDto() : null;
+			this.userId = shop.getUser() != null ? shop.getUser().getId() : null;
 			this.purchasesIds = shop.getPurchases() != null
 					? shop.getPurchases().stream().map(ShopPayment::getId).collect(Collectors.toList()) : null;
 			this.promotionsIds = shop.getShopPromotions() != null

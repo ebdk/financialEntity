@@ -5,6 +5,7 @@ import com.uade.financialEntity.messages.requests.ShopRequest;
 import com.uade.financialEntity.messages.responses.CardResponse;
 import com.uade.financialEntity.messages.responses.MonthResumeResponse;
 import com.uade.financialEntity.messages.responses.ShopResponse;
+import com.uade.financialEntity.messages.responses.UserResponse;
 import com.uade.financialEntity.services.ShopService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -108,6 +109,20 @@ public class ShopController {
 			@ApiParam(value = "Modifications", required = true)
 			@RequestBody ShopRequest request) {
 		return ResponseEntity.ok(service.modify(id, request));
+	}
+
+	@ApiOperation(
+			value = "Validates if it exists a Shop with given name",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The shop was found successfully", response = UserResponse.class),
+	})
+	@GetMapping(path = "exists_name/{name}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object existsName(
+			@ApiParam(value = "The shop's username", required = true)
+			@PathVariable("name") String name) {
+		return ResponseEntity.ok(service.existsName(name));
 	}
 
 }

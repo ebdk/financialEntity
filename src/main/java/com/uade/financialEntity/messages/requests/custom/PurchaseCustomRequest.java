@@ -10,8 +10,8 @@ import java.util.List;
 public class PurchaseCustomRequest implements Response {
 
 	//ATTRIBUTES
-	private Long shopId;
-	private Long cardId;
+	private String shopName;
+	private Integer cardNumber;
 	private Integer monthPays;
 	private List<PurchaseItemRequest> purchaseItems;
 
