@@ -34,34 +34,23 @@ public class Card {
 	@ManyToOne
 	private CardEntity cardEntity;
 
-	private Integer creditNumber;
-	private Integer codeNumber;
+	private Long creditNumber;
+	private Integer secretCode;
 	private String validFrom;
 	private String goodThrough;
 	private String nameCustomer;
-	private CardType cardType;
-	private Boolean cardPayOnTime;
 
-	public Card(Integer creditNumber) {
+	public Card(Long creditNumber) {
 		this.creditNumber = creditNumber;
-	}
-
-	public enum CardType {
-		BLACK,
-		GOLD,
-		PLATINUM,
-		CLASSIC
 	}
 
 	//BUILDERS
 	public Card(CardRequest cardRequest) {
 		this.creditNumber = cardRequest.getCreditNumber() != null ? cardRequest.getCreditNumber() : creditNumber;
-		this.codeNumber = cardRequest.getCodeNumber() != null ? cardRequest.getCodeNumber() : codeNumber;
+		this.secretCode = cardRequest.getSecretCode() != null ? cardRequest.getSecretCode() : secretCode;
 		this.validFrom = cardRequest.getValidFrom() != null ? cardRequest.getValidFrom() : validFrom;
 		this.goodThrough = cardRequest.getGoodThrough() != null ? cardRequest.getGoodThrough() : goodThrough;
 		this.nameCustomer = cardRequest.getNameCustomer() != null ? cardRequest.getNameCustomer() : nameCustomer;
-		this.cardType = cardRequest.getCardType() != null ? CardType.valueOf(cardRequest.getCardType()) : cardType;
-		this.cardPayOnTime = cardRequest.getCardPayOnTime() != null ? cardRequest.getCardPayOnTime() : cardPayOnTime;
 	}
 
 	public Card() {
@@ -86,12 +75,10 @@ public class Card {
 
 	public void modify(CardRequest cardRequest) {
 		this.creditNumber = cardRequest.getCreditNumber() != null ? cardRequest.getCreditNumber() : creditNumber;
-		this.codeNumber = cardRequest.getCodeNumber() != null ? cardRequest.getCodeNumber() : codeNumber;
+		this.secretCode = cardRequest.getSecretCode() != null ? cardRequest.getSecretCode() : secretCode;
 		this.validFrom = cardRequest.getValidFrom() != null ? cardRequest.getValidFrom() : validFrom;
 		this.goodThrough = cardRequest.getGoodThrough() != null ? cardRequest.getGoodThrough() : goodThrough;
 		this.nameCustomer = cardRequest.getNameCustomer() != null ? cardRequest.getNameCustomer() : nameCustomer;
-		this.cardType = cardRequest.getCardType() != null ? CardType.valueOf(cardRequest.getCardType()) : cardType;
-		this.cardPayOnTime = cardRequest.getCardPayOnTime() != null ? cardRequest.getCardPayOnTime() : cardPayOnTime;
 	}
 
 	public String getCardEntityName() {
@@ -110,4 +97,7 @@ public class Card {
 		return newPurchases;
 	}
 
+	public boolean isCard(Long creditNumber, Integer secretCode) {
+		return creditNumber.equals(this.creditNumber) && secretCode.equals(this.secretCode);
+	}
 }

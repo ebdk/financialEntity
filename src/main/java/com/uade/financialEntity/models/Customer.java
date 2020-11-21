@@ -24,15 +24,19 @@ public class Customer {
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Card> cards;
 
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	private List<CardSolicitation> cardSolicitations;
+
 	@OneToOne(cascade = {CascadeType.ALL})
 	private User user;
 
-	private Integer dni;
+	private Long dni;
 	private String firstname;
 	private String lastname;
 	private String address;
-	private Integer phone;
-	private Integer salary;
+	private Long phone;
+	private Long salary;
+	private Long cbu;
 
 	//BUILDERS
 	public Customer(CustomerRequest request) {
@@ -42,12 +46,13 @@ public class Customer {
 		this.address = request.getAddress() != null ? request.getAddress() : address;
 		this.phone = request.getPhone() != null ? request.getPhone() : phone;
 		this.salary = request.getSalary() != null ? request.getSalary() : salary;
+		this.cbu = request.getCbu() != null ? request.getCbu() : cbu;
 	}
 
 	public Customer() {
 	}
 
-	public Customer(Integer dni) {
+	public Customer(Long dni) {
 		this.dni = dni;
 	}
 
@@ -68,5 +73,6 @@ public class Customer {
 		this.address = request.getAddress() != null ? request.getAddress() : address;
 		this.phone = request.getPhone() != null ? request.getPhone() : phone;
 		this.salary = request.getSalary() != null ? request.getSalary() : salary;
+		this.cbu = request.getCbu() != null ? request.getCbu() : cbu;
 	}
 }

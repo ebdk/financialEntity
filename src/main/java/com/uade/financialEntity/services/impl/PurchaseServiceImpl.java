@@ -1,7 +1,6 @@
 package com.uade.financialEntity.services.impl;
 
 import com.uade.financialEntity.messages.MessageResponse;
-import com.uade.financialEntity.messages.requests.PurchaseItemRequest;
 import com.uade.financialEntity.messages.requests.custom.PurchaseCustomRequest;
 import com.uade.financialEntity.messages.responses.PurchaseResponse;
 import com.uade.financialEntity.models.*;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.uade.financialEntity.models.Purchase.PurchaseType.ORIGINAL;
-import static com.uade.financialEntity.models.ShopPayment.DateType.DAILY;
+import static com.uade.financialEntity.models.ShopPayment.PaymentType.DAILY;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
@@ -28,8 +27,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Autowired
 	private PurchaseDAO purchaseRepository;
 
+	/*
 	@Autowired
 	private PurchaseItemDAO purchaseItemRepository;
+	 */
 
 	@Autowired
 	private ShopDAO shopRepository;
@@ -64,33 +65,38 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public Object purchase(PurchaseCustomRequest request) {
 		Optional<Shop> optionalShop = shopRepository.findByName(request.getShopName());
-		Optional<Card> optionalCard = cardRepository.findByCreditNumber(request.getCardNumber());
+		List<Card> cards = cardRepository.findAll()
+				.stream()
+				.filter(card -> card.isCard(request.getCreditNumber(), request.getSecretCode()))
+				.collect(Collectors.toList());
 
 		SystemCache systemCache = systemCacheRepository.findAll().get(0);
 		Integer monthNumber = systemCache.getMonthNumber();
 
-		if (optionalShop.isPresent() && optionalCard.isPresent()) {
-			Card card = optionalCard.get();
+		if (optionalShop.isPresent() && !cards.isEmpty()) {
+			Card card = cards.get(0);
 			Shop shop = optionalShop.get();
 
-			Purchase purchase = new Purchase();
+			Purchase purchase = new Purchase(ORIGINAL);
 			purchase.setMonthPays(request.getMonthPays());
 			purchase.setMonthsPaid(1);
-			purchase.setPurchaseType(ORIGINAL);
 
+			/*
 			List<PurchaseItem> purchaseItems = request.getPurchaseItems()
 					.stream()
 					.map(PurchaseItemRequest::toEntity).collect(Collectors.toList());
 			purchaseItems.forEach(purchaseItem -> purchaseItem.setPurchase(purchase));
 			purchase.setPurchaseItems(purchaseItems);
-			purchase.setOriginalAmount(purchase.calculateTotalAmount(request.getMonthPays()));
+			 */
+
+			purchase.setOriginalAmount(purchase.calculateTotalAmount(request.getAmount(), request.getMonthPays()));
 
 			Date now = new Date();
 			purchase.setDate(now);
 			SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE", Locale.US); // the day of the week spelled out completely
 			String date = simpleDateformat.format(now);
 
-			ShopPromotion shopPromotion = shop.getPromotion(card.getCardEntityName(), purchase.getPurchaseProductTypes(), date);
+			ShopPromotion shopPromotion = shop.getPromotion(card.getCardEntityName(), request.getProductWithDiscount(), date);
 			Integer amount;
 			if (shopPromotion != null) {
 				purchase.setDiscount(MathUtils.getPercentage(purchase.getOriginalAmount(), shopPromotion.getPercentageValue()));
@@ -121,15 +127,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 			shopPayment.setComission(MathUtils.getPercentage(shopPayment.getOriginalAmount(), 15));
 			shopPayment.setTotalAmount(shopPayment.getOriginalAmount() - shopPayment.getComission());
 			shopPayment.setDate(now);
-			shopPayment.setDateType(DAILY);
+			shopPayment.setPaymentType(DAILY);
 			shopPayment.setDescription("Venta " + description);
 			shopPayment.setMonth(monthNumber);
 			shopPayment.setPurchase(purchase);
 
 			shopPaymentRepository.save(shopPayment);
-			purchaseItemRepository.saveAll(purchaseItems);
 			purchaseRepository.save(purchase);
 			monthResumeRepository.save(monthResume);
+			//purchaseItemRepository.saveAll(purchaseItems);
 
 			return purchase.toFullDto();
 		} else {
@@ -143,10 +149,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return new MessageResponse("Removed Succesfuly").getMapMessage();
 	}
 
+	/*
 	@Override
 	public Object deleteItem(Long id) {
 		purchaseItemRepository.deleteById(id);
 		return new MessageResponse("Removed Succesfuly").getMapMessage();
 	}
+	 */
 
 }

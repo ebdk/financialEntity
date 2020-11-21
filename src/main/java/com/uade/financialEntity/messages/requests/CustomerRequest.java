@@ -8,13 +8,14 @@ import lombok.Getter;
 public class CustomerRequest implements Response {
 
 	//ATTRIBUTES
-	private Integer dni;
+	private Long dni;
 	private Long userId;
 	private String firstname;
 	private String lastname;
 	private String address;
-	private Integer phone;
-	private Integer salary;
+	private Long phone;
+	private Long salary;
+	private Long cbu;
 
 	//BUILDERS
 	public CustomerRequest(Customer customer) {

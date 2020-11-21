@@ -15,12 +15,13 @@ public class CustomerFullResponse implements Response {
 	private Long id;
 	private UserResponse user;
 	private List<CardFullResponse> cards;
-	private Integer dni;
+	private Long dni;
 	private String firstname;
 	private String lastname;
 	private String address;
-	private Integer phone;
-	private Integer salary;
+	private Long phone;
+	private Long salary;
+	private Long cbu;
 
 	//BUILDERS
 	public CustomerFullResponse(Customer customer) {
@@ -35,6 +36,7 @@ public class CustomerFullResponse implements Response {
 			this.address = customer.getAddress() != null ? customer.getAddress() : null;
 			this.phone = customer.getPhone() != null ? customer.getPhone() : null;
 			this.salary = customer.getSalary() != null ? customer.getSalary() : null;
+			this.cbu = customer.getCbu() != null ? customer.getCbu() : null;
 		}
 	}
 

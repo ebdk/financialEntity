@@ -4,7 +4,9 @@ import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.CardRequest;
 import com.uade.financialEntity.messages.responses.CardFullResponse;
 import com.uade.financialEntity.messages.responses.MonthResumeFullResponse;
-import com.uade.financialEntity.models.*;
+import com.uade.financialEntity.models.Card;
+import com.uade.financialEntity.models.MonthResume;
+import com.uade.financialEntity.models.Purchase;
 import com.uade.financialEntity.repositories.*;
 import com.uade.financialEntity.services.CardService;
 import com.uade.financialEntity.utils.Pair;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.uade.financialEntity.models.Purchase.PurchaseType.ORIGINAL;
 import static com.uade.financialEntity.utils.MathUtils.getPercentage;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
@@ -58,13 +61,14 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
-	public Object getByCreditNumber(Integer creditnumber) {
+	public Object getByCreditNumber(Long creditnumber) {
 		Optional<Card> card = cardRepository.findByCreditNumber(creditnumber);
 		return card.isPresent() ?
 				card.get().toFullDto() :
 				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con numero " + creditnumber)).getMapMessage();
 	}
 
+	/*
 	@Override
 	public Object createCard(List<CardRequest> cardRequests) {
 		SystemCache systemCache = systemCacheRepository.findAll().get(0);
@@ -92,6 +96,7 @@ public class CardServiceImpl implements CardService {
 
 		return cards.stream().map(Card::toDto).collect(toList());
 	}
+	 */
 
 	@Override
 	public Object closeLastMonthResume(Long id) {
@@ -160,7 +165,7 @@ public class CardServiceImpl implements CardService {
 		cloneMonthlyPay.forEach(cloneMonth -> cloneMonth.setMonthResume(newMonthResume));
 
 		if (!leftOver.equals(0)) {
-			Purchase purchase = new Purchase();
+			Purchase purchase = new Purchase(ORIGINAL);
 			purchase.setTotalAmount(leftOver);
 			purchase.setDescription("Restante del mes " + monthNumner);
 			purchase.setMonthResume(newMonthResume);
@@ -219,6 +224,8 @@ public class CardServiceImpl implements CardService {
 			MonthResume monthResume = card.getLastMonthResumeOpen();
 			monthResume.setAmountPaid(monthResume.getAmountPaid() + amount);
 
+			//TODO Transfer to Bank
+
 			monthResumeRepository.save(monthResume);
 
 			return monthResume.toFullDto();
@@ -254,7 +261,7 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
-	public Object existsCreditNumber(Integer creditNumber) {
+	public Object existsCreditNumber(Long creditNumber) {
 		Card card = new Card(creditNumber);
 		boolean exists = cardRepository.exists(Example.of(card));
 		return new MessageResponse(new PairObject("exists", exists)).getMapObject();

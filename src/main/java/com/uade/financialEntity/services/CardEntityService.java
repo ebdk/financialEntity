@@ -15,6 +15,8 @@ public interface CardEntityService {
 
 	Object getByName(String name);
 
+	Object getBySalary(Long salary);
+
 	Object createCardEntities(List<CardEntityRequest> cardEntityRequests);
 
 	Object delete(Long cardId);

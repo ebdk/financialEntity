@@ -13,7 +13,7 @@ public class UserFullResponse implements Response {
 	private ShopResponse shopResponse;
 	private String userName;
 	private String password;
-	private String privilege;
+	private String type;
 
 	//BUILDERS
 	public UserFullResponse(User user) {
@@ -23,7 +23,7 @@ public class UserFullResponse implements Response {
 			this.shopResponse = user.getShop() != null ? user.getShop().toDto() : null;
 			this.userName = user.getUserName() != null ? user.getUserName() : null;
 			this.password = user.getPassword() != null ? user.getPassword() : null;
-			this.privilege = user.getPrivilege() != null ? user.getPrivilege().toString() : null;
+			this.type = user.getType() != null ? user.getType().toString() : null;
 		}
 	}
 

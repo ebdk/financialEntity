@@ -1,4 +1,4 @@
-package com.uade.financialEntity.messages.responses;
+/*package com.uade.financialEntity.messages.responses;
 
 import com.uade.financialEntity.messages.Response;
 import com.uade.financialEntity.models.PurchaseItem;
@@ -29,3 +29,5 @@ public class PurchaseItemResponse implements Response {
 	}
 
 }
+
+ */

@@ -25,7 +25,7 @@ public interface ShopService {
 
 	Object closeMonth(Long id);
 
-	Object closeMonths();
+	//Object closeMonths();
 
 	List<ShopPaymentResponse> closeMonths(Integer month);
 

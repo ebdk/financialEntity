@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
-import static com.uade.financialEntity.models.ShopPayment.DateType.DAILY;
+import static com.uade.financialEntity.models.ShopPayment.PaymentType.DAILY;
 
 @Entity(name = "ShopPayment")
 @Table(name = "shop_payment")
@@ -33,9 +33,9 @@ public class ShopPayment {
 	private Integer comission;
 	private Integer totalAmount;
 	private Date date;
-	private DateType dateType;
+	private PaymentType paymentType;
 
-	public enum DateType {
+	public enum PaymentType {
 		DAILY,
 		END_MONTH
 	}
@@ -46,7 +46,7 @@ public class ShopPayment {
 	}
 
 	public boolean isDailyOfMonth(Integer month) {
-		return dateType.equals(DAILY) && month.equals(this.month);
+		return paymentType.equals(DAILY) && month.equals(this.month);
 	}
 
 }

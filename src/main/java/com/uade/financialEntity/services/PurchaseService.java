@@ -15,6 +15,4 @@ public interface PurchaseService {
 
 	Object delete(Long id);
 
-	Object deleteItem(Long id);
-
 }

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.List;
 
 @Entity(name = "CardEntity")
@@ -27,13 +26,20 @@ public class CardEntity {
 	@OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
 	private List<Card> cards;
 
+	@OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
+	private List<CardSolicitation> cardSolicitations;
+
 	private String name;
-	private String imgUrl;
+	private String color;
+	private Long minimumSalary;
+	private Integer minimumDiscount;
 
 	//BUILDERS
 	public CardEntity(CardEntityRequest request) {
 		this.name = request.getName() != null ? request.getName() : name;
-		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
+		this.color = request.getColor() != null ? request.getColor() : color;
+		this.minimumSalary = request.getMinimumSalary() != null ? request.getMinimumSalary() : minimumSalary;
+		this.minimumDiscount = request.getMinimumDiscount() != null ? request.getMinimumDiscount() : minimumDiscount;
 	}
 
 	public CardEntity() {
@@ -46,6 +52,13 @@ public class CardEntity {
 
 	public void modify(CardEntityRequest request) {
 		this.name = request.getName() != null ? request.getName() : name;
-		this.imgUrl = request.getImgUrl() != null ? request.getImgUrl() : imgUrl;
+		this.color = request.getColor() != null ? request.getColor() : color;
+		this.minimumSalary = request.getMinimumSalary() != null ? request.getMinimumSalary() : minimumSalary;
+		this.minimumDiscount = request.getMinimumDiscount() != null ? request.getMinimumDiscount() : minimumDiscount;
 	}
+
+	public boolean isAvailableForSalary(Long salary) {
+		return this.minimumSalary <= salary;
+	}
+
 }

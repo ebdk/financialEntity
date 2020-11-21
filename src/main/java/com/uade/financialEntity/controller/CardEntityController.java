@@ -63,12 +63,25 @@ public class CardEntityController {
 	})
 	@GetMapping(path = "queryOne/{name}", produces = APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Object getcardEntityByCreditnumber(
+	public Object getByName(
 			@ApiParam(value = "The Card Entity's name", required = true)
 			@PathVariable("name") String name) {
 		return ResponseEntity.ok(service.getByName(name));
 	}
 
+	@ApiOperation(
+			value = "Looks up a Card Entities by salary",
+			notes = "Self explanatory")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "The Card Entity was found successfully", response = CardEntityResponse.class),
+	})
+	@GetMapping(path = "salary/{salary}", produces = APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Object getBySalary(
+			@ApiParam(value = "The Customer's salary", required = true)
+			@PathVariable("salary") Long salary) {
+		return ResponseEntity.ok(service.getBySalary(salary));
+	}
 
 	@ApiOperation(
 			value = "Looks up ALL Card Entities from the database",

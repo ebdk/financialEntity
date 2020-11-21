@@ -16,12 +16,11 @@ public class CardResponse implements Response {
 	private Long customerId;
 	private List<Long> monthResumes;
 	private Long cardEntityId;
-	private Integer creditNumber;
-	private Integer codeNumber;
+	private Long creditNumber;
+	private Integer secretCode;
 	private String validFrom;
 	private String goodThrough;
 	private String nameCustomer;
-	private String cardType;
 	private Boolean cardPayOnTime;
 
 	//BUILDERS
@@ -33,13 +32,10 @@ public class CardResponse implements Response {
 					? card.getMonthResumes().stream().map(MonthResume::getId).collect(Collectors.toList()) : null;
 			this.cardEntityId = card.getCardEntity() != null ? card.getCardEntity().getId() : null;
 			this.creditNumber = card.getCreditNumber() != null ? card.getCreditNumber() : null;
-			this.codeNumber = card.getCodeNumber() != null ? card.getCodeNumber() : null;
+			this.secretCode = card.getSecretCode() != null ? card.getSecretCode() : null;
 			this.validFrom = card.getValidFrom() != null ? card.getValidFrom() : null;
 			this.goodThrough = card.getGoodThrough() != null ? card.getGoodThrough() : null;
 			this.nameCustomer = card.getNameCustomer() != null ? card.getNameCustomer() : null;
-			this.cardType = card.getCardType() != null ? card.getCardType().toString() : null;
-			this.cardPayOnTime = card.getCardPayOnTime() != null ? card.getCardPayOnTime() : null;
-
 		}
 	}
 

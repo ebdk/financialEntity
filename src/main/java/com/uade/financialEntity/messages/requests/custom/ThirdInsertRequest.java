@@ -12,7 +12,7 @@ public class ThirdInsertRequest implements Response {
 
 	//ATTRIBUTES
 	private List<ShopPromotionRequest> shopPromotionRequests;
-	private List<CardRequest> cardRequests;
+	//private List<CardRequest> cardRequests;
 
 	//BUILDERS
 	public ThirdInsertRequest() {

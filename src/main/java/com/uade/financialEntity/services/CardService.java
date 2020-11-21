@@ -12,9 +12,9 @@ public interface CardService {
 
 	Object get(Long id);
 
-	Object getByCreditNumber(Integer creditNumber);
+	Object getByCreditNumber(Long creditNumber);
 
-	Object createCard(List<CardRequest> cardRequests);
+	//Object createCard(List<CardRequest> cardRequests);
 
 	Object closeLastMonthResume(Long id);
 
@@ -34,7 +34,7 @@ public interface CardService {
 
 	Object deleteResume(Long id);
 
-	Object existsCreditNumber(Integer creditNumber);
+	Object existsCreditNumber(Long creditNumber);
 
 	List<MonthResumeFullResponse> closeLastMonthResumes(Integer month);
 

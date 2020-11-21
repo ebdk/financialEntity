@@ -123,9 +123,7 @@ public class DebugServiceImpl implements DebugService {
 
 	@Override
 	public Object thirdInsert(ThirdInsertRequest thirdInsertRequest) {
-		SystemCache systemCache = systemCacheRepository.findAll().get(0);
-		Integer monthNumber = systemCache.getMonthNumber();
-
+		/*
 		thirdInsertRequest.getCardRequests().forEach(cardRequest -> {
 			Card card = new Card(cardRequest);
 
@@ -143,6 +141,7 @@ public class DebugServiceImpl implements DebugService {
 			cardRepository.save(card);
 			monthResumeRepository.save(monthResume);
 		});
+		 */
 
 		List<ShopPromotion> shopPromotions = new ArrayList<>();
 		thirdInsertRequest.getShopPromotionRequests().forEach(shopPromotionRequest -> {

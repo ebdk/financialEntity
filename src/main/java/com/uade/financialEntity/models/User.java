@@ -28,23 +28,23 @@ public class User {
 
 	private String userName;
 	private String password;
-	private Privilege privilege;
+	private Type type;
 
 	public User(String username) {
 		this.userName = username;
 	}
 
-	public enum Privilege {
+	public enum Type {
 		SHOP,
 		CUSTOMER,
 		ADMIN
 	}
 
 	//BUILDERS
-	public User(UserRequest userRequest) {
-		this.userName = userRequest.getUserName();
-		this.password = userRequest.getPassword();
-		this.privilege = Privilege.valueOf(userRequest.getPrivilege());
+	public User(UserRequest request) {
+		this.userName = request.getUserName() != null ? request.getUserName() : userName;
+		this.password = request.getPassword() != null ? request.getPassword() : password;
+		this.type = request.getType() != null ? Type.valueOf(request.getType()) : type;
 	}
 
 	public User() {
@@ -62,7 +62,7 @@ public class User {
 	public void modify(UserRequest request) {
 		this.userName = request.getUserName() != null ? request.getUserName() : userName;
 		this.password = request.getPassword() != null ? request.getPassword() : password;
-		this.privilege = request.getPrivilege() != null ? Privilege.valueOf(request.getPrivilege()) : privilege;
+		this.type = request.getType() != null ? Type.valueOf(request.getType()) : type;
 	}
 
 }

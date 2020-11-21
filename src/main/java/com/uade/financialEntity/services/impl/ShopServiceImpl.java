@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.uade.financialEntity.models.ShopPayment.DateType.END_MONTH;
+import static com.uade.financialEntity.models.ShopPayment.PaymentType.END_MONTH;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -115,6 +115,7 @@ public class ShopServiceImpl implements ShopService {
 		}
 	}
 
+	/*
 	@Override
 	public Object closeMonths() {
 		List<Shop> shops = shopRepository.findAll();
@@ -129,6 +130,7 @@ public class ShopServiceImpl implements ShopService {
 				.map(ShopPayment::toDto)
 				.collect(toList());
 	}
+	 */
 
 	@Override
 	public List<ShopPaymentResponse> closeMonths(Integer month) {
@@ -139,6 +141,8 @@ public class ShopServiceImpl implements ShopService {
 				.stream()
 				.map(shop -> closeMonth(shop, month))
 				.collect(toList());
+
+		//TODO Transfer to Bank
 
 		return shopPayments
 				.stream()
@@ -159,7 +163,8 @@ public class ShopServiceImpl implements ShopService {
 		ShopPayment endMonthPurchase = new ShopPayment();
 		endMonthPurchase.setMonth(month);
 		endMonthPurchase.setDescription("Resume of Month " + month);
-		endMonthPurchase.setDateType(END_MONTH);
+		endMonthPurchase.setShop(shop);
+		endMonthPurchase.setPaymentType(END_MONTH);
 		endMonthPurchase.setDate(now);
 
 		endMonthPurchase.setOriginalAmount(shopPayments

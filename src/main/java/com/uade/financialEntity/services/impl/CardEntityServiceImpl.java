@@ -54,6 +54,16 @@ public class CardEntityServiceImpl implements CardEntityService {
 	}
 
 	@Override
+	public Object getBySalary(Long salary) {
+		List<CardEntity> cardEntities = cardEntityRepository.findAll()
+				.stream()
+				.filter(cardEntity -> cardEntity.isAvailableForSalary(salary))
+				.collect(Collectors.toList());
+
+		return cardEntities.stream().map(CardEntity::toDto).collect(Collectors.toList());
+	}
+
+	@Override
 	public Object createCardEntities(List<CardEntityRequest> cardEntityRequests) {
 		List<CardEntity> cardEntities = cardEntityRequests
 				.stream()

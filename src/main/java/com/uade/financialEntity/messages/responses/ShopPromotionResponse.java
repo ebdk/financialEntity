@@ -13,7 +13,7 @@ public class ShopPromotionResponse implements Response {
 	private CardEntityResponse cardEntity;
 	private String description;
 	private String day;
-	private String productType;
+	//private String productType;
 	private Integer percentageValue;
 
 	//BUILDERS
@@ -24,7 +24,7 @@ public class ShopPromotionResponse implements Response {
 			this.cardEntity = shopPromotion.getCardEntity() != null ? shopPromotion.getCardEntity().toDto() : null;
 			this.description = shopPromotion.getDescription() != null ? shopPromotion.getDescription() : null;
 			this.day = shopPromotion.getDay() != null ? shopPromotion.getDay().toString() : null;
-			this.productType = shopPromotion.getProductType() != null ? shopPromotion.getProductType().toString() : null;
+			//this.productType = shopPromotion.getProductType() != null ? shopPromotion.getProductType().toString() : null;
 			this.percentageValue = shopPromotion.getPercentageValue() != null ? shopPromotion.getPercentageValue() : null;
 		}
 	}

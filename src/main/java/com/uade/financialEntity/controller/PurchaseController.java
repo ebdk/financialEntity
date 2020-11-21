@@ -77,18 +77,4 @@ public class PurchaseController {
 		return ResponseEntity.ok(service.delete(id));
 	}
 
-	@ApiOperation(
-			value = "Deletes a Purchase Item by Id",
-			notes = "Self explanatory")
-	@ApiResponses({
-			@ApiResponse(code = 200, message = "The purchase item was deleted successfully", response = CardResponse.class),
-	})
-	@DeleteMapping(path = "item/{id}", produces = APPLICATION_JSON_VALUE)
-	@ResponseStatus(HttpStatus.OK)
-	public Object deleteItem(
-			@ApiParam(value = "The Purchase item's id", required = true)
-			@PathVariable("id") Long id) {
-		return ResponseEntity.ok(service.deleteItem(id));
-	}
-
 }

@@ -6,7 +6,6 @@ import com.uade.financialEntity.models.CardEntity;
 import com.uade.financialEntity.models.ShopPromotion;
 import lombok.Getter;
 
-import java.sql.Blob;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +17,9 @@ public class CardEntityFullResponse implements Response {
 	private List<ShopPromotionResponse> shopPromotions;
 	private List<Long> cardIds;
 	private String name;
-	private String imgUrl;
+	private String color;
+	private Long minimumSalary;
+	private Integer minimumDiscount;
 
 	//BUILDERS
 	public CardEntityFullResponse(CardEntity cardEntity) {
@@ -29,7 +30,9 @@ public class CardEntityFullResponse implements Response {
 			this.cardIds = cardEntity.getCards() != null
 					? cardEntity.getCards().stream().map(Card::getId).collect(Collectors.toList()) : null;
 			this.name = cardEntity.getName() != null ? cardEntity.getName() : null;
-			this.imgUrl = cardEntity.getImgUrl() != null ? cardEntity.getImgUrl() : null;
+			this.color = cardEntity.getColor() != null ? cardEntity.getColor() : null;
+			this.minimumSalary = cardEntity.getMinimumSalary() != null ? cardEntity.getMinimumSalary() : null;
+			this.minimumDiscount = cardEntity.getMinimumDiscount() != null ? cardEntity.getMinimumDiscount() : null;
 		}
 	}
 

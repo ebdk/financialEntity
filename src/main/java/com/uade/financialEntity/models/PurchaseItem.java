@@ -1,4 +1,4 @@
-package com.uade.financialEntity.models;
+/*package com.uade.financialEntity.models;
 
 import com.uade.financialEntity.messages.requests.PurchaseItemRequest;
 import com.uade.financialEntity.messages.responses.PurchaseItemResponse;
@@ -56,3 +56,4 @@ public class PurchaseItem {
 	}
 
 }
+ */

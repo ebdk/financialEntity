@@ -12,14 +12,11 @@ public class CardEntityRequest implements Response {
 
 	//ATTRIBUTES
 	private String name;
-	private String imgUrl;
+	private String color;
+	private Long minimumSalary;
+	private Integer minimumDiscount;
 
 	//BUILDERS
-	public CardEntityRequest(CardEntity cardEntity) {
-		this.name = cardEntity.getName();
-		this.imgUrl = cardEntity.getImgUrl();
-	}
-
 	public CardEntityRequest() {
 	}
 

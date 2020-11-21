@@ -45,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Object getByDni(Integer dni) {
+	public Object getByDni(Long dni) {
 		Optional<Customer> persona = customerRepository.findByDni(dni);
 		return persona.isPresent() ?
 				new CustomerResponse(persona.get()) :
@@ -89,7 +89,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Object existsDni(Integer dni) {
+	public Object existsDni(Long dni) {
 		Customer customer = new Customer(dni);
 		boolean exists = customerRepository.exists(Example.of(customer));
 		return new MessageResponse(new PairObject("exists", exists)).getMapObject();

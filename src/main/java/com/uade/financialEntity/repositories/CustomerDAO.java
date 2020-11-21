@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerDAO extends JpaRepository<Customer, Long> {
-	Optional<Customer> findByDni(Integer dni);
+	Optional<Customer> findByDni(Long dni);
 }

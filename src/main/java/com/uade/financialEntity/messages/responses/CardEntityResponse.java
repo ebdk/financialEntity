@@ -10,14 +10,18 @@ public class CardEntityResponse implements Response {
 	//ATTRIBUTES
 	private Long id;
 	private String name;
-	private String imgUrl;
+	private String color;
+	private Long minimumSalary;
+	private Integer minimumDiscount;
 
 	//BUILDERS
 	public CardEntityResponse(CardEntity cardEntity) {
 		if (cardEntity != null) {
 			this.id = cardEntity.getId() != null ? cardEntity.getId() : null;
 			this.name = cardEntity.getName() != null ? cardEntity.getName() : null;
-			this.imgUrl = cardEntity.getImgUrl() != null ? cardEntity.getImgUrl() : null;
+			this.color = cardEntity.getColor() != null ? cardEntity.getColor() : null;
+			this.minimumSalary = cardEntity.getMinimumSalary() != null ? cardEntity.getMinimumSalary() : null;
+			this.minimumDiscount = cardEntity.getMinimumDiscount() != null ? cardEntity.getMinimumDiscount() : null;
 		}
 	}
 

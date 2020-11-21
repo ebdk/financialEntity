@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface CardDAO extends JpaRepository<Card, Long> {
-	Optional<Card> findByCreditNumber(Integer creditNumber);
+	Optional<Card> findByCreditNumber(Long creditNumber);
 }

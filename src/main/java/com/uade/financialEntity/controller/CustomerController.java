@@ -51,7 +51,7 @@ public class CustomerController {
 	@ResponseStatus(HttpStatus.OK)
 	public Object getByDni(
 			@ApiParam(value = "The customer's dni", required = true)
-			@PathVariable("dni") Integer dni) {
+			@PathVariable("dni") Long dni) {
 		return ResponseEntity.ok(service.getByDni(dni));
 	}
 
@@ -121,7 +121,7 @@ public class CustomerController {
 	@ResponseStatus(HttpStatus.OK)
 	public Object existsDni(
 			@ApiParam(value = "The Customer's dni", required = true)
-			@PathVariable("dni") Integer dni) {
+			@PathVariable("dni") Long dni) {
 		return ResponseEntity.ok(service.existsDni(dni));
 	}
 

@@ -11,7 +11,7 @@ public interface CustomerService {
 
 	Object get(Long id);
 
-	Object getByDni(Integer dni);
+	Object getByDni(Long dni);
 
 	Object createCustomers(List<CustomerRequest> customerRequests);
 
@@ -19,6 +19,6 @@ public interface CustomerService {
 
 	Object modify(Long id, CustomerRequest request);
 
-	Object existsDni(Integer dni);
+	Object existsDni(Long dni);
 
 }

@@ -50,7 +50,7 @@ public class CardController {
 	@ResponseStatus(HttpStatus.OK)
 	public Object getByCreditNumber(
 			@ApiParam(value = "The card's creditnumber", required = true)
-			@PathVariable("creditnumber") Integer creditnumber) {
+			@PathVariable("creditnumber") Long creditnumber) {
 		return ResponseEntity.ok(service.getByCreditNumber(creditnumber));
 	}
 
@@ -68,6 +68,7 @@ public class CardController {
 		return ResponseEntity.ok(service.getAllCards());
 	}
 
+	/*
 	@ApiOperation(
 			value = "Creates cards",
 			notes = "Self explanatory")
@@ -94,6 +95,7 @@ public class CardController {
 			@PathVariable("id") Long id) {
 		return ResponseEntity.ok(service.closeLastMonthResume(id));
 	}
+ */
 
 	@ApiOperation(
 			value = "Gets Resume by Resume ID",
@@ -207,7 +209,7 @@ public class CardController {
 	@ResponseStatus(HttpStatus.OK)
 	public Object existsCreditNumber(
 			@ApiParam(value = "The Card's Credit Number", required = true)
-			@PathVariable("creditNumber") Integer creditNumber) {
+			@PathVariable("creditNumber") Long creditNumber) {
 		return ResponseEntity.ok(service.existsCreditNumber(creditNumber));
 	}
 
