@@ -36,8 +36,8 @@ public class Shop {
 
 	private String name;
 	private String imgUrl;
-	private Long cuit;
-	private Long cbuForBank;
+	private String cuit;
+	private String cbuForBank;
 
 	//BUILDERS
 	public Shop(ShopRequest request) {
@@ -75,22 +75,6 @@ public class Shop {
 			return null;
 		}
 	}
-
-	/*
-	public ShopPromotion getPromotion(String cardEntityName, List<PurchaseItem.ProductType> purchaseProductTypes, String date) {
-
-		PromotionDay day = PromotionDay.valueOf(date.toUpperCase());
-		List<ShopPromotion> shopPromotionList = shopPromotions.stream()
-				.filter(shopPromotion -> shopPromotion.isPromotion(cardEntityName, purchaseProductTypes, day))
-				.sorted(comparing(ShopPromotion::getPercentageValue).reversed())
-				.collect(toList());
-		if (!shopPromotionList.isEmpty()) {
-			return shopPromotionList.get(0);
-		} else {
-			return null;
-		}
-	}
-	*/
 
 	public void modify(ShopRequest request) {
 		this.name = request.getName() != null ? request.getName() : name;

@@ -15,7 +15,7 @@ public class CustomerRequest implements Response {
 	private String address;
 	private Long phone;
 	private Long salary;
-	private Long cbu;
+	private String cbuForBank;
 
 	//BUILDERS
 	public CustomerRequest(Customer customer) {

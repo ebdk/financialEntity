@@ -4,6 +4,7 @@ import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.custom.PurchaseCustomRequest;
 import com.uade.financialEntity.messages.responses.PurchaseResponse;
 import com.uade.financialEntity.models.*;
+import com.uade.financialEntity.models.Purchase.PurchaseType;
 import com.uade.financialEntity.repositories.*;
 import com.uade.financialEntity.services.PurchaseService;
 import com.uade.financialEntity.utils.MathUtils;
@@ -18,7 +19,9 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.uade.financialEntity.models.Purchase.PurchaseType.ORIGINAL;
+import static com.uade.financialEntity.models.Purchase.PurchaseType.MONTHLY_PAYMENT_ORIGINAL_AMOUNT;
+import static com.uade.financialEntity.models.Purchase.PurchaseType.ONE_PAY;
+import static com.uade.financialEntity.models.Purchase.calculateTotalAmount;
 import static com.uade.financialEntity.models.ShopPayment.PaymentType.DAILY;
 
 @Service
@@ -77,25 +80,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 			Card card = cards.get(0);
 			Shop shop = optionalShop.get();
 
-			Purchase purchase = new Purchase(ORIGINAL);
+			PurchaseType purchaseType = request.getMonthPays() <= 1 ? ONE_PAY : MONTHLY_PAYMENT_ORIGINAL_AMOUNT;
+			Purchase purchase = new Purchase(purchaseType);
+			purchase.setOriginalAmount(calculateTotalAmount(request.getAmount(), request.getMonthPays()));
 			purchase.setMonthPays(request.getMonthPays());
-			purchase.setMonthsPaid(1);
-
-			/*
-			List<PurchaseItem> purchaseItems = request.getPurchaseItems()
-					.stream()
-					.map(PurchaseItemRequest::toEntity).collect(Collectors.toList());
-			purchaseItems.forEach(purchaseItem -> purchaseItem.setPurchase(purchase));
-			purchase.setPurchaseItems(purchaseItems);
-			 */
-
-			purchase.setOriginalAmount(purchase.calculateTotalAmount(request.getAmount(), request.getMonthPays()));
 
 			Date now = new Date();
 			purchase.setDate(now);
 			SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE", Locale.US); // the day of the week spelled out completely
 			String date = simpleDateformat.format(now);
-
 			ShopPromotion shopPromotion = shop.getPromotion(card.getCardEntityName(), request.getProductWithDiscount(), date);
 			Integer amount;
 			if (shopPromotion != null) {
@@ -108,18 +101,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 			}
 			purchase.setTotalAmount(amount);
 
-			MonthResume monthResume;
-			monthResume = card.getLastMonthResumeOpen();
+			MonthResume monthResume = card.getLastMonthResumeOpen();
 
 			monthResume.addPurchase(purchase);
 			purchase.setMonthResume(monthResume);
-			//purchase.setShop(shop);
 
 			String description = String.format("con tarjeta %s del dia %s",
 					card.getCardEntityName(), now);
-			purchase.setDescription(String.format("Compra del negocio %s ",
+			purchase.setDescription(String.format("Compra en %s ",
 					shop.getName()) + description);
-			monthResume.setAmountToPay(monthResume.calculateTotalAmount());
+
 
 			ShopPayment shopPayment = new ShopPayment();
 			shopPayment.setShop(shop);
@@ -132,12 +123,39 @@ public class PurchaseServiceImpl implements PurchaseService {
 			shopPayment.setMonth(monthNumber);
 			shopPayment.setPurchase(purchase);
 
-			shopPaymentRepository.save(shopPayment);
-			purchaseRepository.save(purchase);
-			monthResumeRepository.save(monthResume);
-			//purchaseItemRepository.saveAll(purchaseItems);
+			if (purchase.getPurchaseType().equals(MONTHLY_PAYMENT_ORIGINAL_AMOUNT)) {
+				Integer cuotasRemaining = card.getPurchasesRemainingMonthPay().stream()
+						.filter(Purchase::itOriginalMonthlyPay)
+						.mapToInt(Purchase::getTotalAmount)
+						.sum();
+				if (purchase.getTotalAmount() + cuotasRemaining > card.getCardEntity().getLimitMonthlyPay()) {
+					return new MessageResponse(new Pair("error", "Error, Limite de compra en cuotas.")).getMapMessage();
+				}
 
-			return purchase.toFullDto();
+				Purchase purchaseMonthlyPayOne = purchase.cloneNew();
+				monthResume.addPurchase(purchaseMonthlyPayOne);
+				purchaseMonthlyPayOne.setMonthResume(monthResume);
+				purchaseRepository.save(purchaseMonthlyPayOne);
+
+				card.setAmountUntilMonthlyPayLimit(card.getCardEntity().getLimitMonthlyPay() - (purchase.getTotalAmount() + cuotasRemaining));
+
+			} else {
+				Integer amountFromMonth = card.getLastMonthResumeOpen().getAmountToPay();
+				if (amountFromMonth + purchase.getTotalAmount() > card.getCardEntity().getLimitPay()) {
+					return new MessageResponse(new Pair("error", "Error, Limite de compra.")).getMapMessage();
+				}
+
+				card.setAmountUntilOnePayLimit(card.getCardEntity().getLimitPay() - (purchase.getTotalAmount() + amountFromMonth));
+			}
+			purchaseRepository.save(purchase);
+
+			monthResume.setAmountToPay(monthResume.calculateTotalAmount());
+
+			shopPaymentRepository.save(shopPayment);
+			monthResumeRepository.save(monthResume);
+			cardRepository.save(card);
+
+			return shopPayment.toDto();
 		} else {
 			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrado la tarjeta o negocio.")).getMapMessage();
 		}

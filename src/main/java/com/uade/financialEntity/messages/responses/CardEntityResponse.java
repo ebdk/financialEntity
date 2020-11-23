@@ -13,6 +13,8 @@ public class CardEntityResponse implements Response {
 	private String color;
 	private Long minimumSalary;
 	private Integer minimumDiscount;
+	private Long limitPay;
+	private Long limitMonthlyPay;
 
 	//BUILDERS
 	public CardEntityResponse(CardEntity cardEntity) {
@@ -22,6 +24,8 @@ public class CardEntityResponse implements Response {
 			this.color = cardEntity.getColor() != null ? cardEntity.getColor() : null;
 			this.minimumSalary = cardEntity.getMinimumSalary() != null ? cardEntity.getMinimumSalary() : null;
 			this.minimumDiscount = cardEntity.getMinimumDiscount() != null ? cardEntity.getMinimumDiscount() : null;
+			this.limitPay = cardEntity.getLimitPay() != null ? cardEntity.getLimitPay() : null;
+			this.limitMonthlyPay = cardEntity.getLimitMonthlyPay() != null ? cardEntity.getLimitMonthlyPay() : null;
 		}
 	}
 

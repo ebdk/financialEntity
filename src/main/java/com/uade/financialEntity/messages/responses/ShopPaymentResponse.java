@@ -11,7 +11,7 @@ public class ShopPaymentResponse implements Response {
 
 	//ATTRIBUTES
 	private Long id;
-	private ShopResponse shop;
+	private Long shopId;
 	private Integer month;
 	private String description;
 	private Integer originalAmount;
@@ -24,7 +24,7 @@ public class ShopPaymentResponse implements Response {
 	public ShopPaymentResponse(ShopPayment shopPayment) {
 		if (shopPayment != null) {
 			this.id = shopPayment.getId() != null ? shopPayment.getId() : null;
-			this.shop = shopPayment.getShop() != null ? shopPayment.getShop().toDto() : null;
+			this.shopId = shopPayment.getShop() != null ? shopPayment.getId() : null;
 			this.month = shopPayment.getMonth() != null ? shopPayment.getMonth() : null;
 			this.description = shopPayment.getDescription() != null ? shopPayment.getDescription() : null;
 			this.originalAmount = shopPayment.getOriginalAmount() != null ? shopPayment.getOriginalAmount() : null;

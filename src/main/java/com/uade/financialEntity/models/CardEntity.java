@@ -33,6 +33,8 @@ public class CardEntity {
 	private String color;
 	private Long minimumSalary;
 	private Integer minimumDiscount;
+	private Long limitPay;
+	private Long limitMonthlyPay;
 
 	//BUILDERS
 	public CardEntity(CardEntityRequest request) {
@@ -40,6 +42,8 @@ public class CardEntity {
 		this.color = request.getColor() != null ? request.getColor() : color;
 		this.minimumSalary = request.getMinimumSalary() != null ? request.getMinimumSalary() : minimumSalary;
 		this.minimumDiscount = request.getMinimumDiscount() != null ? request.getMinimumDiscount() : minimumDiscount;
+		this.limitPay = request.getLimitPay() != null ? request.getLimitPay() : limitPay;
+		this.limitMonthlyPay = request.getLimitMonthlyPay() != null ? request.getLimitMonthlyPay() : limitMonthlyPay;
 	}
 
 	public CardEntity() {
@@ -55,6 +59,8 @@ public class CardEntity {
 		this.color = request.getColor() != null ? request.getColor() : color;
 		this.minimumSalary = request.getMinimumSalary() != null ? request.getMinimumSalary() : minimumSalary;
 		this.minimumDiscount = request.getMinimumDiscount() != null ? request.getMinimumDiscount() : minimumDiscount;
+		this.limitPay = request.getLimitPay() != null ? request.getLimitPay() : limitPay;
+		this.limitMonthlyPay = request.getLimitMonthlyPay() != null ? request.getLimitMonthlyPay() : limitMonthlyPay;
 	}
 
 	public boolean isAvailableForSalary(Long salary) {

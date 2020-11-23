@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.uade.financialEntity.models.Purchase.PurchaseType.ORIGINAL;
+import static com.uade.financialEntity.models.Purchase.PurchaseType.ONE_PAY;
 import static com.uade.financialEntity.utils.MathUtils.getPercentage;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
@@ -142,11 +142,9 @@ public class CardServiceImpl implements CardService {
 
 	private MonthResume closeCard(Card card, Integer monthNumner) {
 		List<Purchase> monthlyPay = card.getPurchasesRemainingMonthPay();
-		monthlyPay.forEach(Purchase::increasePayMonth);
 		List<Purchase> cloneMonthlyPay = card.clonePurchase(monthlyPay);
 
 		MonthResume monthResumeOpen = card.getLastMonthResumeOpen();
-		//monthResumeOpen.addPurchases(cloneMonthlyPay);
 
 		Integer leftOver = 0;
 		if (monthResumeOpen.paidsArentZero()) {
@@ -165,7 +163,7 @@ public class CardServiceImpl implements CardService {
 		cloneMonthlyPay.forEach(cloneMonth -> cloneMonth.setMonthResume(newMonthResume));
 
 		if (!leftOver.equals(0)) {
-			Purchase purchase = new Purchase(ORIGINAL);
+			Purchase purchase = new Purchase(ONE_PAY);
 			purchase.setTotalAmount(leftOver);
 			purchase.setDescription("Restante del mes " + monthNumner);
 			purchase.setMonthResume(newMonthResume);

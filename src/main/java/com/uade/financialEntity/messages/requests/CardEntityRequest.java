@@ -15,6 +15,8 @@ public class CardEntityRequest implements Response {
 	private String color;
 	private Long minimumSalary;
 	private Integer minimumDiscount;
+	private Long limitPay;
+	private Long limitMonthlyPay;
 
 	//BUILDERS
 	public CardEntityRequest() {

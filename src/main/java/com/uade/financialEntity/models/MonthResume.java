@@ -72,7 +72,11 @@ public class MonthResume {
 	}
 
 	public Integer calculateTotalAmount() {
-		return purchases.stream().mapToInt(Purchase::getTotalAmount).sum();
+		return purchases
+				.stream()
+				.filter(Purchase::isNotOriginalMonthlyPay)
+				.mapToInt(Purchase::getTotalAmount)
+				.sum();
 	}
 
 	List<Purchase> getPurchasesRemainingMonthPay() {

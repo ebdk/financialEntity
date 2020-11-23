@@ -39,6 +39,8 @@ public class Card {
 	private String validFrom;
 	private String goodThrough;
 	private String nameCustomer;
+	private Long amountUntilOnePayLimit;
+	private Long amountUntilMonthlyPayLimit;
 
 	public Card(Long creditNumber) {
 		this.creditNumber = creditNumber;

@@ -1,6 +1,7 @@
 package com.uade.financialEntity.services;
 
 import com.uade.financialEntity.messages.requests.ShopRequest;
+import com.uade.financialEntity.messages.responses.ShopFullResponse;
 import com.uade.financialEntity.messages.responses.ShopPaymentResponse;
 import com.uade.financialEntity.messages.responses.ShopResponse;
 import com.uade.financialEntity.models.ShopPayment;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface ShopService {
 
-	List<ShopResponse> getAllShops();
+	List<ShopFullResponse> getAllShops();
 
 	Object get(Long name);
 

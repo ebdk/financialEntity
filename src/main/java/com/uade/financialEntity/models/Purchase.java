@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 import static com.uade.financialEntity.models.Purchase.PurchaseType.MONTHLY_PAYMENT;
-import static com.uade.financialEntity.models.Purchase.PurchaseType.ORIGINAL;
+import static com.uade.financialEntity.models.Purchase.PurchaseType.MONTHLY_PAYMENT_ORIGINAL_AMOUNT;
 
 @Entity(name = "Purchase")
 @Table(name = "purchase")
@@ -33,11 +33,6 @@ public class Purchase {
 	@ManyToOne
 	private MonthResume monthResume;
 
-	/*
-	@OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
-	private List<PurchaseItem> purchaseItems;
-	 */
-
 	private String description;
 	private Integer originalAmount;
 	private Integer discount;
@@ -48,16 +43,19 @@ public class Purchase {
 	private Integer monthsPaid;
 
 	public enum PurchaseType {
-		ORIGINAL,
-		MONTHLY_PAYMENT
+		ONE_PAY,
+		MONTHLY_PAYMENT,
+		MONTHLY_PAYMENT_ORIGINAL_AMOUNT
 	}
 
 	//BUILDERS
-	Purchase cloneNew() {
-		//monthsPaid++;
+	public Purchase cloneNew() {
+		monthsPaid++;
 		Purchase newPurchase = new Purchase(MONTHLY_PAYMENT);
 		newPurchase.setDate(date);
-		newPurchase.setTotalAmount(totalAmount);
+		newPurchase.setOriginalAmount(totalAmount);
+		newPurchase.setTotalAmount(totalAmount / monthPays);
+		newPurchase.setDiscount(newPurchase.getOriginalAmount() - newPurchase.getTotalAmount());
 		newPurchase.setMonthPays(monthPays);
 		newPurchase.setMonthsPaid(monthsPaid);
 		newPurchase.setDescription(description + String.format(" - Pago de la cuota %s / %s", monthsPaid, monthPays));
@@ -70,7 +68,7 @@ public class Purchase {
 		totalAmount = 0;
 		date = new Date();
 		monthPays = 1;
-		monthsPaid = 0;
+		monthsPaid = 1;
 	}
 
 	public Purchase(PurchaseType purchaseType) {
@@ -79,8 +77,8 @@ public class Purchase {
 		discount = 0;
 		totalAmount = 0;
 		date = new Date();
+		monthsPaid = purchaseType.equals(MONTHLY_PAYMENT_ORIGINAL_AMOUNT) ? 0 : 1;
 		monthPays = 1;
-		monthsPaid = 0;
 	}
 
 	//METHODS
@@ -92,13 +90,7 @@ public class Purchase {
 		return new PurchaseFullResponse(this);
 	}
 
-	/*
-	public Integer calculateTotalAmount() {
-		return purchaseItems.stream().mapToInt(PurchaseItem::calculateTotalAmount).sum();
-	}
-	 */
-
-	public Integer calculateTotalAmount(Integer amount, Integer monthPays) {
+	public static Integer calculateTotalAmount(Integer amount, Integer monthPays) {
 		//Integer amount = purchaseItems.stream().mapToInt(PurchaseItem::calculateTotalAmount).sum();
 		if (monthPays.equals(1)) {
 			return amount;
@@ -116,33 +108,19 @@ public class Purchase {
 		}
 	}
 
-	/*
-	public List<ProductType> getPurchaseProductTypes() {
-		List<ProductType> types = new ArrayList<>();
-		purchaseItems.forEach(purchaseItem -> types.add(purchaseItem.getTypeOfProduct()));
-		return types;
-	}
-	 */
-
-	private boolean isOriginal() {
-		return purchaseType.equals(ORIGINAL);
-	}
-
-
-	private boolean isFullyPaid() {
-		return monthsPaid >= monthPays;
-	}
-
-	private boolean isNotFullyPaid() {
-		return !isFullyPaid();
-	}
-
 	boolean isOriginalAndNotFullyPaid() {
-		return isNotFullyPaid() && isOriginal();
+		boolean isNotFullyPaid = monthsPaid < monthPays;
+		boolean isOriginal = purchaseType.equals(MONTHLY_PAYMENT_ORIGINAL_AMOUNT);
+
+		return isNotFullyPaid && isOriginal;
 	}
 
-	public void increasePayMonth() {
-		this.monthsPaid = monthsPaid + 1;
+	public boolean isNotOriginalMonthlyPay() {
+		return !this.purchaseType.equals(MONTHLY_PAYMENT_ORIGINAL_AMOUNT);
+	}
+
+	public boolean itOriginalMonthlyPay() {
+		return this.purchaseType.equals(MONTHLY_PAYMENT_ORIGINAL_AMOUNT);
 	}
 
 

@@ -2,6 +2,7 @@ package com.uade.financialEntity.services.impl;
 
 import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.ShopRequest;
+import com.uade.financialEntity.messages.responses.ShopFullResponse;
 import com.uade.financialEntity.messages.responses.ShopPaymentResponse;
 import com.uade.financialEntity.messages.responses.ShopResponse;
 import com.uade.financialEntity.models.Shop;
@@ -39,9 +40,9 @@ public class ShopServiceImpl implements ShopService {
 	private UserDAO userRepository;
 
 	@Override
-	public List<ShopResponse> getAllShops() {
+	public List<ShopFullResponse> getAllShops() {
 		List<Shop> shops = shopRepository.findAll();
-		return shops.stream().map(Shop::toDto).collect(Collectors.toList());
+		return shops.stream().map(Shop::toFullDto).collect(Collectors.toList());
 	}
 
 
@@ -49,7 +50,7 @@ public class ShopServiceImpl implements ShopService {
 	public Object get(Long id) {
 		Optional<Shop> shop = shopRepository.findById(id);
 		return shop.isPresent() ?
-				new ShopResponse(shop.get()) :
+				new ShopFullResponse(shop.get()) :
 				new MessageResponse(new Pair("error", "Error, no pudo ser encontrado el negocio con id " + id)).getMapMessage();
 	}
 
@@ -57,7 +58,7 @@ public class ShopServiceImpl implements ShopService {
 	public Object getByName(String name) {
 		Optional<Shop> shop = shopRepository.findByName(name);
 		return shop.isPresent() ?
-				new ShopResponse(shop.get()) :
+				new ShopFullResponse(shop.get()) :
 				new MessageResponse(new Pair("error", "Error, no pudo ser encontrado el negocio con nombre " + name)).getMapMessage();
 	}
 
@@ -75,7 +76,7 @@ public class ShopServiceImpl implements ShopService {
 		});
 
 		shopRepository.saveAll(shops);
-		return shops.stream().map(Shop::toDto).collect(toList());
+		return shops.stream().map(Shop::toFullDto).collect(toList());
 	}
 
 	@Override
@@ -91,7 +92,7 @@ public class ShopServiceImpl implements ShopService {
 			Shop shop = optionalShop.get();
 			shop.modify(request);
 			shopRepository.save(shop);
-			return shop.toDto();
+			return shop.toFullDto();
 		} else {
 			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada el negocio con id " + id)).getMapMessage();
 		}

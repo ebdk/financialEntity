@@ -36,7 +36,7 @@ public class Customer {
 	private String address;
 	private Long phone;
 	private Long salary;
-	private Long cbu;
+	private String cbuForBank;
 
 	//BUILDERS
 	public Customer(CustomerRequest request) {
@@ -46,7 +46,7 @@ public class Customer {
 		this.address = request.getAddress() != null ? request.getAddress() : address;
 		this.phone = request.getPhone() != null ? request.getPhone() : phone;
 		this.salary = request.getSalary() != null ? request.getSalary() : salary;
-		this.cbu = request.getCbu() != null ? request.getCbu() : cbu;
+		this.cbuForBank = request.getCbuForBank() != null ? request.getCbuForBank() : cbuForBank;
 	}
 
 	public Customer() {
@@ -73,6 +73,6 @@ public class Customer {
 		this.address = request.getAddress() != null ? request.getAddress() : address;
 		this.phone = request.getPhone() != null ? request.getPhone() : phone;
 		this.salary = request.getSalary() != null ? request.getSalary() : salary;
-		this.cbu = request.getCbu() != null ? request.getCbu() : cbu;
+		this.cbuForBank = request.getCbuForBank() != null ? request.getCbuForBank() : cbuForBank;
 	}
 }

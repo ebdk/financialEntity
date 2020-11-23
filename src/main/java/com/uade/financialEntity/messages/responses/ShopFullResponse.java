@@ -19,20 +19,21 @@ public class ShopFullResponse implements Response {
 	//ATTRIBUTES
 	private Long id;
 	private UserResponse user;
-	private List<ShopPaymentResponse> purchases;
+	//private List<ShopPaymentResponse> purchases;
 	private Map<Integer, Map<String, List<ShopPaymentResponse>>> purchasesMap;
 	private List<ShopPromotionResponse> promotions;
 	private String name;
 	private String imgUrl;
-	private Long cuit;
-	private Long cbuForBank;
+	private String cuit;
+	private String cbuForBank;
 
 	//BUILDERS
 	public ShopFullResponse(Shop shop) {
 		if (shop != null) {
 			this.id = shop.getId() != null ? shop.getId() : null;
 			this.user = shop.getUser() != null ? shop.getUser().toDto() : null;
-			this.purchases = shop.getPurchases() != null
+
+			List<ShopPaymentResponse> purchases = shop.getPurchases() != null
 					? shop.getPurchases()
 					.stream()
 					.map(ShopPayment::toDto)

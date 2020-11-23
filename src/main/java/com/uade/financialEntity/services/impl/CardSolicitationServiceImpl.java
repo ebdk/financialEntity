@@ -80,7 +80,7 @@ public class CardSolicitationServiceImpl implements CardSolicitationService {
 			CardEntity cardEntity = optionalCardEntity.get();
 
 			CardSolicitation cardSolicitation = new CardSolicitation(customer, cardEntity);
-			Long cbu = customer.getCbu();
+			String cbu = customer.getCbuForBank();
 
 			//TODO CHECK IF CBU EXITS IN BANK AND IF IT'S NOT BANKRUPT
 
@@ -123,6 +123,9 @@ public class CardSolicitationServiceImpl implements CardSolicitationService {
 			card.setValidFrom("NOVEMBER 2020");
 			card.setGoodThrough("NOVEMBER 2022");
 			card.setNameCustomer(card.getCustomer().getFirstname() + " " + card.getCustomer().getLastname());
+
+			card.setAmountUntilMonthlyPayLimit(cardSolicitation.getCardEntity().getLimitMonthlyPay());
+			card.setAmountUntilOnePayLimit(cardSolicitation.getCardEntity().getLimitPay());
 
 			MonthResume monthResume = new MonthResume(monthNumber);
 			monthResume.setCard(card);

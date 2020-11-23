@@ -15,20 +15,21 @@ public class ShopResponse implements Response {
 	//ATTRIBUTES
 	private Long id;
 	private Long userId;
-	private List<Long> purchasesIds;
+	//private List<Long> purchasesIds;
 	private List<Long> promotionsIds;
 	private String name;
 	private String imgUrl;
-	private Long cuit;
-	private Long cbu;
+	private String cuit;
+	private String cbu;
 
 	//BUILDERS
 	public ShopResponse(Shop shop) {
 		if (shop != null) {
 			this.id = shop.getId() != null ? shop.getId() : null;
 			this.userId = shop.getUser() != null ? shop.getUser().getId() : null;
-			this.purchasesIds = shop.getPurchases() != null
+			/*this.purchasesIds = shop.getPurchases() != null
 					? shop.getPurchases().stream().map(ShopPayment::getId).collect(Collectors.toList()) : null;
+			 */
 			this.promotionsIds = shop.getShopPromotions() != null
 					? shop.getShopPromotions().stream().map(ShopPromotion::getId).collect(Collectors.toList()) : null;
 			this.name = shop.getName() != null ? shop.getName() : null;

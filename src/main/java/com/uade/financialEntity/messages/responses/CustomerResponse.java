@@ -20,7 +20,7 @@ public class CustomerResponse implements Response {
 	private String address;
 	private Long phone;
 	private Long salary;
-	private Long cbu;
+	private String cbuForBank;
 
 	//BUILDERS
 	public CustomerResponse(Customer customer) {
@@ -34,7 +34,7 @@ public class CustomerResponse implements Response {
 			this.address = customer.getAddress() != null ? customer.getAddress() : null;
 			this.phone = customer.getPhone() != null ? customer.getPhone() : null;
 			this.salary = customer.getSalary() != null ? customer.getSalary() : null;
-			this.cbu = customer.getCbu() != null ? customer.getCbu() : null;
+			this.cbuForBank = customer.getCbuForBank() != null ? customer.getCbuForBank() : null;
 		}
 	}
 

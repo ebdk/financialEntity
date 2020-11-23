@@ -21,6 +21,8 @@ public class CardFullResponse implements Response {
 	private String validFrom;
 	private String goodThrough;
 	private String nameCustomer;
+	private Long amountUntilOnePayLimit;
+	private Long amountUntilMonthlyPayLimit;
 
 	//BUILDERS
 	public CardFullResponse(Card card) {
@@ -35,6 +37,8 @@ public class CardFullResponse implements Response {
 			this.validFrom = card.getValidFrom() != null ? card.getValidFrom() : null;
 			this.goodThrough = card.getGoodThrough() != null ? card.getGoodThrough() : null;
 			this.nameCustomer = card.getNameCustomer() != null ? card.getNameCustomer() : null;
+			this.amountUntilOnePayLimit = card.getAmountUntilOnePayLimit() != null ? card.getAmountUntilOnePayLimit() : null;
+			this.amountUntilMonthlyPayLimit = card.getAmountUntilMonthlyPayLimit() != null ? card.getAmountUntilMonthlyPayLimit() : null;
 		}
 	}
 
