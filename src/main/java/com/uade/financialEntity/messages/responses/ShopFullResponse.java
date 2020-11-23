@@ -19,7 +19,6 @@ public class ShopFullResponse implements Response {
 	//ATTRIBUTES
 	private Long id;
 	private UserResponse user;
-	//private List<ShopPaymentResponse> purchases;
 	private Map<Integer, Map<String, List<ShopPaymentResponse>>> purchasesMap;
 	private List<ShopPromotionResponse> promotions;
 	private String name;

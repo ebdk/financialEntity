@@ -6,7 +6,10 @@ import com.uade.financialEntity.models.MonthResume;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Getter
 public class CardFullResponse implements Response {
@@ -14,7 +17,7 @@ public class CardFullResponse implements Response {
 	//ATTRIBUTESo
 	private Long id;
 	private CustomerResponse customer;
-	private List<MonthResumeFullResponse> monthResumes;
+	Map<Integer, List<MonthResumeFullResponse>> monthResumeMap;
 	private CardEntityResponse cardEntity;
 	private Long creditNumber;
 	private Integer secretCode;
@@ -29,8 +32,19 @@ public class CardFullResponse implements Response {
 		if (card != null) {
 			this.id = card.getId() != null ? card.getId() : null;
 			this.customer = card.getCustomer() != null ? card.getCustomer().toDto() : null;
-			this.monthResumes = card.getMonthResumes() != null
-					? card.getMonthResumes().stream().map(MonthResume::toFullDto).collect(Collectors.toList()) : null;
+
+			List<MonthResumeFullResponse> monthResumes = card.getMonthResumes() != null
+					? card.getMonthResumes()
+					.stream()
+					.map(MonthResume::toFullDto)
+					.collect(Collectors.toList()) : null;
+			if (monthResumes != null) {
+				this.monthResumeMap = monthResumes
+						.stream()
+						.collect(groupingBy(MonthResumeFullResponse::getMonthNumber));
+			}
+
+
 			this.cardEntity = card.getCardEntity() != null ? card.getCardEntity().toDto() : null;
 			this.creditNumber = card.getCreditNumber() != null ? card.getCreditNumber() : null;
 			this.secretCode = card.getSecretCode() != null ? card.getSecretCode() : null;
