@@ -133,8 +133,11 @@ public class CardSolicitationServiceImpl implements CardSolicitationService {
 			cardRepository.save(card);
 			monthResumeRepository.save(monthResume);
 			cardSolicitationRepository.save(cardSolicitation);
+
+			return card.toFullDto();
+		} else {
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la solicitud de Tarjeta con  id " + id + " o esta cerrada.")).getMapMessage();
 		}
-		return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la solicitud de Tarjeta con  id " + id + " o esta cerrada.")).getMapMessage();
 	}
 
 	@Override
@@ -149,8 +152,12 @@ public class CardSolicitationServiceImpl implements CardSolicitationService {
 			cardSolicitation.setDateFinalized(now);
 
 			cardSolicitationRepository.save(cardSolicitation);
+
+			return cardSolicitation.toDto();
 		}
-		return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la solicitud de Tarjeta con  id " + id + " o esta cerrada.")).getMapMessage();
+		else {
+			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la solicitud de Tarjeta con  id " + id + " o esta cerrada.")).getMapMessage();
+		}
 	}
 
 	@Override
