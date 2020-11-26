@@ -3,7 +3,6 @@ package com.uade.financialEntity.services.impl;
 import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.ShopRequest;
 import com.uade.financialEntity.messages.responses.ShopFullResponse;
-import com.uade.financialEntity.messages.responses.ShopPaymentResponse;
 import com.uade.financialEntity.models.Shop;
 import com.uade.financialEntity.models.ShopPayment;
 import com.uade.financialEntity.models.User;
@@ -138,24 +137,13 @@ public class ShopServiceImpl implements ShopService {
 	 */
 
 	@Override
-	public List<ShopPaymentResponse> closeMonths(Integer month) {
+	public void closeMonths(Integer month) {
 
-		List<Shop> shops = shopRepository.findAll();
+		shopRepository.findAll().forEach(shop -> closeMonth(shop, month));
 
-		List<ShopPayment> shopPayments = shops
-				.stream()
-				.map(shop -> closeMonth(shop, month))
-				.collect(toList());
-
-		//TODO Transfer to Bank
-
-		return shopPayments
-				.stream()
-				.map(ShopPayment::toDto)
-				.collect(toList());
 	}
 
-	private ShopPayment closeMonth(Shop shop, Integer month) {
+	private void closeMonth(Shop shop, Integer month) {
 
 		Date now = new Date();
 
@@ -189,8 +177,8 @@ public class ShopServiceImpl implements ShopService {
 			endMonthPurchase.setBankPaymentId(callResponse.getSource_reference_number());
 		}
 		shopPaymentRepository.save(endMonthPurchase);
-		return endMonthPurchase;
 
+		//return endMonthPurchase;
 	}
 
 }

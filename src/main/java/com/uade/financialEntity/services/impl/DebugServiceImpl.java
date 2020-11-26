@@ -6,9 +6,6 @@ import com.uade.financialEntity.messages.requests.UserRequest;
 import com.uade.financialEntity.messages.requests.custom.FirstInsertRequest;
 import com.uade.financialEntity.messages.requests.custom.SecondInsertRequest;
 import com.uade.financialEntity.messages.requests.custom.ThirdInsertRequest;
-import com.uade.financialEntity.messages.responses.MonthResumeFullResponse;
-import com.uade.financialEntity.messages.responses.ShopPaymentResponse;
-import com.uade.financialEntity.messages.responses.custom.CloseMonthResponse;
 import com.uade.financialEntity.models.*;
 import com.uade.financialEntity.repositories.*;
 import com.uade.financialEntity.services.CardService;
@@ -168,15 +165,13 @@ public class DebugServiceImpl implements DebugService {
 		SystemCache systemCache = systemCacheRepository.findAll().get(0);
 		Integer monthNumber = systemCache.getMonthNumber();
 
-		List<MonthResumeFullResponse> monthResumeFullResponses = cardService.closeLastMonthResumes(monthNumber);
-		List<ShopPaymentResponse> shopPaymentResponses = shopService.closeMonths(monthNumber);
-
-
-		CloseMonthResponse closeMonthResponse = new CloseMonthResponse(monthResumeFullResponses, shopPaymentResponses);
+		cardService.closeLastMonthResumes(monthNumber);
+		shopService.closeMonths(monthNumber);
 
 		systemCache.setMonthNumber(monthNumber + 1);
 		systemCacheRepository.save(systemCache);
-		return closeMonthResponse;
+
+		return new MessageResponse("Modified Succesfuly").getMapMessage();
 	}
 
 }

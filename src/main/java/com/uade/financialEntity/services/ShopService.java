@@ -24,10 +24,6 @@ public interface ShopService {
 
 	Object existsName(String name);
 
-	//Object closeMonth(Long id);
-
-	//Object closeMonths();
-
-	List<ShopPaymentResponse> closeMonths(Integer month);
+	void closeMonths(Integer month);
 
 }

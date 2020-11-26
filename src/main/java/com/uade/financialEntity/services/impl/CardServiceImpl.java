@@ -3,7 +3,6 @@ package com.uade.financialEntity.services.impl;
 import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.CardRequest;
 import com.uade.financialEntity.messages.responses.CardFullResponse;
-import com.uade.financialEntity.messages.responses.MonthResumeFullResponse;
 import com.uade.financialEntity.models.Card;
 import com.uade.financialEntity.models.MonthResume;
 import com.uade.financialEntity.models.Purchase;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 import static com.uade.financialEntity.models.Purchase.PurchaseType.ONE_PAY;
 import static com.uade.financialEntity.utils.MathUtils.getPercentage;
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -65,79 +63,14 @@ public class CardServiceImpl implements CardService {
 				new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con numero " + creditnumber)).getMapMessage();
 	}
 
-	/*
 	@Override
-	public Object createCard(List<CardRequest> cardRequests) {
-		SystemCache systemCache = systemCacheRepository.findAll().get(0);
-		Integer monthNumber = systemCache.getMonthNumber();
+	public void closeLastMonthResumes(Integer month) {
 
-		List<Card> cards = new ArrayList<>();
-		cardRequests.forEach(cardRequest -> {
-			Card card = new Card(cardRequest);
-
-			Long idCustomer = cardRequest.getCustomerId();
-			Optional<Customer> optionalCustomer = customerRepository.findById(idCustomer);
-			optionalCustomer.ifPresent(card::setCustomer);
-
-			Long idCardEntity = cardRequest.getCardEntityId();
-			Optional<CardEntity> optionalCardEntity = cardEntityRepository.findById(idCardEntity);
-			optionalCardEntity.ifPresent(card::setCardEntity);
-
-			MonthResume monthResume = new MonthResume(monthNumber);
-			monthResume.setCard(card);
-
-			cardRepository.save(card);
-			monthResumeRepository.save(monthResume);
-			cards.add(card);
-		});
-
-		return cards.stream().map(Card::toDto).collect(toList());
-	}
-
-	@Override
-	public Object closeLastMonthResume(Long id) {
-		Optional<Card> optionalCard = cardRepository.findById(id);
-
-		if (optionalCard.isPresent()) {
-			return closeCard(optionalCard.get(), 1).toFullDto();
-		} else {
-			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con numero " + id)).getMapMessage();
-		}
+		cardRepository.findAll().forEach(card -> closeCard(card, month));
 
 	}
 
-	@Override
-	public Object closeLastMonthResumes() {
-		List<Card> cards = cardRepository.findAll();
-
-		List<MonthResume> monthResumes = cards
-				.stream()
-				.map(card -> closeCard(card, 1))
-				.collect(toList());
-
-		return monthResumes
-				.stream()
-				.map(MonthResume::toFullDto)
-				.collect(toList());
-	}
-	 */
-
-	@Override
-	public List<MonthResumeFullResponse> closeLastMonthResumes(Integer month) {
-		List<Card> cards = cardRepository.findAll();
-
-		List<MonthResume> monthResumes = cards
-				.stream()
-				.map(card -> closeCard(card, month))
-				.collect(toList());
-
-		return monthResumes
-				.stream()
-				.map(MonthResume::toFullDto)
-				.collect(toList());
-	}
-
-	private MonthResume closeCard(Card card, Integer monthNumner) {
+	private void closeCard(Card card, Integer monthNumner) {
 		List<Purchase> monthlyPay = card.getPurchasesRemainingMonthPay();
 		List<Purchase> cloneMonthlyPay = card.clonePurchase(monthlyPay);
 
@@ -183,7 +116,7 @@ public class CardServiceImpl implements CardService {
 		monthlyPay.addAll(cloneMonthlyPay);
 		purchaseRepository.saveAll(monthlyPay);
 
-		return monthResumeOpen;
+		//return monthResumeOpen;
 	}
 
 	@Override
@@ -219,7 +152,7 @@ public class CardServiceImpl implements CardService {
 			MonthResume monthResume = card.getLastMonthResumeOpen();
 			monthResume.setAmountPaid(monthResume.getAmountPaid() + amount);
 
-			if(bankService.validateCbuExists(card.getCustomer().getCbuForBank())) {
+			if (bankService.validateCbuExists(card.getCustomer().getCbuForBank())) {
 				bankService.transfer(amount, card.getCustomer().getCbuForBank());
 				System.out.println("SENT " + amount);
 
