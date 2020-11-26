@@ -43,8 +43,6 @@ public class ShopServiceImpl implements ShopService {
 	@Autowired
 	private BankService bankService;
 
-	private static String PROVIDER_CODE = "044038";
-
 	@Override
 	public List<ShopFullResponse> getAllShops() {
 		List<Shop> shops = shopRepository.findAll();
@@ -187,7 +185,7 @@ public class ShopServiceImpl implements ShopService {
 				.sum());
 
 		if (!endMonthPurchase.getTotalAmount().equals(0)) {
-			TransferResponse callResponse = bankService.transfer(endMonthPurchase.getTotalAmount(), shop.getCbuForBank(), endMonthPurchase.getDescription(), PROVIDER_CODE);
+			TransferResponse callResponse = bankService.transfer(endMonthPurchase.getTotalAmount(), shop.getCbuForBank(), endMonthPurchase.getDescription());
 			endMonthPurchase.setBankPaymentId(callResponse.getSource_reference_number());
 		}
 		shopPaymentRepository.save(endMonthPurchase);

@@ -2,8 +2,10 @@ package com.uade.financialEntity.services.external;
 
 public interface BankService {
 
-	String validateCbuExists(Long cbu);
+	boolean validateCbuExists(String cbu);
 
-	TransferResponse transfer(Integer amount, String cbu, String detail, String providerCode);
+	TransferResponse transfer(Integer amount, String cbu, String detail);
+
+	CustomerPaymentResponse transfer(Integer amount, String cbu);
 
 }

@@ -171,6 +171,7 @@ public class DebugServiceImpl implements DebugService {
 		List<MonthResumeFullResponse> monthResumeFullResponses = cardService.closeLastMonthResumes(monthNumber);
 		List<ShopPaymentResponse> shopPaymentResponses = shopService.closeMonths(monthNumber);
 
+
 		CloseMonthResponse closeMonthResponse = new CloseMonthResponse(monthResumeFullResponses, shopPaymentResponses);
 
 		systemCache.setMonthNumber(monthNumber + 1);

@@ -7,8 +7,11 @@ import com.uade.financialEntity.messages.responses.MonthResumeFullResponse;
 import com.uade.financialEntity.models.Card;
 import com.uade.financialEntity.models.MonthResume;
 import com.uade.financialEntity.models.Purchase;
-import com.uade.financialEntity.repositories.*;
+import com.uade.financialEntity.repositories.CardDAO;
+import com.uade.financialEntity.repositories.MonthResumeDAO;
+import com.uade.financialEntity.repositories.PurchaseDAO;
 import com.uade.financialEntity.services.CardService;
+import com.uade.financialEntity.services.external.BankService;
 import com.uade.financialEntity.utils.Pair;
 import com.uade.financialEntity.utils.PairObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +41,7 @@ public class CardServiceImpl implements CardService {
 	private PurchaseDAO purchaseRepository;
 
 	@Autowired
-	private CardEntityDAO cardEntityRepository;
-
-	@Autowired
-	private CustomerDAO customerRepository;
-
-	@Autowired
-	private SystemCacheDAO systemCacheRepository;
+	private BankService bankService;
 
 	@Override
 	public List<CardFullResponse> getAllCards() {
@@ -222,9 +219,15 @@ public class CardServiceImpl implements CardService {
 			MonthResume monthResume = card.getLastMonthResumeOpen();
 			monthResume.setAmountPaid(monthResume.getAmountPaid() + amount);
 
-			//TODO Transfer to Bank
+			if(bankService.validateCbuExists(card.getCustomer().getCbuForBank())) {
+				bankService.transfer(amount, card.getCustomer().getCbuForBank());
+				System.out.println("SENT " + amount);
 
-			monthResumeRepository.save(monthResume);
+				monthResumeRepository.save(monthResume);
+			} else {
+				return new MessageResponse(new Pair("error", "Error, cbu invalido para el usuario: " + card.getCustomer().getCbuForBank())).getMapMessage();
+			}
+
 
 			return monthResume.toFullDto();
 		} else {
