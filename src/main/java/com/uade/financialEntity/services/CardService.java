@@ -16,9 +16,9 @@ public interface CardService {
 
 	//Object createCard(List<CardRequest> cardRequests);
 
-	Object closeLastMonthResume(Long id);
+	//Object closeLastMonthResume(Long id);
 
-	Object closeLastMonthResumes();
+	//Object closeLastMonthResumes();
 
 	Object getOpenResumeByResumeId(Long idResume);
 

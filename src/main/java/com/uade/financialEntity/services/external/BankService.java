@@ -4,8 +4,6 @@ public interface BankService {
 
 	String validateCbuExists(Long cbu);
 
-	Object transfer(TransferRequest transferRequest);
-
-	//CbuValidationResponse validateUserBankrupt(Long id);
+	TransferResponse transfer(Integer amount, String cbu, String detail, String providerCode);
 
 }

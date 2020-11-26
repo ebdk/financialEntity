@@ -4,7 +4,6 @@ import com.uade.financialEntity.messages.MessageResponse;
 import com.uade.financialEntity.messages.requests.ShopRequest;
 import com.uade.financialEntity.messages.responses.ShopFullResponse;
 import com.uade.financialEntity.messages.responses.ShopPaymentResponse;
-import com.uade.financialEntity.messages.responses.ShopResponse;
 import com.uade.financialEntity.models.Shop;
 import com.uade.financialEntity.models.ShopPayment;
 import com.uade.financialEntity.models.User;
@@ -12,6 +11,8 @@ import com.uade.financialEntity.repositories.ShopDAO;
 import com.uade.financialEntity.repositories.ShopPaymentDAO;
 import com.uade.financialEntity.repositories.UserDAO;
 import com.uade.financialEntity.services.ShopService;
+import com.uade.financialEntity.services.external.BankService;
+import com.uade.financialEntity.services.external.TransferResponse;
 import com.uade.financialEntity.utils.Pair;
 import com.uade.financialEntity.utils.PairObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,11 @@ public class ShopServiceImpl implements ShopService {
 
 	@Autowired
 	private UserDAO userRepository;
+
+	@Autowired
+	private BankService bankService;
+
+	private static String PROVIDER_CODE = "044038";
 
 	@Override
 	public List<ShopFullResponse> getAllShops() {
@@ -105,6 +111,7 @@ public class ShopServiceImpl implements ShopService {
 		return new MessageResponse(new PairObject("exists", exists)).getMapObject();
 	}
 
+	/*
 	@Override
 	public Object closeMonth(Long id) {
 		Optional<Shop> optionalShop = shopRepository.findById(id);
@@ -116,7 +123,6 @@ public class ShopServiceImpl implements ShopService {
 		}
 	}
 
-	/*
 	@Override
 	public Object closeMonths() {
 		List<Shop> shops = shopRepository.findAll();
@@ -160,7 +166,6 @@ public class ShopServiceImpl implements ShopService {
 				.filter(shopPayment -> shopPayment.isDailyOfMonth(month))
 				.collect(toList());
 
-
 		ShopPayment endMonthPurchase = new ShopPayment();
 		endMonthPurchase.setMonth(month);
 		endMonthPurchase.setDescription("Resume of Month " + month);
@@ -181,8 +186,13 @@ public class ShopServiceImpl implements ShopService {
 				.mapToInt(ShopPayment::getTotalAmount)
 				.sum());
 
+		if (!endMonthPurchase.getTotalAmount().equals(0)) {
+			TransferResponse callResponse = bankService.transfer(endMonthPurchase.getTotalAmount(), shop.getCbuForBank(), endMonthPurchase.getDescription(), PROVIDER_CODE);
+			endMonthPurchase.setBankPaymentId(callResponse.getSource_reference_number());
+		}
 		shopPaymentRepository.save(endMonthPurchase);
 		return endMonthPurchase;
+
 	}
 
 }

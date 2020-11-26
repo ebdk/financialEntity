@@ -19,6 +19,7 @@ public class ShopPaymentResponse implements Response {
 	private Integer totalAmount;
 	private Date date;
 	private String paymentType;
+	private Long bankPaymentId;
 
 	//BUILDERS
 	public ShopPaymentResponse(ShopPayment shopPayment) {
@@ -32,6 +33,7 @@ public class ShopPaymentResponse implements Response {
 			this.totalAmount = shopPayment.getTotalAmount() != null ? shopPayment.getTotalAmount() : null;
 			this.date = shopPayment.getDate() != null ? shopPayment.getDate() : null;
 			this.paymentType = shopPayment.getPaymentType() != null ? shopPayment.getPaymentType().toString() : null;
+			this.bankPaymentId = shopPayment.getBankPaymentId() != null ? shopPayment.getBankPaymentId() : null;
 		}
 	}
 

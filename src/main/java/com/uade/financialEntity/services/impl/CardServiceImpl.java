@@ -96,7 +96,6 @@ public class CardServiceImpl implements CardService {
 
 		return cards.stream().map(Card::toDto).collect(toList());
 	}
-	 */
 
 	@Override
 	public Object closeLastMonthResume(Long id) {
@@ -124,6 +123,7 @@ public class CardServiceImpl implements CardService {
 				.map(MonthResume::toFullDto)
 				.collect(toList());
 	}
+	 */
 
 	@Override
 	public List<MonthResumeFullResponse> closeLastMonthResumes(Integer month) {

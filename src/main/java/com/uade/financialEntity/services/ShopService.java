@@ -24,7 +24,7 @@ public interface ShopService {
 
 	Object existsName(String name);
 
-	Object closeMonth(Long id);
+	//Object closeMonth(Long id);
 
 	//Object closeMonths();
 

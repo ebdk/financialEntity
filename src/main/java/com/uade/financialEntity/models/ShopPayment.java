@@ -34,6 +34,7 @@ public class ShopPayment {
 	private Integer totalAmount;
 	private Date date;
 	private PaymentType paymentType;
+	private Long bankPaymentId;
 
 	public enum PaymentType {
 		DAILY,
