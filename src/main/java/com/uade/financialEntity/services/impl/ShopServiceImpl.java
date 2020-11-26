@@ -108,34 +108,6 @@ public class ShopServiceImpl implements ShopService {
 		return new MessageResponse(new PairObject("exists", exists)).getMapObject();
 	}
 
-	/*
-	@Override
-	public Object closeMonth(Long id) {
-		Optional<Shop> optionalShop = shopRepository.findById(id);
-
-		if (optionalShop.isPresent()) {
-			return closeMonth(optionalShop.get(), 1).toDto();
-		} else {
-			return new MessageResponse(new Pair("error", "Error, no pudo ser encontrada la tarjeta con numero " + id)).getMapMessage();
-		}
-	}
-
-	@Override
-	public Object closeMonths() {
-		List<Shop> shops = shopRepository.findAll();
-
-		List<ShopPayment> shopPayments = shops
-				.stream()
-				.map(shop -> closeMonth(shop, 1))
-				.collect(toList());
-
-		return shopPayments
-				.stream()
-				.map(ShopPayment::toDto)
-				.collect(toList());
-	}
-	 */
-
 	@Override
 	public void closeMonths(Integer month) {
 
