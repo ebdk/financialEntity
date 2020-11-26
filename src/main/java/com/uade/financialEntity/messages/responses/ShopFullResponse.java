@@ -22,7 +22,6 @@ public class ShopFullResponse implements Response {
 	private Map<Integer, Map<String, List<ShopPaymentResponse>>> purchasesMap;
 	private List<ShopPromotionResponse> promotions;
 	private String name;
-	private String imgUrl;
 	private String cuit;
 	private String cbuForBank;
 
@@ -62,7 +61,6 @@ public class ShopFullResponse implements Response {
 			this.promotions = shop.getShopPromotions() != null
 					? shop.getShopPromotions().stream().map(ShopPromotion::toDto).collect(Collectors.toList()) : null;
 			this.name = shop.getName() != null ? shop.getName() : null;
-			this.imgUrl = shop.getImgUrl() != null ? shop.getImgUrl() : null;
 			this.cuit = shop.getCuit() != null ? shop.getCuit() : null;
 			this.cbuForBank = shop.getCbuForBank() != null ? shop.getCbuForBank() : null;
 		}

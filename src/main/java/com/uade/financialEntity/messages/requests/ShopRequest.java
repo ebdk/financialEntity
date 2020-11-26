@@ -12,7 +12,6 @@ public class ShopRequest implements Response {
 	//ATTRIBUTES
 	private String name;
 	private Long userId;
-	private String imgUrl;
 	private String cuit;
 	private String cbuForBank;
 

@@ -18,7 +18,6 @@ public class ShopResponse implements Response {
 	//private List<Long> purchasesIds;
 	private List<Long> promotionsIds;
 	private String name;
-	private String imgUrl;
 	private String cuit;
 	private String cbu;
 
@@ -33,7 +32,6 @@ public class ShopResponse implements Response {
 			this.promotionsIds = shop.getShopPromotions() != null
 					? shop.getShopPromotions().stream().map(ShopPromotion::getId).collect(Collectors.toList()) : null;
 			this.name = shop.getName() != null ? shop.getName() : null;
-			this.imgUrl = shop.getImgUrl() != null ? shop.getImgUrl() : null;
 			this.cuit = shop.getCuit() != null ? shop.getCuit() : null;
 			this.cbu = shop.getCbuForBank() != null ? shop.getCbuForBank() : null;
 		}
